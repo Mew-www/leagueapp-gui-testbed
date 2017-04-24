@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { KonamiComponent } from './konami/konami.component';
+import {PreferencesService} from "./services/preferences.service";
+import {TranslatorService} from "./services/translator.service";
 
 @NgModule({
   declarations: [
@@ -16,7 +18,7 @@ import { KonamiComponent } from './konami/konami.component';
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [PreferencesService, TranslatorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
