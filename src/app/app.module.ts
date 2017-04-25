@@ -7,18 +7,22 @@ import { AppComponent } from './app.component';
 import { KonamiComponent } from './konami/konami.component';
 import {PreferencesService} from "./services/preferences.service";
 import {TranslatorService} from "./services/translator.service";
+import {StaticApiService} from "./services/static-api.service";
 
 @NgModule({
   declarations: [
     AppComponent,
-    KonamiComponent
+    KonamiComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [PreferencesService, TranslatorService],
+  providers: [
+    PreferencesService, TranslatorService,
+    StaticApiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

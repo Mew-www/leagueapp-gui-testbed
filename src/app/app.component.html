@@ -1,4 +1,13 @@
-<h1>
-  {{title}}
-</h1>
+<p><u>Champions</u></p>
+<ul>
+  <li *ngFor="let c of champions">
+    {{c.name}} (#{{c.id}})
+  </li>
+</ul>
+
+<p><u>Items</u></p>
+<pre>
+  {{items | json}}
+</pre>
+
 <konami></konami>

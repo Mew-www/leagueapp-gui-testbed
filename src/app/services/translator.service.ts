@@ -16,7 +16,7 @@ export class TranslatorService {
       });
   }
 
-  getTranslation = (phrase_id, opt_alt_language?) => {
+  public getTranslation = (phrase_id, opt_alt_language?) => {
     let language = opt_alt_language ? opt_alt_language : this.current_language;
 
     if (!this.translations.hasOwnProperty(language)) {
