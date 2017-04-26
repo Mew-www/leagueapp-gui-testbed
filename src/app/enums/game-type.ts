@@ -1,0 +1,6 @@
+export enum GameType {
+  SOLO_QUEUE,
+  FLEX_QUEUE,
+  SOLO_AND_FLEXQUEUE,
+  UNKNOWN_UNDEFINED
+}

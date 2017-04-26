@@ -1,5 +1,6 @@
 export enum ResType {
   SUCCESS,
   ERROR,
-  TRY_LATER
+  TRY_LATER,
+  NOT_FOUND
 }

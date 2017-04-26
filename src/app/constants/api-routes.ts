@@ -1,4 +1,5 @@
 import {Settings} from "./settings";
+import {GameType} from "../enums/game-type";
 export class ApiRoutes {
 
   public static CHAMPION_LIST_URI = Settings.API_BASE_URI + "static/champions";
@@ -35,22 +36,22 @@ export class ApiRoutes {
     + "&summoner_id=" + summoner_id;
   };
 
-  public static PLAYER_RANKED_GAME_HISTORY_URI = (flex_or_solo_or_both, count, region, summoner_id) => {
-    switch (flex_or_solo_or_both.toLowerCase()) {
-      case "flex":
-        return Settings.API_BASE_URI + "player/history/flex/" + count + "/"
+  public static PLAYER_RANKED_GAME_HISTORY_URI = (game_type: GameType, count, region, summoner_id) => {
+    switch (game_type) {
+      case GameType.FLEX_QUEUE:
+        return Settings.API_BASE_URI + "player/history/flex/" + count + "/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
-      case "solo":
-        return Settings.API_BASE_URI + "player/history/solo/" + count + "/"
+      case GameType.SOLO_QUEUE:
+        return Settings.API_BASE_URI + "player/history/solo/" + count + "/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
-      case "both":
-        return Settings.API_BASE_URI + "player/history/solo_and_flex/" + count + "/"
+      case GameType.SOLO_AND_FLEXQUEUE:
+        return Settings.API_BASE_URI + "player/history/solo_and_flex/" + count + "/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
       default:
-        return Settings.API_BASE_URI + "player/history/solo_and_flex/" + count + "/"
+        return Settings.API_BASE_URI + "player/history/solo_and_flex/" + count + "/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
     }
