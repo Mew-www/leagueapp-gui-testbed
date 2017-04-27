@@ -36,22 +36,22 @@ export class ApiRoutes {
     + "&summoner_id=" + summoner_id;
   };
 
-  public static PLAYER_RANKED_GAME_HISTORY_URI = (game_type: GameType, count, region, summoner_id) => {
+  public static PLAYER_RANKED_GAME_HISTORY_URI = (game_type: GameType, region, summoner_id) => {
     switch (game_type) {
       case GameType.FLEX_QUEUE:
-        return Settings.API_BASE_URI + "player/history/flex/" + count + "/preview"
+        return Settings.API_BASE_URI + "player/history/flex/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
       case GameType.SOLO_QUEUE:
-        return Settings.API_BASE_URI + "player/history/solo/" + count + "/preview"
+        return Settings.API_BASE_URI + "player/history/solo/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
       case GameType.SOLO_AND_FLEXQUEUE:
-        return Settings.API_BASE_URI + "player/history/solo_and_flex/" + count + "/preview"
+        return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
       default:
-        return Settings.API_BASE_URI + "player/history/solo_and_flex/" + count + "/preview"
+        return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
           + "&summoner_id=" + summoner_id;
     }

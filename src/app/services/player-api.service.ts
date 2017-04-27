@@ -78,8 +78,8 @@ export class PlayerApiService {
     return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_SUMMID_URI(region, summoner_id))
       .map(res => PlayerApiService._wrapSummonerApiResponse(res));
   }
-  public getListOfRecentGames(region, summoner_id, gametype, max): Observable<ApiResponse<Object, String, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, max, region, summoner_id))
+  public getListOfRecentGames(region, summoner_id, gametype): Observable<ApiResponse<Object, String, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, summoner_id))
       .map(res => PlayerApiService._wrapRecentgamesApiResponse(res));
   }
 }
