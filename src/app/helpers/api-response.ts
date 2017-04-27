@@ -1,36 +1,40 @@
 import {ResType} from "../enums/api-response-type";
 
-export class ApiResponse {
+export class ApiResponse<Td, Te, Tw> {
 
-  public type: ResType;
-  public data: any;
+  public type:  ResType;
+  public data:  Td;
+  public error: Te;
+  public wait:  Tw;
 
-  constructor(type, data) {
-    this.type = type;
-    this.data = data;
+  constructor(type, data, error, wait) {
+    this.type =   type;
+    this.data =   data;
+    this.error =  error;
+    this.wait =   wait;
   }
 }
 
-export class ApiResponseSuccess extends ApiResponse {
-  constructor(data: any) {
-    super(ResType.SUCCESS, data);
+export class ApiResponseSuccess<T> extends ApiResponse<T, any, any> {
+  constructor(data: T) {
+    super(ResType.SUCCESS, data, null, null);
   }
 }
 
-export class ApiResponseNotFound extends ApiResponse {
-  constructor(optional_description?: String) {
-    super(ResType.NOT_FOUND, optional_description || null);
+export class ApiResponseError<T> extends ApiResponse<any, T, any> {
+  constructor(error: T) {
+    super(ResType.ERROR, null, error, null);
   }
 }
 
-export class ApiResponseTryLater extends ApiResponse {
-  constructor(seconds_to_wait) {
-    super(ResType.TRY_LATER, seconds_to_wait);
+export class ApiResponseTryLater<T> extends ApiResponse<any, any, T> {
+  constructor(seconds_to_wait: T) {
+    super(ResType.TRY_LATER, null, null, seconds_to_wait);
   }
 }
 
-export class ApiResponseError extends ApiResponse {
-  constructor(error: String) {
-    super(ResType.ERROR, error);
+export class ApiResponseNotFound extends ApiResponse<any, any, any> {
+  constructor() {
+    super(ResType.NOT_FOUND, null, null, null);
   }
 }

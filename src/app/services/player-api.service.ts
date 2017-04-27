@@ -14,7 +14,7 @@ export class PlayerApiService {
 
   constructor(private http: Http) { }
 
-  private static wrapSummonerApiResponse(res: Response): ApiResponse {
+  private static _wrapSummonerApiResponse(res: Response): ApiResponse<Summoner, String, Number> {
     switch (res.status) {
       case 404:
         return new ApiResponseNotFound(); // Non-existing summoner name or ID
@@ -27,15 +27,14 @@ export class PlayerApiService {
         if (res.json().hasOwnProperty("status") && res.json()['status'] === 503) {
           return new ApiResponseTryLater(res.json()['data']['Retry-After']);
         } else {
-          return new ApiResponseError(res.json()['data']);
+          return new ApiResponseError(res.json()['data'].toString());
         }
 
       default:
         return new ApiResponseError(res.text());
     }
   }
-
-  private static wrapRecentgamesApiResponse(res: Response): ApiResponse {
+  private static _wrapRecentgamesApiResponse(res: Response): ApiResponse<Object, String, Number> {
     switch (res.status) {
       case 404:
         return new ApiResponseNotFound(); // Invalid summoner ID
@@ -63,7 +62,7 @@ export class PlayerApiService {
         if (res.json().hasOwnProperty("status") && res.json()['status'] === 503) {
           return new ApiResponseTryLater(res.json()['data']['Retry-After']);
         } else {
-          return new ApiResponseError(res.json()['data']);
+          return new ApiResponseError(res.json()['data'].toString());
         }
 
       default:
@@ -71,18 +70,16 @@ export class PlayerApiService {
     }
   }
 
-  public getSummonerByName(region, name): Observable<ApiResponse> {
+  public getSummonerByName(region, name): Observable<ApiResponse<Summoner, String, Number>> {
     return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_NAME_URI(region, name))
-      .map(res => PlayerApiService.wrapSummonerApiResponse(res));
+      .map(res => PlayerApiService._wrapSummonerApiResponse(res));
   }
-
-  public getSummonerById(region, summoner_id): Observable<ApiResponse> {
+  public getSummonerById(region, summoner_id): Observable<ApiResponse<Summoner, String, Number>> {
     return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_SUMMID_URI(region, summoner_id))
-      .map(res => PlayerApiService.wrapSummonerApiResponse(res));
+      .map(res => PlayerApiService._wrapSummonerApiResponse(res));
   }
-
-  public getListOfRecentGames(region, summoner_id, game_type, max_nr_of_games): Observable<ApiResponse> {
-    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(game_type, max_nr_of_games, region, summoner_id))
-      .map(res => PlayerApiService.wrapRecentgamesApiResponse(res));
+  public getListOfRecentGames(region, summoner_id, gametype, max): Observable<ApiResponse<Object, String, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, max, region, summoner_id))
+      .map(res => PlayerApiService._wrapRecentgamesApiResponse(res));
   }
 }

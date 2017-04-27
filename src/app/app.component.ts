@@ -38,7 +38,6 @@ export class AppComponent {
         }
       });
   }
-
   public updateSummoner() {
     this.player_api.getSummonerById("EUW", this.selected_summoner.id)
       .subscribe(api_res => {
@@ -47,7 +46,6 @@ export class AppComponent {
         }
       })
   }
-
   public fetchGameHistory(count) {
     this.total_history = null;
     this.selected_history = null;
