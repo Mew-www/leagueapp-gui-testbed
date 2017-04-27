@@ -9,6 +9,7 @@ import {PreferencesService} from "./services/preferences.service";
 import {TranslatorService} from "./services/translator.service";
 import {StaticApiService} from "./services/static-api.service";
 import {PlayerApiService} from "./services/player-api.service";
+import {GameApiService} from "./services/game-api.service";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import {PlayerApiService} from "./services/player-api.service";
   ],
   providers: [
     PreferencesService, TranslatorService,
-    StaticApiService, PlayerApiService
+    StaticApiService, PlayerApiService, GameApiService
   ],
   bootstrap: [AppComponent]
 })

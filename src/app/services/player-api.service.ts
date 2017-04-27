@@ -21,7 +21,7 @@ export class PlayerApiService {
 
       case 200:
         let summoner_json = res.json();
-        return new ApiResponseSuccess(new Summoner(summoner_json['id'], summoner_json['name']));
+        return new ApiResponseSuccess(new Summoner(summoner_json['id'], summoner_json['name'], summoner_json['icon']));
 
       case 500:
         if (res.json().hasOwnProperty("status") && res.json()['status'] === 503) {

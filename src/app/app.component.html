@@ -3,24 +3,23 @@
 <div *ngIf="selected_summoner">
 
   <h3>
-    {{selected_summoner.current_name}}#{{selected_summoner.id}}
+    {{selected_summoner.current_name}}#{{selected_summoner.id}} (icon {{selected_summoner.icon.id}})
     &nbsp;
     <button (click)="updateSummoner()">Update by summoner ID lookup</button>
   </h3>
   <div>
-    <button (click)="fetchGameHistory(nrOfGamesEl.value)">Load</button>
-    &nbsp;
-    preview of
-    &nbsp;
-    <input #nrOfGamesEl type="text"/>
-    &nbsp;
-    games
+    <button (click)="fetchGameHistory()">Load preview of game history</button>
   </div>
 
   <div *ngIf="selected_history">
     <p>Loaded {{selected_history.length}}/{{total_history}} records</p>
     <br/>
-    <pre>{{selected_history | json}}</pre>
+    <pre *ngFor="let dataset of selected_history" style="margin: 4px; border: 1px solid black;">
+      {{dataset | json}}
+      <button (click)="fetchGameDetails(dataset.match_id)">
+        Load details
+      </button>
+    </pre>
   </div>
 
 </div>

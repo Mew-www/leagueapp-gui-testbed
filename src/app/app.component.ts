@@ -5,6 +5,7 @@ import {Champion} from "./models/champion";
 import {PlayerApiService} from "./services/player-api.service";
 import {Summoner} from "./models/summoner";
 import {GameType} from "./enums/game-type";
+import {GameApiService} from "./services/game-api.service";
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,8 @@ export class AppComponent {
 
   constructor(
     private static_api: StaticApiService,
-    private player_api: PlayerApiService
+    private player_api: PlayerApiService,
+    private game_api: GameApiService
   ) {}
 
   public selectSummoner(name) {
@@ -46,16 +48,30 @@ export class AppComponent {
         }
       })
   }
-  public fetchGameHistory(count) {
+  public fetchGameHistory() {
     this.total_history = null;
     this.selected_history = null;
-    this.player_api.getListOfRecentGames("EUW", this.selected_summoner.id, GameType.SOLO_AND_FLEXQUEUE, count)
+    this.player_api.getListOfRecentGames("EUW", this.selected_summoner.id, GameType.SOLO_AND_FLEXQUEUE)
       .subscribe(api_res => {
         if (api_res.type == ResType.SUCCESS) {
           this.total_history = api_res.data['total_existing_records'];
           this.selected_history = api_res.data['records'];
         }
       })
+  }
+  public fetchGameDetails(game_id) {
+    this.game_api.getHistoricalGame("EUW", game_id)
+      .subscribe(api_res => {
+        if (api_res.type == ResType.SUCCESS) {
+          let game_record = api_res.data;
+          this.selected_history.forEach(dataset => {
+            if (dataset["match_id"] === game_id) {
+              dataset["details"] = game_record.raw_origin['teams'].map(t => t['bans']);
+              dataset["players"] = game_record.raw_origin['participantIdentities'];
+            }
+          });
+        }
+      });
   }
 
   ngOnInit() {
