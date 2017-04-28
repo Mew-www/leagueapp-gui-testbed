@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Enviroment specific settings (API URL, supported regions, ...)
+/src/app/constants/settings.ts
+
 # compiled output
 /dist
 /tmp
