@@ -18,7 +18,7 @@ export class StaticApiService {
   private _cacheAndWrapChampionApiResponse(res: Response): ApiResponse<Array<Champion>, String, any> {
     switch(res.status) {
       case 200:
-        let array_of_champions = (<Array<any>>res.json()).map(dataset => new Champion(dataset));
+        let array_of_champions = res.json().map(dataset => new Champion(dataset['id'], dataset['name']));
         // Cache
         this._champions = array_of_champions;
         // ..and return

@@ -6,6 +6,7 @@ import {PlayerApiService} from "./services/player-api.service";
 import {Summoner} from "./models/summoner";
 import {GameType} from "./enums/game-type";
 import {GameApiService} from "./services/game-api.service";
+import {GameRecordPersonalised} from "./models/game-record-personalised";
 
 @Component({
   selector: 'app-root',
@@ -55,7 +56,7 @@ export class AppComponent {
       .subscribe(api_res => {
         if (api_res.type == ResType.SUCCESS) {
           this.total_history = api_res.data['total_existing_records'];
-          this.selected_history = api_res.data['records'];
+          this.selected_history = api_res.data['records'].sort((a,b) => b.timestamp - a.timestamp);
         }
       })
   }
@@ -64,12 +65,25 @@ export class AppComponent {
       .subscribe(api_res => {
         if (api_res.type == ResType.SUCCESS) {
           let game_record = api_res.data;
-          this.selected_history.forEach(dataset => {
-            if (dataset["match_id"] === game_id) {
-              dataset["details"] = game_record.raw_origin['teams'].map(t => t['bans']);
-              dataset["players"] = game_record.raw_origin['participantIdentities'];
-            }
-          });
+          this.selected_history = this.selected_history
+            .map(dataset => {
+              if (dataset["match_id"] === game_id) {
+                let personalised_game_record = new GameRecordPersonalised(
+                  game_record.raw_origin,
+                  this.selected_summoner.id,
+                  this.champions
+                );
+                return {
+                  time: new Date(personalised_game_record.match_start_epochtime).toDateString(),
+                  duration: Math.floor(personalised_game_record.match_duration_seconds/60) + " minutes",
+                  season: personalised_game_record.league_season,
+                  version: personalised_game_record.league_version,
+                  teams: personalised_game_record.teams
+                };
+              } else {
+                return dataset;
+              }
+            });
         }
       });
   }
