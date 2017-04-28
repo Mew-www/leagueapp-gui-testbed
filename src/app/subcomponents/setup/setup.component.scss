@@ -1,3 +1,11 @@
+%clearfix {
+  &:after {
+    content: " ";
+    display: table;
+    clear: both;
+  }
+}
+
 .InitialSetup {
   margin-top: 5%;
   margin-left: 15%;
@@ -9,5 +17,18 @@
 
   &__region-selector-container {
     margin-top: 4px;
+  }
+}
+
+.HeaderSetup {
+
+  @extend %clearfix;
+
+  &__region-selector-container {
+    float: left;
+  }
+
+  &__language-selector-container {
+    float: right;
   }
 }

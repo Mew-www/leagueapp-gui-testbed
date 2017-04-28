@@ -1,4 +1,13 @@
-<div class="LanguageSelector">
+<div *ngIf="is_initial" class="InitialLanguageSelector">
+  <button *ngFor="let l_code of language_codes_available"
+          [class.active]="l_code === active_language"
+          (click)="selectedLanguage.emit(l_code)">
+    {{l_code}}
+  </button>
+</div>
+
+<div *ngIf="!is_initial" class="HeaderLanguageSelector">
+  <p class="HeaderLanguageSelector__text HeaderLanguageSelector__text--title">{{gettext('alternative_languages')}}</p>
   <button *ngFor="let l_code of language_codes_available"
           [class.active]="l_code === active_language"
           (click)="selectedLanguage.emit(l_code)">

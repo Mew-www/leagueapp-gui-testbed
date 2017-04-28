@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {i18n} from "../../../../constants/i18n";
+import {TranslatorService} from "../../../../services/translator.service";
 
 @Component({
   selector: 'app-language-selector',
@@ -8,13 +9,16 @@ import {i18n} from "../../../../constants/i18n";
 })
 export class LanguageSelectorComponent implements OnInit {
 
-  private language_codes_available = Object.keys(i18n.translations);
   @Input() active_language; // Component receives the initial language as argument
+  @Input() is_initial; // true/false
   @Output() selectedLanguage = new EventEmitter<String>();
+  private language_codes_available = Object.keys(i18n.translations);
+  private gettext: Function;
 
-  constructor() { }
+  constructor(private translator: TranslatorService) { }
 
   ngOnInit() {
+    this.gettext = this.translator.getTranslation;
   }
 
 }

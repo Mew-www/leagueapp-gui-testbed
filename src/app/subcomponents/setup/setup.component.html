@@ -5,6 +5,7 @@
 <div class="InitialSetup" *ngIf="initial_preferences_loaded && !initialised">
   <div class="InitialSetup__language-selector-container">
     <app-language-selector
+        [is_initial]="true"
         [active_language]="current_language_code"
         (selectedLanguage)="changeLanguage($event)">
     </app-language-selector>
@@ -19,15 +20,16 @@
 </div>
 
 <div class="HeaderSetup" *ngIf="initial_preferences_loaded && initialised">
-  <div>
+  <div class="HeaderSetup__region-selector-container">
     <app-region-selector
         [is_initial]="false"
         [active_region]="current_region"
         (selectedRegion)="changeRegion($event)">
     </app-region-selector>
   </div>
-  <div>
+  <div class="HeaderSetup__language-selector-container">
     <app-language-selector
+        [is_initial]="false"
         [active_language]="current_language_code"
         (selectedLanguage)="changeLanguage($event)">
     </app-language-selector>
