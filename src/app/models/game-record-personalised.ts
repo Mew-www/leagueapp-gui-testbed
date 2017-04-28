@@ -4,16 +4,11 @@ import {Champion} from "./champion";
 
 export class GameRecordPersonalised extends GameRecord {
 
-  private _match_start_epochtime;
-  private _match_duration_seconds;
-  private _league_version;
-  private _league_season;
-  private _teams;
-  public get match_start_epochtime() { return this._match_start_epochtime; }
-  public get match_duration_seconds() { return this._match_duration_seconds; }
-  public get league_version() { return this._league_version; }
-  public get league_season() { return this._league_season; }
-  public get teams() { return this._teams; }
+  public readonly match_start_epochtime;
+  public readonly match_duration_seconds;
+  public readonly league_version;
+  public readonly league_season;
+  public readonly teams;
 
   constructor(game_json, looked_up_summoner_id, champions_list: Array<Champion>) {
     super(game_json);
@@ -148,11 +143,11 @@ export class GameRecordPersonalised extends GameRecord {
     }, {});
     let ally_team_id = game_json.participants.filter(p => p.participantId === self_participant_id)[0].teamId;
 
-    this._match_start_epochtime = game_json.matchCreation;
-    this._match_duration_seconds = game_json.matchDuration;
-    this._league_version = game_json.matchVersion.split('.').slice(0,2).join('.');
-    this._league_season = game_json.season;
-    this._teams = {
+    this.match_start_epochtime = game_json.matchCreation;
+    this.match_duration_seconds = game_json.matchDuration;
+    this.league_version = game_json.matchVersion.split('.').slice(0,2).join('.');
+    this.league_season = game_json.season;
+    this.teams = {
       ally: parse_teamdata(ally_team_id, true),
       enemy: parse_teamdata(ally_team_id, false)
     };
