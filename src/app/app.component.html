@@ -1,39 +1,10 @@
-<input #summonerEl type="text" (keyup.enter)="selectSummoner(summonerEl.value)"/>
+<app-setup
+    (setupReady)="handleSetupReady($event)"
+    (regionChanged)="handleRegionChanged($event)">
+</app-setup>
 
-<div *ngIf="selected_summoner">
-
-  <h3>
-    {{selected_summoner.current_name}}#{{selected_summoner.id}} (icon {{selected_summoner.icon.id}})
-    &nbsp;
-    <button (click)="updateSummoner()">Update by summoner ID lookup</button>
-  </h3>
-  <div>
-    <button (click)="fetchGameHistory()">Load preview of game history</button>
-  </div>
-
-  <div *ngIf="selected_history">
-    <p>Loaded {{selected_history.length}}/{{total_history}} records</p>
-    <br/>
-    <pre *ngFor="let dataset of selected_history" style="margin: 4px; border: 1px solid black;">
-      {{dataset | json}}
-      <button (click)="fetchGameDetails(dataset.match_id)">
-        Load details
-      </button>
-    </pre>
-  </div>
-
+<div *ngIf="is_setup_ready">
+  <p>Setup is ready</p>
 </div>
-
-<p><u>Champions</u></p>
-<ul>
-  <li *ngFor="let c of champions">
-    {{c.name}} (#{{c.id}})
-  </li>
-</ul>
-
-<p><u>Items</u></p>
-<pre>
-  {{items | json}}
-</pre>
 
 <konami></konami>

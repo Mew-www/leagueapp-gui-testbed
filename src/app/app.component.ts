@@ -7,6 +7,7 @@ import {Summoner} from "./models/summoner";
 import {GameType} from "./enums/game-type";
 import {GameApiService} from "./services/game-api.service";
 import {GameRecordPersonalised} from "./models/game-record-personalised";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-root',
@@ -15,19 +16,28 @@ import {GameRecordPersonalised} from "./models/game-record-personalised";
 })
 export class AppComponent {
 
-  public items;
+  private is_setup_ready: boolean = false;
+
   public champions: Array<Champion>;
+  public items;
 
   public selected_summoner: Summoner = null;
   public total_history = null;
   public selected_history = null;
   public error_text = null;
 
-  constructor(
-    private static_api: StaticApiService,
-    private player_api: PlayerApiService,
-    private game_api: GameApiService
-  ) {}
+  constructor(private static_api: StaticApiService,
+              private player_api: PlayerApiService,
+              private game_api: GameApiService) {}
+
+  public handleSetupReady(e) {
+    this.is_setup_ready = true;
+  }
+
+  public handleRegionChanged(new_region) {
+    // Return to stage 1 where no summoner selected yet
+    // We can get region from preferencesService at any given time
+  }
 
   public selectSummoner(name) {
     this.error_text = null;
@@ -89,18 +99,14 @@ export class AppComponent {
   }
 
   ngOnInit() {
-
-    this.static_api.getItemMap()
-      .subscribe(api_res => {
-        if (api_res.type == ResType.SUCCESS) {
-          this.items = api_res.data;
-        }
-      });
-
-    this.static_api.getChampions()
-      .subscribe(api_res => {
-        if (api_res.type == ResType.SUCCESS) {
-          this.champions = api_res.data;
+    Observable.forkJoin([
+      this.static_api.getChampions(),
+      this.static_api.getItemMap()
+    ])
+      .subscribe(static_api_responses => {
+        if (static_api_responses.every(api_res => api_res.type == ResType.SUCCESS)) {
+          this.champions = <Array<Champion>>static_api_responses[0].data;
+          this.items = static_api_responses[1].data;
         }
       });
   }

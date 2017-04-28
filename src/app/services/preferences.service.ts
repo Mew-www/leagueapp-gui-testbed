@@ -4,7 +4,7 @@ import {BehaviorSubject} from "rxjs";
 @Injectable()
 export class PreferencesService {
 
-  private preferences_source = new BehaviorSubject<Object>({
+  private preferences_source = new BehaviorSubject<any>({
     // Default preferences
     language_code: 'en'
   });

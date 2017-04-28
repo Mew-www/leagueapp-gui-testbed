@@ -1,0 +1,33 @@
+<p *ngIf="!initial_preferences_loaded">
+  . . .
+</p>
+
+<div *ngIf="initial_preferences_loaded && initialised" class="HeaderSetup">
+  <div>
+    <app-region-selector
+        [active_region]="current_region"
+        (selectedRegion)="changeRegion($event)">
+    </app-region-selector>
+  </div>
+  <div>
+    <app-language-selector
+        [active_language]="current_language_code"
+        (selectedLanguage)="changeLanguage($event)">
+    </app-language-selector>
+  </div>
+</div>
+
+<div *ngIf="initial_preferences_loaded && !initialised" class="InitialSetup">
+  <div>
+    <app-language-selector
+        [active_language]="current_language_code"
+        (selectedLanguage)="changeLanguage($event)">
+    </app-language-selector>
+  </div>
+  <div>
+    <app-region-selector
+        [active_region]="current_region"
+        (selectedRegion)="changeRegion($event)">
+    </app-region-selector>
+  </div>
+</div>

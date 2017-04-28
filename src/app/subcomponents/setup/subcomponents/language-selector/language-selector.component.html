@@ -1,0 +1,7 @@
+<div class="LanguageSelector">
+  <button *ngFor="let l_code of language_codes_available"
+          [class.active]="l_code === active_language"
+          (click)="selectedLanguage.emit(l_code)">
+    {{l_code}}
+  </button>
+</div>

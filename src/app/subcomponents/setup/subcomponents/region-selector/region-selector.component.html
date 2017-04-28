@@ -1,0 +1,7 @@
+<div class="RegionSelector">
+  <button *ngFor="let region of regions_available"
+          [class.active]="region === active_region"
+          (click)="selectedRegion.emit(region)">
+    {{region}}
+  </button>
+</div>

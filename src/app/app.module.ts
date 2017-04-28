@@ -10,11 +10,17 @@ import {TranslatorService} from "./services/translator.service";
 import {StaticApiService} from "./services/static-api.service";
 import {PlayerApiService} from "./services/player-api.service";
 import {GameApiService} from "./services/game-api.service";
+import { SetupComponent } from './subcomponents/setup/setup.component';
+import { LanguageSelectorComponent } from './subcomponents/setup/subcomponents/language-selector/language-selector.component';
+import { RegionSelectorComponent } from './subcomponents/setup/subcomponents/region-selector/region-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     KonamiComponent,
+    SetupComponent,
+    LanguageSelectorComponent,
+    RegionSelectorComponent,
   ],
   imports: [
     BrowserModule,
