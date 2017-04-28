@@ -1,3 +1,56 @@
-button.active {
-  border: 3px solid lightblue;
+.InitialRegionSelector {
+  &__region-btn {
+    display: block;
+    width: 100%;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    // Position text to justified-center
+    text-align: left;
+    padding-left: 33%;
+
+    margin-top: 13px;
+    &:first-child { margin-top: 0; }
+
+    &--active {
+      border: 3px solid lightblue;
+    }
+  }
+
+  &__text {
+    color: orangered;
+
+    &--emp {
+      font-family: 'Akronim', cursive;
+      font-size: 104px;
+    }
+
+    &--alt {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 68px;
+      vertical-align: text-bottom;
+    }
+  }
+}
+
+.HeaderRegionSelector {
+  &__region-btn {
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    &--active {
+      border: 3px solid lightblue;
+    }
+  }
+
+  &__text {
+    color: black;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+
+    &--title {
+      text-decoration: underline;
+      margin-bottom: 3px;
+    }
+  }
 }

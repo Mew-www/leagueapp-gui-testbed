@@ -1,7 +1,21 @@
-<div class="RegionSelector">
+<div *ngIf="is_initial" class="InitialRegionSelector">
   <button *ngFor="let region of regions_available"
-          [class.active]="region === active_region"
-          (click)="selectedRegion.emit(region)">
-    {{region}}
+          class="InitialRegionSelector__region-btn"
+          [class.InitialRegionSelector__region-btn--active]="region.id === active_region"
+          (click)="selectedRegion.emit(region.id)"
+  >
+    <span class="InitialRegionSelector__text InitialRegionSelector__text--emp">{{region.id}}</span>
+    <span class="InitialRegionSelector__text InitialRegionSelector__text--alt">&nbsp;({{region.full_name}})</span>
+  </button>
+</div>
+
+<div *ngIf="!is_initial" class="HeaderRegionSelector">
+  <p class="HeaderRegionSelector__text HeaderRegionSelector__text--title">{{gettext('supported_regions')}}</p>
+  <button *ngFor="let region of regions_available"
+          class="HeaderRegionSelector__region-btn"
+          [class.HeaderRegionSelector__region-btn--active]="region.id === active_region"
+          (click)="selectedRegion.emit(region.id)"
+  >
+    <span class="HeaderRegionSelector__text HeaderRegionSelector__text--emp">{{region.id}}</span>
   </button>
 </div>

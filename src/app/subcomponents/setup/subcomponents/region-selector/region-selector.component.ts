@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Settings} from "../../../../constants/settings";
+import {TranslatorService} from "../../../../services/translator.service";
 
 @Component({
   selector: 'app-region-selector',
@@ -8,13 +9,16 @@ import {Settings} from "../../../../constants/settings";
 })
 export class RegionSelectorComponent implements OnInit {
 
-  private regions_available = Settings.REGIONS;
   @Input() active_region; // Initially null
+  @Input() is_initial; // true/false
   @Output() selectedRegion = new EventEmitter<String>();
+  private regions_available = Settings.REGIONS;
+  private gettext: Function;
 
-  constructor() { }
+  constructor(private translator: TranslatorService) { }
 
   ngOnInit() {
+    this.gettext = this.translator.getTranslation;
   }
 
 }
