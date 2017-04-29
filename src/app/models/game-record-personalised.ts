@@ -29,7 +29,15 @@ export class GameRecordPersonalised extends GameRecord {
               timesKilledDragon: team.dragonKills,           gotFirstDragon: team.firstDragon,
               timesKilledBaron: team.baronKills,             gotFirstBaron: team.firstBaron,
               timesDestroyedInhibitor: team.inhibitorKills,  gotFirstInhibitor: team.firstInhibitor,
-
+              kda: game_json.participants
+                .filter(p => (get_ally_data ? p.teamId === ally_team_id : p.teamId !== ally_team_id))
+                .reduce((kda, p) => {
+                  let pstats = p.stats;
+                  kda['kills'] += pstats.kills;
+                  kda['deaths'] += pstats.deaths;
+                  kda['assists'] += pstats.assists;
+                  return kda;
+                }, {kills: 0, deaths: 0, assists: 0})
             }
           })[0],
         bans: game_json.teams
@@ -46,6 +54,7 @@ export class GameRecordPersonalised extends GameRecord {
         players: game_json.participants
           .filter(p => (get_ally_data ? p.teamId === ally_team_id : p.teamId !== ally_team_id))
           .map(p => {
+            let pstats = p.stats;
             return {
               summoner: player_map[p.participantId],
               border: p.highestAchievedSeasonTier,
@@ -55,77 +64,77 @@ export class GameRecordPersonalised extends GameRecord {
               masterypage: p.masteries, // TODO MasteryPage class
               runepage: p.runes, // TODO RunePage class
               stats: {
-                final_champion_level: p.stats.champLevel,
-                gold_earned: p.stats.goldEarned,
+                final_champion_level: pstats.champLevel,
+                gold_earned: pstats.goldEarned,
                 creeps: {
-                  lane: p.stats.minionsKilled, // TODO: confirm this isn't total CS, in which case reduce jungle cs
-                  jungle: p.stats.neutralMinionsKilled, // TODO: confirm this doesn't count summons
-                  counterjungle: p.stats.neutralMinionsKilledEnemyJungle,
-                  allyjungle: p.stats.neutralMinionsKilledTeamJungle
+                  lane: pstats.minionsKilled, // TODO: confirm this isn't total CS, in which case reduce jungle cs
+                  jungle: pstats.neutralMinionsKilled, // TODO: confirm this doesn't count summons
+                  counterjungle: pstats.neutralMinionsKilledEnemyJungle,
+                  allyjungle: pstats.neutralMinionsKilledTeamJungle
                 },
-                gold_spent: p.stats.goldSpent,
+                gold_spent: pstats.goldSpent,
                 final_items: [
-                  p.stats.item0,
-                  p.stats.item1,
-                  p.stats.item2,
-                  p.stats.item3,
-                  p.stats.item4,
-                  p.stats.item5,
-                  p.stats.item6
+                  pstats.item0,
+                  pstats.item1,
+                  pstats.item2,
+                  pstats.item3,
+                  pstats.item4,
+                  pstats.item5,
+                  pstats.item6
                 ],
                 kda: {
-                  kills: p.stats.kills,
-                  deaths: p.stats.deaths,
-                  assists: p.stats.assists
+                  kills: pstats.kills,
+                  deaths: pstats.deaths,
+                  assists: pstats.assists
                 },
                 killing_sprees: {
-                  double_kills: p.stats.doubleKills,
-                  triple_kills: p.stats.tripleKills,
-                  quadra_kills: p.stats.quadraKills,
-                  penta_kills: p.stats.pentaKills,
-                  six_plus_wat_kills: p.stats.unrealKills,
-                  killing_sprees: p.stats.killingSprees,
-                  largest_killing_spree: p.stats.largestKillingSpree
+                  double_kills: pstats.doubleKills,
+                  triple_kills: pstats.tripleKills,
+                  quadra_kills: pstats.quadraKills,
+                  penta_kills: pstats.pentaKills,
+                  six_plus_wat_kills: pstats.unrealKills,
+                  killing_sprees: pstats.killingSprees,
+                  largest_killing_spree: pstats.largestKillingSpree
                 },
                 combat_totals: {
-                  largest_critical_strike: p.stats.largestCriticalStrike,
+                  largest_critical_strike: pstats.largestCriticalStrike,
                   damage_dealt_vs_champions: {
-                    physical: p.stats.physicalDamageDealtToChampions,
-                    magical: p.stats.magicDamageDealtToChampions,
-                    truetype: p.stats.trueDamageDealtToChampions,
-                    all: p.stats.totalDamageDealtToChampions
+                    physical: pstats.physicalDamageDealtToChampions,
+                    magical: pstats.magicDamageDealtToChampions,
+                    truetype: pstats.trueDamageDealtToChampions,
+                    all: pstats.totalDamageDealtToChampions
                   },
                   damage_dealt_vs_npcs: {
-                    physical: (p.stats.physicalDamageDealt - p.stats.physicalDamageDealtToChampions),
-                    magical: (p.stats.magicDamageDealt - p.stats.magicDamageDealtToChampions),
-                    truetype: (p.stats.trueDamageDealt - p.stats.trueDamageDealtToChampions),
-                    all: (p.stats.totalDamageDealt - p.stats.totalDamageDealtToChampions)
+                    physical: (pstats.physicalDamageDealt - pstats.physicalDamageDealtToChampions),
+                    magical: (pstats.magicDamageDealt - pstats.magicDamageDealtToChampions),
+                    truetype: (pstats.trueDamageDealt - pstats.trueDamageDealtToChampions),
+                    all: (pstats.totalDamageDealt - pstats.totalDamageDealtToChampions)
                   },
                   damage_taken: {
-                    physical: p.stats.physicalDamageTaken,
-                    magical: p.stats.magicDamageTaken,
-                    truetype: p.stats.trueDamageTaken,
-                    all: p.stats.totalDamageTaken
+                    physical: pstats.physicalDamageTaken,
+                    magical: pstats.magicDamageTaken,
+                    truetype: pstats.trueDamageTaken,
+                    all: pstats.totalDamageTaken
                   },
-                  total_heal: p.stats.totalHeal,
-                  total_units_healed: p.stats.totalUnitsHealed, // TODO: figure difference between totalHeal
-                  cc_applied_seconds: p.stats.totalTimeCrowdControlDealt,
+                  total_heal: pstats.totalHeal,
+                  total_units_healed: pstats.totalUnitsHealed, // TODO: figure difference between totalHeal
+                  cc_applied_seconds: pstats.totalTimeCrowdControlDealt,
                 },
                 vision: {
-                  normalwards_bought: p.stats.sightWardsBoughtInGame,
-                  pinkwards_bought: p.stats.visionWardsBoughtInGame,
-                  wards_killed: p.stats.wardsKilled,
-                  wards_placed: p.stats.wardsPlaced,
+                  normalwards_bought: pstats.sightWardsBoughtInGame,
+                  pinkwards_bought: pstats.visionWardsBoughtInGame,
+                  wards_killed: pstats.wardsKilled,
+                  wards_placed: pstats.wardsPlaced,
                 },
                 objectives: {
-                  gotFirstBlood: p.stats.firstBloodKill,
-                  gotFirstBloodAssist: p.stats.firstBloodAssist,
-                  gotFirstTower: p.stats.firstTowerKill,
-                  gotFirstTowerAssist: p.stats.firstTowerAssist,
-                  gotFirstInhibitor: p.stats.firstInhibitorKill,
-                  gotFirstInhibitorAssist: p.stats.firstInhibitorAssist,
-                  towers_killed: p.stats.towerKills,
-                  inhibitors_killed: p.stats.inhibitorKills
+                  gotFirstBlood: pstats.firstBloodKill,
+                  gotFirstBloodAssist: pstats.firstBloodAssist,
+                  gotFirstTower: pstats.firstTowerKill,
+                  gotFirstTowerAssist: pstats.firstTowerAssist,
+                  gotFirstInhibitor: pstats.firstInhibitorKill,
+                  gotFirstInhibitorAssist: pstats.firstInhibitorAssist,
+                  towers_killed: pstats.towerKills,
+                  inhibitors_killed: pstats.inhibitorKills
                 }
               }
             };
