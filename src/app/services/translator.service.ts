@@ -6,7 +6,7 @@ import {PreferencesService} from "./preferences.service";
 export class TranslatorService {
 
   private translations = i18n.translations;
-  private current_language: String; // Gets overridden by initial preferences
+  private current_language: string; // Gets overridden by initial preferences
 
   constructor(private preferencesService: PreferencesService) {
     // Control language choice from preferences

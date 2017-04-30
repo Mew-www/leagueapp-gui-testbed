@@ -1,10 +1,12 @@
 <app-setup
-    (setupReady)="handleSetupReady($event)"
-    (regionChanged)="handleRegionChanged($event)">
+    (setupReady)="handleSetupReady($event)">
 </app-setup>
 
 <div *ngIf="is_setup_ready">
-  <p>Setup is ready</p>
+  <profiling
+      [champions_metadata]="champions"
+      [items_metadata]="items">
+  </profiling>
 </div>
 
 <konami></konami>

@@ -14,32 +14,55 @@ export class PlayerApiService {
 
   constructor(private http: Http) { }
 
-  private static _wrapSummonerApiResponse(res: Response): ApiResponse<Summoner, String, Number> {
-    switch (res.status) {
-      case 404:
-        return new ApiResponseNotFound(); // Non-existing summoner name or ID
-
-      case 200:
+  public getSummonerByName(region, name): Observable<ApiResponse<Summoner, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_NAME_URI(region, name))
+      .map(res => {
         let summoner_json = res.json();
         return new ApiResponseSuccess(new Summoner(summoner_json['id'], summoner_json['name'], summoner_json['icon']));
+      }).catch(error_res => {
+        switch (error_res.status) {
 
-      case 500:
-        if (res.json().hasOwnProperty("status") && res.json()['status'] === 503) {
-          return new ApiResponseTryLater(res.json()['data']['Retry-After']);
-        } else {
-          return new ApiResponseError(res.json()['data'].toString());
+          case 404:
+            return Observable.of(new ApiResponseNotFound()); // Non-existing summoner name or ID
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
         }
-
-      default:
-        return new ApiResponseError(res.text());
-    }
+      });
   }
-  private static _wrapRecentgamesApiResponse(res: Response): ApiResponse<Object, String, Number> {
-    switch (res.status) {
-      case 404:
-        return new ApiResponseNotFound(); // Invalid summoner ID
+  public getSummonerById(region, summoner_id): Observable<ApiResponse<Summoner, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_SUMMID_URI(region, summoner_id))
+      .map(res => {
+        let summoner_json = res.json();
+        return new ApiResponseSuccess(new Summoner(summoner_json['id'], summoner_json['name'], summoner_json['icon']));
+      }).catch(error_res => {
+        switch (error_res.status) {
 
-      case 200:
+          case 404:
+            return Observable.of(new ApiResponseNotFound()); // Non-existing summoner name or ID
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
+        }
+      });
+  }
+  public getListOfRecentGames(region, summoner_id, gametype): Observable<ApiResponse<Object, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, summoner_id))
+      .map(res => {
         let historical_data = res.json();
         let total_existing_records = historical_data['totalGames'];
         let records = historical_data['matches'].map(match => {
@@ -49,37 +72,33 @@ export class PlayerApiService {
             chosen_champion_id: match['champion'],
             game_type: ((type: String) => {
               switch (type) {
-                case "RANKED_FLEX_SR":            return GameType.FLEX_QUEUE;
-                case "TEAM_BUILDER_RANKED_SOLO":  return GameType.SOLO_QUEUE;
-                default:                          return GameType.UNKNOWN_UNDEFINED;
+                case "RANKED_FLEX_SR":
+                  return GameType.FLEX_QUEUE;
+                case "TEAM_BUILDER_RANKED_SOLO":
+                  return GameType.SOLO_QUEUE;
+                default:
+                  return GameType.UNKNOWN_UNDEFINED;
               }
             })(match['queue']),
           }
-        }).sort((a,b) => a['timestamp'] - b['timestamp']);
+        }).sort((a, b) => a['timestamp'] - b['timestamp']);
         return new ApiResponseSuccess({total_existing_records: total_existing_records, records: records});
+      }).catch(error_res => {
+        switch (error_res.status) {
 
-      case 500:
-        if (res.json().hasOwnProperty("status") && res.json()['status'] === 503) {
-          return new ApiResponseTryLater(res.json()['data']['Retry-After']);
-        } else {
-          return new ApiResponseError(res.json()['data'].toString());
+          case 404:
+            return Observable.of(new ApiResponseNotFound()); // Invalid summoner ID
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
         }
-
-      default:
-        return new ApiResponseError(res.text());
-    }
-  }
-
-  public getSummonerByName(region, name): Observable<ApiResponse<Summoner, String, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_NAME_URI(region, name))
-      .map(res => PlayerApiService._wrapSummonerApiResponse(res));
-  }
-  public getSummonerById(region, summoner_id): Observable<ApiResponse<Summoner, String, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_SUMMID_URI(region, summoner_id))
-      .map(res => PlayerApiService._wrapSummonerApiResponse(res));
-  }
-  public getListOfRecentGames(region, summoner_id, gametype): Observable<ApiResponse<Object, String, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, summoner_id))
-      .map(res => PlayerApiService._wrapRecentgamesApiResponse(res));
+      });
   }
 }

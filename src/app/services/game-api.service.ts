@@ -16,35 +16,35 @@ export class GameApiService {
 
   constructor(private http: Http) { }
 
-  private _cacheAndWrapGamedetailApiResponse(res: Response, region, game_id): ApiResponse<GameRecord, String, Number> {
-    switch (res.status) {
+  private _cacheAndWrapGamedetailApiResponse(res: Response, region, game_id): ApiResponse<GameRecord, string, Number> {
+    let game_json = res.json();
+    let game_record = new GameRecord(game_json);
+    // Cache
+    if (!(region in this._cached_historic_games)) {
+      this._cached_historic_games[region] = {};
+    }
+    this._cached_historic_games[region][game_id] = game_record;
+    // ..and return
+    return new ApiResponseSuccess(game_record);
+  }
+  private _wrapGamedetailApiError(error_res: Response): Observable<ApiResponse<GameRecord, string, Number>> {
+    switch (error_res.status) {
       case 404:
-        return new ApiResponseNotFound();
-
-      case 200:
-        let game_json = res.json();
-        let game_record = new GameRecord(game_json);
-        // Cache
-        if (!(region in this._cached_historic_games)) {
-          this._cached_historic_games[region] = {};
-        }
-        this._cached_historic_games[region][game_id] = game_record;
-        // ..and return
-        return new ApiResponseSuccess(game_record);
+        return Observable.of(new ApiResponseNotFound());
 
       case 500:
-        if (res.json().hasOwnProperty("status") && res.json()['status'] === 503) {
-          return new ApiResponseTryLater(res.json()['data']['Retry-After']);
+        if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+          return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
         } else {
-          return new ApiResponseError(res.json()['data'].toString());
+          return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
         }
 
       default:
-        return new ApiResponseError(res.text());
+        return Observable.of(new ApiResponseError(error_res.text()));
     }
   }
 
-  public getHistoricalGame(region, game_id): Observable<ApiResponse<GameRecord, String, Number>> {
+  public getHistoricalGame(region, game_id): Observable<ApiResponse<GameRecord, string, Number>> {
     // #1 check if cached
     if (region in this._cached_historic_games && game_id in this._cached_historic_games[region]) {
       return Observable.of(this._cached_historic_games[region][game_id]);
@@ -59,6 +59,7 @@ export class GameApiService {
     }
     this._historic_game_requests[region][game_id] = this.http.get(ApiRoutes.GAME_DETAILS(region, game_id))
       .map(res => this._cacheAndWrapGamedetailApiResponse(res, region, game_id))
+      .catch(error_res => this._wrapGamedetailApiError(error_res))
       .share();
     return this._historic_game_requests[region][game_id];
   }

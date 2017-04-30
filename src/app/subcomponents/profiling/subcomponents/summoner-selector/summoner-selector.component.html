@@ -1,0 +1,10 @@
+<div>
+  <input
+      #summonerSearch
+      (keyup.enter)="searchSummoner(summonerSearch.value)"
+      type="text"
+      placeholder="Summoner's full name"
+  />
+  <button (click)="searchSummoner(summonerSearch.value)">{{gettext("find")}}</button>
+  <p>{{error_text_key ? (gettext(error_text_key) + (error_details ? " ("+error_details+")" : "")) : ""}}</p>
+</div>

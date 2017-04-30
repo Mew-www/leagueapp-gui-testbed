@@ -13,6 +13,8 @@ import {GameApiService} from "./services/game-api.service";
 import { SetupComponent } from './subcomponents/setup/setup.component';
 import { LanguageSelectorComponent } from './subcomponents/setup/subcomponents/language-selector/language-selector.component';
 import { RegionSelectorComponent } from './subcomponents/setup/subcomponents/region-selector/region-selector.component';
+import { ProfilingComponent } from './subcomponents/profiling/profiling.component';
+import { SummonerSelectorComponent } from './subcomponents/profiling/subcomponents/summoner-selector/summoner-selector.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { RegionSelectorComponent } from './subcomponents/setup/subcomponents/reg
     SetupComponent,
     LanguageSelectorComponent,
     RegionSelectorComponent,
+    ProfilingComponent,
+    SummonerSelectorComponent,
   ],
   imports: [
     BrowserModule,

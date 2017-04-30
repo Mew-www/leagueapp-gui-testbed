@@ -9,41 +9,30 @@ import {ApiResponse, ApiResponseError, ApiResponseSuccess} from "../helpers/api-
 export class StaticApiService {
 
   private _champions: Array<Champion> = null;
-  private _champions_request: Observable<ApiResponse<Array<Champion>, String, any>> = null;
+  private _champions_request: Observable<ApiResponse<Array<Champion>, string, any>> = null;
   private _item_table: Object = null;
   private _item_request: Observable<ApiResponse<Object, String, any>> = null;
 
   constructor(private http: Http) { }
 
-  private _cacheAndWrapChampionApiResponse(res: Response): ApiResponse<Array<Champion>, String, any> {
-    switch(res.status) {
-      case 200:
-        let array_of_champions = res.json().map(dataset => new Champion(dataset['id'], dataset['name']));
-        // Cache
-        this._champions = array_of_champions;
-        // ..and return
-        return new ApiResponseSuccess(array_of_champions);
-
-      default:
-        return new ApiResponseError(`Error when requesting URI "${ApiRoutes.CHAMPION_LIST_URI}"`);
-    }
-  }
-  private _cacheAndWrapItemsApiResponse(res: Response): ApiResponse<Object, String, any> {
-    switch(res.status) {
-      case 200:
-        let items_json = res.json();
-        let item_table = items_json['data'];
-        // Cache
-        this._item_table = item_table;
-        // ..and return
-        return new ApiResponseSuccess(item_table);
-
-      default:
-        return new ApiResponseError(`Error when requesting URI "${ApiRoutes.ITEM_LIST_URI}"`);
-    }
+  private _cacheAndWrapChampionApiResponse(res: Response): ApiResponse<Array<Champion>, string, any> {
+    let array_of_champions = res.json().map(dataset => new Champion(dataset['id'], dataset['name']));
+    // Cache
+    this._champions = array_of_champions;
+    // ..and return
+    return new ApiResponseSuccess(array_of_champions);
   }
 
-  public getChampions(): Observable<ApiResponse<Array<Champion>, String, any>> {
+  private _cacheAndWrapItemsApiResponse(res: Response): ApiResponse<Object, string, any> {
+    let items_json = res.json();
+    let item_table = items_json['data'];
+    // Cache
+    this._item_table = item_table;
+    // ..and return
+    return new ApiResponseSuccess(item_table);
+  }
+
+  public getChampions(): Observable<ApiResponse<Array<Champion>, string, any>> {
     // #1 retrieve data from cache
     if (this._champions) {
       return Observable.of(new ApiResponseSuccess(this._champions));
@@ -55,10 +44,11 @@ export class StaticApiService {
     // #3 create a request and return it
     this._champions_request = this.http.get(ApiRoutes.CHAMPION_LIST_URI)
       .map(res => this._cacheAndWrapChampionApiResponse(res))
+      .catch(error => Observable.of(new ApiResponseError(`Error when requesting URI "${ApiRoutes.CHAMPION_LIST_URI}"`)))
       .share();
     return this._champions_request;
   }
-  public getItemMap(): Observable<ApiResponse<Object, String, any>> {
+  public getItemMap(): Observable<ApiResponse<Object, string, any>> {
     // #1 retrieve data from cache
     if (this._item_table) {
       return Observable.of(new ApiResponseSuccess<Object>(this._item_table));
@@ -70,6 +60,7 @@ export class StaticApiService {
     // #3 create a request and return it
     this._item_request = this.http.get(ApiRoutes.ITEM_LIST_URI)
       .map(res => this._cacheAndWrapItemsApiResponse(res))
+      .catch(error => Observable.of(new ApiResponseError(`Error when requesting URI "${ApiRoutes.ITEM_LIST_URI}"`)))
       .share();
     return this._item_request;
   }

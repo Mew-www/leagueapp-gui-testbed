@@ -9,7 +9,6 @@ import {PreferencesService} from "../../services/preferences.service";
 export class SetupComponent implements OnInit {
 
   @Output() setupReady = new EventEmitter<boolean>();
-  @Output() regionChanged = new EventEmitter<String>();
 
   private initial_preferences_loaded: boolean = false;
   private initialised: boolean                = false;
@@ -44,7 +43,6 @@ export class SetupComponent implements OnInit {
           // On-prefs-change post-initialisation (REMINDER: THIS HAPPENS EVEN IF ONLY PART OF PREFERENCES ARE CHANGED)
           if (new_prefs.hasOwnProperty('region') && new_prefs.region !== this.current_region) {
             this.current_region = new_prefs.region; // Update only if changed
-            this.regionChanged.emit(new_prefs.region);
           }
         }
         // On-prefs-change regardless initialisation state

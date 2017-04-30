@@ -21,24 +21,20 @@ export class AppComponent {
   public champions: Array<Champion>;
   public items;
 
+  /*
   public selected_summoner: Summoner = null;
   public total_history = null;
   public selected_history = null;
   public error_text = null;
+  */
 
-  constructor(private static_api: StaticApiService,
-              private player_api: PlayerApiService,
-              private game_api: GameApiService) {}
+  constructor(private static_api: StaticApiService) {}
 
   public handleSetupReady(e) {
     this.is_setup_ready = true;
   }
 
-  public handleRegionChanged(new_region) {
-    // Return to stage 1 where no summoner selected yet
-    // We can get region from preferencesService at any given time
-  }
-
+  /*
   public selectSummoner(name) {
     this.error_text = null;
     this.player_api.getSummonerByName("EUW", name)
@@ -97,6 +93,7 @@ export class AppComponent {
         }
       });
   }
+  */
 
   ngOnInit() {
     Observable.forkJoin([
