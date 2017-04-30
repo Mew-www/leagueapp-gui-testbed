@@ -3,8 +3,13 @@
       #summonerSearch
       (keyup.enter)="searchSummoner(summonerSearch.value)"
       type="text"
+      [disabled]="search_in_progress"
       placeholder="Summoner's full name"
   />
-  <button (click)="searchSummoner(summonerSearch.value)">{{gettext("find")}}</button>
+  <button
+      (click)="searchSummoner(summonerSearch.value)"
+      [disabled]="search_in_progress">
+    {{gettext("find")}}
+  </button>
   <p>{{error_text_key ? (gettext(error_text_key) + (error_details ? " ("+error_details+")" : "")) : ""}}</p>
 </div>
