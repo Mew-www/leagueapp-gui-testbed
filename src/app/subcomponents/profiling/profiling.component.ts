@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Summoner} from "../../models/summoner";
+import {TranslatorService} from "../../services/translator.service";
+import {Champion} from "../../models/champion";
 
 @Component({
   selector: 'profiling',
@@ -8,16 +10,19 @@ import {Summoner} from "../../models/summoner";
 })
 export class ProfilingComponent implements OnInit {
 
-  @Input() champions_metadata;
+  @Input() champions_metadata: Array<Champion>;
   @Input() items_metadata;
   private selected_summoner: Summoner = null;
+  private gettext: Function;
 
-  constructor() { }
+  constructor(private translator: TranslatorService) { }
 
   public handleSummonerChanged(new_selected_summoner) {
     this.selected_summoner = new_selected_summoner;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.gettext = this.translator.getTranslation;
+  }
 
 }

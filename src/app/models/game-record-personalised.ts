@@ -4,10 +4,10 @@ import {Champion} from "./champion";
 
 export class GameRecordPersonalised extends GameRecord {
 
-  public readonly match_start_epochtime;
-  public readonly match_duration_seconds;
-  public readonly league_version;
-  public readonly league_season;
+  public readonly match_start_time: Date;
+  public readonly match_duration_seconds: Number;
+  public readonly league_version: string;
+  public readonly league_season: string;
   public readonly teams;
 
   constructor(game_json, looked_up_summoner_id, champions_list: Array<Champion>) {
@@ -152,7 +152,7 @@ export class GameRecordPersonalised extends GameRecord {
     }, {});
     let ally_team_id = game_json.participants.filter(p => p.participantId === self_participant_id)[0].teamId;
 
-    this.match_start_epochtime = game_json.matchCreation;
+    this.match_start_time = new Date(game_json.matchCreation);
     this.match_duration_seconds = game_json.matchDuration;
     this.league_version = game_json.matchVersion.split('.').slice(0,2).join('.');
     this.league_season = game_json.season;

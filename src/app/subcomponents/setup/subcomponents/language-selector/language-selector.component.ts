@@ -15,10 +15,11 @@ export class LanguageSelectorComponent implements OnInit {
   private language_codes_available = Object.keys(i18n.translations);
   private gettext: Function;
 
-  constructor(private translator: TranslatorService) { }
+  constructor(private translator: TranslatorService) {
+    this.gettext = this.translator.getTranslation;
+  }
 
   ngOnInit() {
-    this.gettext = this.translator.getTranslation;
   }
 
 }

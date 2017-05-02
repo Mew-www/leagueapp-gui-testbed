@@ -15,10 +15,11 @@ export class RegionSelectorComponent implements OnInit {
   private regions_available = Settings.REGIONS;
   private gettext: Function;
 
-  constructor(private translator: TranslatorService) { }
+  constructor(private translator: TranslatorService) {
+    this.gettext = this.translator.getTranslation;
+  }
 
   ngOnInit() {
-    this.gettext = this.translator.getTranslation;
   }
 
 }

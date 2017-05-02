@@ -15,6 +15,8 @@ import { LanguageSelectorComponent } from './subcomponents/setup/subcomponents/l
 import { RegionSelectorComponent } from './subcomponents/setup/subcomponents/region-selector/region-selector.component';
 import { ProfilingComponent } from './subcomponents/profiling/profiling.component';
 import { SummonerSelectorComponent } from './subcomponents/profiling/subcomponents/summoner-selector/summoner-selector.component';
+import { StatisticsComponent } from './subcomponents/profiling/subcomponents/statistics/statistics.component';
+import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { SummonerSelectorComponent } from './subcomponents/profiling/subcomponen
     RegionSelectorComponent,
     ProfilingComponent,
     SummonerSelectorComponent,
+    StatisticsComponent,
+    QueuetypeDescriptionPipe
   ],
   imports: [
     BrowserModule,

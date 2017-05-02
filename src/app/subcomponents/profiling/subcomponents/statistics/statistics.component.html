@@ -1,0 +1,38 @@
+<div>
+  <p *ngIf="loading">
+    {{gettext("loading_statistics")}}
+  </p>
+  <p *ngIf="gamehistory_error_text_key">
+    {{gettext(gamehistory_error_text_key) + (gamehistory_error_details ? " ("+gamehistory_error_details+")" : "")}}
+    {{gamehistory_error_details}}
+  </p>
+  <p *ngIf="masterypoints_error_text_key">
+    {{gettext(masterypoints_error_text_key) + (masterypoints_error_details ? " ("+masterypoints_error_details+")" : "")}}
+    {{masterypoints_error_details}}
+  </p>
+  <p *ngIf="rankedwinrate_error_text_key">
+    {{gettext(rankedwinrate_error_text_key) + (rankedwinrate_error_details ? " ("+rankedwinrate_error_details+")" : "")}}
+    {{rankedwinrate_error_details}}
+  </p>
+  <div *ngIf="masterypoints">
+    <p *ngFor="let m of masterypoints">
+      {{m.champion.name}}: Level {{m.level}} ({{m.total_points}} pts) (last played {{m.last_play_time.toISOString()}})
+    </p>
+  </div>
+  <div *ngIf="rankedwinrate">
+    <p *ngFor="let queue of rankedwinrate">
+      Season {{queue.season}} {{queue.queue_type | queuetypeDescription}}:
+      <span *ngIf="queue.wins+queue.losses > 0">
+        {{queue.wins}} {{gettext("n_of_wins")}},
+        {{queue.losses}} {{gettext("n_of_losses")}}
+        ({{this.Math.round((queue.wins/(queue.losses+queue.wins))*100)}}% winrate)
+      </span>
+      <span *ngIf="queue.wins+queue.losses === 0">
+        {{gettext("no_games_played")}}
+      </span>
+    </p>
+  </div>
+  <pre *ngIf="gamehistory">
+    {{gamehistory | json}}
+  </pre>
+</div>

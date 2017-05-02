@@ -4,7 +4,7 @@
       (keyup.enter)="searchSummoner(summonerSearch.value)"
       type="text"
       [disabled]="search_in_progress"
-      placeholder="Summoner's full name"
+      placeholder="{{gettext('summoner_s_full_name')}}"
   />
   <button
       (click)="searchSummoner(summonerSearch.value)"

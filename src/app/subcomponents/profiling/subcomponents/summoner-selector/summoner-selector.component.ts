@@ -18,9 +18,11 @@ export class SummonerSelectorComponent implements OnInit {
   private error_details = "";
   private gettext: Function;
 
-  constructor(private preferencesService: PreferencesService,
+  constructor(private preferences_service: PreferencesService,
               private player_api: PlayerApiService,
-              private translator: TranslatorService) { }
+              private translator: TranslatorService) {
+    this.gettext = this.translator.getTranslation;
+  }
 
   private searchSummoner(name) {
     if (this.search_in_progress) {
@@ -31,7 +33,7 @@ export class SummonerSelectorComponent implements OnInit {
     this.error_text_key = "";
     this.error_details = "";
 
-    this.player_api.getSummonerByName(this.preferencesService.preferences['region'], name)
+    this.player_api.getSummonerByName(this.preferences_service.preferences['region'], name)
       .subscribe(api_res => {
         switch (api_res.type) {
           case ResType.NOT_FOUND:
@@ -56,7 +58,6 @@ export class SummonerSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gettext = this.translator.getTranslation;
   }
 
 }

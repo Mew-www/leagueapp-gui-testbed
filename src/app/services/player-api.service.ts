@@ -8,6 +8,7 @@ import {
   ApiResponseTryLater
 } from "../helpers/api-response";
 import {GameType} from "../enums/game-type";
+import {Mastery} from "../models/mastery";
 
 @Injectable()
 export class PlayerApiService {
@@ -65,6 +66,9 @@ export class PlayerApiService {
       .map(res => {
         let historical_data = res.json();
         let total_existing_records = historical_data['totalGames'];
+        if (total_existing_records === 0) {
+          return new ApiResponseNotFound();
+        }
         let records = historical_data['matches'].map(match => {
           return {
             match_id: match['matchId'],
@@ -88,6 +92,46 @@ export class PlayerApiService {
 
           case 404:
             return Observable.of(new ApiResponseNotFound()); // Invalid summoner ID
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
+        }
+      });
+  }
+  public getMasteryPointCounts(region, summoner_id): Observable<ApiResponse<Object, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_MASTERIES_URI(region, summoner_id))
+      .map(res => {
+        let masteries_json = res.json();
+        return new ApiResponseSuccess(masteries_json);
+      }).catch(error_res => {
+        switch (error_res.status) {
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
+        }
+      });
+  }
+  public getRankedWinrate(region, summoner_id): Observable<ApiResponse<Object, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_RANKEDSTATS_URI(region, summoner_id))
+      .map(res => {
+        let stats_json = res.json();
+        return new ApiResponseSuccess(stats_json);
+      }).catch(error_res => {
+        switch (error_res.status) {
 
           case 500:
             if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {

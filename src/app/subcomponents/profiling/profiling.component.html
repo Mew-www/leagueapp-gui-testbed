@@ -2,7 +2,13 @@
   <app-summoner-selector
       (selectedSummoner)="handleSummonerChanged($event)">
   </app-summoner-selector>
-  <p *ngIf="selected_summoner">
-    {{selected_summoner.current_name}} #{{selected_summoner.id}}
-  </p>
+  <div *ngIf="selected_summoner">
+    <p>
+      {{selected_summoner.current_name}} #{{selected_summoner.id}}
+    </p>
+    <statistics
+        [champions_metadata]="champions_metadata"
+        [summoner]="selected_summoner">
+    </statistics>
+  </div>
 </div>
