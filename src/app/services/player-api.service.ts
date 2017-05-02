@@ -85,7 +85,7 @@ export class PlayerApiService {
               }
             })(match['queue']),
           }
-        }).sort((a, b) => a['timestamp'] - b['timestamp']);
+        }).sort((a, b) => b['timestamp'] - a['timestamp']);
         return new ApiResponseSuccess(records);
       }).catch(error_res => {
         switch (error_res.status) {
