@@ -15,9 +15,9 @@
     {{rankedwinrate_error_details}}
   </p>
   <div *ngIf="masterypoints">
-    <p *ngFor="let m of masterypoints">
-      {{m.champion.name}}: Level {{m.level}} ({{m.total_points}} pts) (last played {{m.last_play_time.toISOString()}})
-    </p>
+    <player-champion-mastery *ngFor="let mastery of masterypoints"
+        [mastery]="mastery">
+    </player-champion-mastery>
   </div>
   <div *ngIf="rankedwinrate">
     <p *ngFor="let queue of rankedwinrate">

@@ -61,7 +61,7 @@ export class PlayerApiService {
         }
       });
   }
-  public getListOfRecentGames(region, summoner_id, gametype): Observable<ApiResponse<Object, string, Number>> {
+  public getListOfRankedGamesJson(region, summoner_id, gametype): Observable<ApiResponse<Object, string, Number>> {
     return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, summoner_id))
       .map(res => {
         let historical_data = res.json();
@@ -86,7 +86,7 @@ export class PlayerApiService {
             })(match['queue']),
           }
         }).sort((a, b) => a['timestamp'] - b['timestamp']);
-        return new ApiResponseSuccess({total_existing_records: total_existing_records, records: records});
+        return new ApiResponseSuccess(records);
       }).catch(error_res => {
         switch (error_res.status) {
 
@@ -105,7 +105,7 @@ export class PlayerApiService {
         }
       });
   }
-  public getMasteryPointCounts(region, summoner_id): Observable<ApiResponse<Object, string, Number>> {
+  public getMasteryPointCountsJson(region, summoner_id): Observable<ApiResponse<Object, string, Number>> {
     return this.http.get(ApiRoutes.PLAYER_MASTERIES_URI(region, summoner_id))
       .map(res => {
         let masteries_json = res.json();

@@ -13,7 +13,10 @@ export class i18n {
       'gamehistory_not_found': "No played games found.",
       'n_of_wins': "wins",
       'n_of_losses': "losses",
-      'no_games_played': "0 games played"
+      'no_games_played': "0 games played",
+      'last_played': "last played",
+      'n_hours_ago': "hours ago",
+      'yesterday': "yesterday"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -27,7 +30,10 @@ export class i18n {
       'gamehistory_not_found': "Yht\u00e4\u00e4n pelattua peli\u00e4 ei l\u00f6ytynyt.",
       'n_of_wins': "voittoa",
       'n_of_losses': "h\u00e4vi\u00f6t\u00e4",
-      'no_games_played': "0 peli\u00e4 pelattu"
+      'no_games_played': "0 peli\u00e4 pelattu",
+      'last_played': "viimeksi pelattu",
+      'n_hours_ago': "tuntia sitten",
+      'yesterday': "eilen"
     }
   }
 

@@ -9,6 +9,7 @@ import {TranslatorService} from "../../../../services/translator.service";
 import {Observable} from "rxjs/Observable";
 import {Champion} from "../../../../models/champion";
 import {Mastery} from "../../../../models/mastery";
+import {GamePreview} from "../../../../models/game-preview";
 
 @Component({
   selector: 'statistics',
@@ -22,7 +23,7 @@ export class StatisticsComponent implements OnInit, OnChanges {
   private ongoing_request: Subscription = null;
   private loading = true;
 
-  private gamehistory = null;
+  private gamehistory: Array<GamePreview> = null;
   private gamehistory_error_text_key = "";
   private gamehistory_error_details = "";
 
@@ -44,10 +45,10 @@ export class StatisticsComponent implements OnInit, OnChanges {
     this.Math = Math;
   }
 
-  private _processGamehistoryResponse(api_res) {
+  private _processGamehistoryJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
-        this.gamehistory = api_res.data;
+        this.gamehistory = api_res.data.map(record => new GamePreview(record, this.champions_metadata));
         break;
 
       case ResType.ERROR:
@@ -65,7 +66,7 @@ export class StatisticsComponent implements OnInit, OnChanges {
     }
   }
 
-  private _processMasterypointsResponse(api_res) {
+  private _processMasterypointsJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
         this.masterypoints = api_res.data.map(m_json => new Mastery(m_json, this.champions_metadata))
@@ -129,13 +130,13 @@ export class StatisticsComponent implements OnInit, OnChanges {
       let region = this.preferences_service.preferences['region'];
       let summoner_id = this.summoner.id;
       this.ongoing_request = Observable.forkJoin([
-        this.player_api.getListOfRecentGames(region, summoner_id, GameType.SOLO_AND_FLEXQUEUE),
-        this.player_api.getMasteryPointCounts(region, summoner_id),
+        this.player_api.getListOfRankedGamesJson(region, summoner_id, GameType.SOLO_AND_FLEXQUEUE),
+        this.player_api.getMasteryPointCountsJson(region, summoner_id),
         this.player_api.getRankedWinrate(region, summoner_id)
       ])
         .subscribe(api_responses => {
-          this._processGamehistoryResponse(api_responses[0]);
-          this._processMasterypointsResponse(api_responses[1]);
+          this._processGamehistoryJsonResponse(api_responses[0]);
+          this._processMasterypointsJsonResponse(api_responses[1]);
           this._processRankedstatsResponse(api_responses[2]);
 
           this.loading = false;

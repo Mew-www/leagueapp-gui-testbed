@@ -17,6 +17,7 @@ import { ProfilingComponent } from './subcomponents/profiling/profiling.componen
 import { SummonerSelectorComponent } from './subcomponents/profiling/subcomponents/summoner-selector/summoner-selector.component';
 import { StatisticsComponent } from './subcomponents/profiling/subcomponents/statistics/statistics.component';
 import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
+import { PlayerChampionMasteryComponent } from './subcomponents/profiling/subcomponents/statistics/subcomponents/player-champion-mastery/player-champion-mastery.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
     ProfilingComponent,
     SummonerSelectorComponent,
     StatisticsComponent,
-    QueuetypeDescriptionPipe
+    QueuetypeDescriptionPipe,
+    PlayerChampionMasteryComponent
   ],
   imports: [
     BrowserModule,
