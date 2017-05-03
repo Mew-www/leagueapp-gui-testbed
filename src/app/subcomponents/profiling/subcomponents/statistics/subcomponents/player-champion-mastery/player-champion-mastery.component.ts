@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TranslatorService} from "../../../../../../services/translator.service";
 import {Mastery} from "../../../../../../models/mastery";
+import {Settings} from "../../../../../../constants/settings";
 
 @Component({
   selector: 'player-champion-mastery',
@@ -11,9 +12,19 @@ export class PlayerChampionMasteryComponent implements OnInit {
 
   @Input() mastery: Mastery;
   private gettext: Function;
+  private Math;
+  private Array;
+  private masteryemote_img_uri = Settings.STATIC_BASE_URI + "masteryemote.svg";
+  private chestacquired_img_uri = Settings.STATIC_BASE_URI + "chestacquired.svg";
+  private masterytoken_6_have_img_uri = Settings.STATIC_BASE_URI + "masterytoken_6_obtained.svg";
+  private masterytoken_6_need_img_uri = Settings.STATIC_BASE_URI + "masterytoken_6_required.svg";
+  private masterytoken_7_have_img_uri = Settings.STATIC_BASE_URI + "masterytoken_7_obtained.svg";
+  private masterytoken_7_need_img_uri = Settings.STATIC_BASE_URI + "masterytoken_7_required.svg";
 
   constructor(private translator: TranslatorService) {
     this.gettext = translator.getTranslation;
+    this.Math = Math;
+    this.Array = Array;
   }
 
   private getTimeAgoAsString(date: Date) {
@@ -31,7 +42,7 @@ export class PlayerChampionMasteryComponent implements OnInit {
 
     } else {
       // DD. MM. YYYY
-      return ("0"+date.getDate()).slice(-2) + '. ' + ("0"+(date.getMonth()+1)).slice(-2) + '. ' + date.getFullYear();
+      return ("0"+date.getDate()).slice(-2) + '.' + ("0"+(date.getMonth()+1)).slice(-2) + '.' + date.getFullYear();
     }
   }
 

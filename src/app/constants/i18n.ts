@@ -16,7 +16,9 @@ export class i18n {
       'no_games_played': "0 games played",
       'last_played': "last played",
       'n_hours_ago': "hours ago",
-      'yesterday': "yesterday"
+      'yesterday': "yesterday",
+      'emote_available': "Emote available",
+      'chest_acquired': "Hextech chest acquired (S- or higher grade in same team per season)"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -33,7 +35,9 @@ export class i18n {
       'no_games_played': "0 peli\u00e4 pelattu",
       'last_played': "viimeksi pelattu",
       'n_hours_ago': "tuntia sitten",
-      'yesterday': "eilen"
+      'yesterday': "eilen",
+      'emote_available': "Emote k\u00e4ytett\u00e4viss\u00e4",
+      'chest_acquired': "Hextech arkku saatu (S- tai korkeampi suoritus samassa tiimiss\u00e4 per season)"
     }
   }
 

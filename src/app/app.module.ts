@@ -18,6 +18,7 @@ import { SummonerSelectorComponent } from './subcomponents/profiling/subcomponen
 import { StatisticsComponent } from './subcomponents/profiling/subcomponents/statistics/statistics.component';
 import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
 import { PlayerChampionMasteryComponent } from './subcomponents/profiling/subcomponents/statistics/subcomponents/player-champion-mastery/player-champion-mastery.component';
+import { EmphasiseThousandsPipe } from './pipes/emphasise-thousands.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PlayerChampionMasteryComponent } from './subcomponents/profiling/subcom
     SummonerSelectorComponent,
     StatisticsComponent,
     QueuetypeDescriptionPipe,
-    PlayerChampionMasteryComponent
+    PlayerChampionMasteryComponent,
+    EmphasiseThousandsPipe
   ],
   imports: [
     BrowserModule,

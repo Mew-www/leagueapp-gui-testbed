@@ -1,0 +1,71 @@
+.clearfix { &:after { content: " "; display: table; clear: both; } }
+.float-left { float: left; }
+.letter-spaced { letter-spacing: 1px; }
+
+.Mastery {
+  color: #333;
+  font-family: Roboto, 'sans-serif';
+  display: table;
+
+  /* Header */
+  &__champion-name {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 2px;
+    text-align: center;
+    font-size: 24px;
+    font-variant: all-petite-caps;
+  }
+  &__champion-last-played-time {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 4px;
+    text-align: center;
+    font-size: 14px;
+    &:first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  /* First half (icon) */
+  &__champion-icon-container {
+    max-width: 100px;
+  }
+  &__champion-icon {
+    max-width: 100%;
+  }
+
+  /* Second half (infographics) */
+  &__infographics-container {
+    margin-left: 8px;
+    max-width: 400px;
+  }
+  &__infographics {
+    margin-bottom: 5px;
+  }
+  &__level {
+    font-size: 36px;
+    font-weight: bold;
+    // Circle around
+    padding: 0 14px;
+    border-radius: 50%;
+    border: 1px solid slategrey;
+    margin-top: 4px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+  }
+  &__point-counts {
+    padding: 5px;
+    cursor: help;
+  }
+  &__points-total {
+    font-size: 20px;
+    &--bigger {
+      font-size: 36px;
+    }
+  }
+  &__token {
+    margin-left: 4px;
+  }
+
+}
