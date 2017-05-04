@@ -8,6 +8,52 @@ $mastery-7-color: #21ADA6;
   white-space: nowrap;
 }
 
+.MasteryScrollerContainer {
+  position: relative;
+
+  .arrow-right {
+    cursor: pointer;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-right: 15px solid #000;
+    border-bottom: 15px solid #000;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 45px;
+    right: 30px;
+    opacity: 0;
+    transition: opacity 1s linear, box-shadow 0.5s linear;
+
+    &:hover {
+      box-shadow: 4px 4px 2px 0px blue, 6px 6px 2px 0px cyan;
+    }
+  }
+  &:hover .arrow-right {
+    opacity: 1;
+  }
+  .arrow-left {
+    cursor: pointer;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-left: 15px solid #000;
+    border-bottom: 15px solid #000;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 45px;
+    left: 30px;
+    opacity: 0;
+    transition: opacity 1s linear, box-shadow 0.5s linear;
+    &:hover {
+      box-shadow: -4px 4px 2px 0px blue, -6px 6px 2px 0px cyan;
+    }
+  }
+  &:hover .arrow-left {
+    opacity: 1;
+  }
+}
+
 .PlayerChampionMastery-container {
   display: inline-block;
   margin: 4px;
