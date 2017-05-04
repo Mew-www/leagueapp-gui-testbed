@@ -16,13 +16,12 @@ export class StaticApiService {
   constructor(private http: Http) { }
 
   private _cacheAndWrapChampionApiResponse(res: Response): ApiResponse<Array<Champion>, string, any> {
-    let array_of_champions = res.json().map(dataset => new Champion(dataset['id'], dataset['name']));
+    let array_of_champions = res.json().map(dataset => new Champion(dataset['id'], dataset['name'], dataset['ddragon_key']));
     // Cache
     this._champions = array_of_champions;
     // ..and return
     return new ApiResponseSuccess(array_of_champions);
   }
-
   private _cacheAndWrapItemsApiResponse(res: Response): ApiResponse<Object, string, any> {
     let items_json = res.json();
     let item_table = items_json['data'];

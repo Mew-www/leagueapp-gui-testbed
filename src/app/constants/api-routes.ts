@@ -63,4 +63,11 @@ export class ApiRoutes {
       + "&match_id=" + game_id;
   };
 
+  public static PROFILE_ICON_URI = (icon_id) => {
+    return Settings.API_BASE_URI + "static/assets/profile_icons/"+icon_id+".png";
+  };
+  public static CHAMPION_SQUARE_URI = (champion_ddragon_name) => {
+    return Settings.API_BASE_URI + "static/assets/champion_squares/"+champion_ddragon_name+".png";
+  };
+
 }

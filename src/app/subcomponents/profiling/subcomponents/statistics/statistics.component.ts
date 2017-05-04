@@ -1,4 +1,6 @@
-import {Component, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChildren
+} from '@angular/core';
 import {Summoner} from "../../../../models/summoner";
 import {PreferencesService} from "../../../../services/preferences.service";
 import {PlayerApiService} from "../../../../services/player-api.service";
@@ -16,7 +18,7 @@ import {GamePreview} from "../../../../models/game-preview";
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
-export class StatisticsComponent implements OnInit, OnChanges {
+export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() champions_metadata: Array<Champion>;
   @Input() summoner: Summoner;
@@ -38,13 +40,87 @@ export class StatisticsComponent implements OnInit, OnChanges {
   private Math;
   private gettext: Function;
 
+  @ViewChildren('lazy_mastery_scroller') lazy_scroller_query: QueryList<any>;
+  private masteryscroller: ElementRef;
+  private scrolling_masteries = false;
+  private scrolling_masteries_timeout;
+  private scrolling_masteries_right_available = false;
+  private scrolling_masteries_left_available = false;
+
   constructor(private preferences_service: PreferencesService,
               private player_api: PlayerApiService,
-              private translator: TranslatorService) {
+              private translator: TranslatorService,
+              private changeDetector: ChangeDetectorRef) {
     this.gettext = this.translator.getTranslation;
     this.Math = Math;
   }
 
+  ngAfterViewInit() {
+    this.lazy_scroller_query.changes
+      .subscribe((matching_queried_components: QueryList<ElementRef>) => {
+        // Kek
+        console.log("A wild scroller appeared!");
+        // Initialize new scroller here as it was successfully queried
+        this.masteryscroller = matching_queried_components.first;
+        let scroller = this.masteryscroller.nativeElement;
+        let masteries = <Array<Element>>Array.from(scroller.children);
+
+        // Check right
+        let scrollerRightmostPoint = scroller.getBoundingClientRect().right;
+        let nonVisibleMasteriesToRight = masteries
+        // "mastery's right edge is before (smaller px position than) scroller's rightmost edge" * (NOT)
+          .filter(m => !(m.getBoundingClientRect().right < scrollerRightmostPoint));
+        this.scrolling_masteries_right_available = nonVisibleMasteriesToRight.length > 0;
+
+        // Check left
+        let scrollerLeftmostPoint = scroller.getBoundingClientRect().left;
+        let nonVisibleMasteriesToLeft = masteries
+        // "mastery's left edge is after (bigger px position [more to right] than) scroller's leftmost edge" * (NOT)
+          .filter(m => !(m.getBoundingClientRect().left > scrollerLeftmostPoint));
+        this.scrolling_masteries_left_available = nonVisibleMasteriesToLeft.length > 0;
+
+        // WE UPDATED UI COMPONENT STATES RIGHT >AFTER CHANGE( DETECTION)<
+        // => UPDATE STATE BY MANUALLY DETECTING ANY NEW CHANGES
+        // ^p.i.t.a. to debug if gotten wrong in production mode... it alerts only in dev mode
+        this.changeDetector.detectChanges();
+      });
+  }
+
+  private onMasteriesScrollingEnd(scroller) {
+    let masteries = <Array<Element>>Array.from(scroller.children);
+
+    // Check right
+    let scrollerRightmostPoint = scroller.getBoundingClientRect().right;
+    let nonVisibleMasteriesToRight = masteries
+      // "mastery's right edge is before (smaller px position than) scroller's rightmost edge" * (NOT)
+      .filter(m => !(m.getBoundingClientRect().right < scrollerRightmostPoint));
+    this.scrolling_masteries_right_available = nonVisibleMasteriesToRight.length > 0;
+
+    // Check left
+    let scrollerLeftmostPoint = scroller.getBoundingClientRect().left;
+    let nonVisibleMasteriesToLeft = masteries
+      // "mastery's left edge is after (bigger px position [more to right] than) scroller's leftmost edge" * (NOT)
+      .filter(m => !(m.getBoundingClientRect().left > scrollerLeftmostPoint));
+    this.scrolling_masteries_left_available = nonVisibleMasteriesToLeft.length > 0;
+  }
+  private onMasteriesScrolled(e) {
+    let scroller = e.target;
+
+    if (this.scrolling_masteries) {
+      // Refresh (=[if exists] clear old and [anyway] set new) timeout
+      if (this.scrolling_masteries_timeout) {
+        window.clearTimeout(this.scrolling_masteries_timeout);
+      }
+      this.scrolling_masteries_timeout = window.setTimeout(() => {
+        this.scrolling_masteries = false;
+        this.onMasteriesScrollingEnd(scroller)
+      }, 1000);
+    } else {
+      console.log("Starting to scroll.");
+      this.scrolling_masteries = true;
+    }
+
+  }
   private _processGamehistoryJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
@@ -65,7 +141,6 @@ export class StatisticsComponent implements OnInit, OnChanges {
         break;
     }
   }
-
   private _processMasterypointsJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
@@ -87,7 +162,6 @@ export class StatisticsComponent implements OnInit, OnChanges {
         break;
     }
   }
-
   private _processRankedstatsResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:

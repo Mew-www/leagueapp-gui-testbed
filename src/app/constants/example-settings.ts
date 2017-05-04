@@ -1,6 +1,7 @@
 export class Settings {
 
   public static API_BASE_URI = "<YOUR-PROXY-SERVER-API-ENDPOINT-HERE>";
+  public static STATIC_BASE_URI = "<YOUR-PROXY-SERVER-STATIC-FOLDER-HERE>";
   public static REGIONS = [
     {
       id: "EUW",

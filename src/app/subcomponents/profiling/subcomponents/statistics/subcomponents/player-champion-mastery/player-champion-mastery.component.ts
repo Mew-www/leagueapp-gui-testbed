@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TranslatorService} from "../../../../../../services/translator.service";
 import {Mastery} from "../../../../../../models/mastery";
 import {Settings} from "../../../../../../constants/settings";
+import {ApiRoutes} from "../../../../../../constants/api-routes";
 
 @Component({
   selector: 'player-champion-mastery',

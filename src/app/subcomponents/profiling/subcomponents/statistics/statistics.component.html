@@ -14,9 +14,20 @@
     {{gettext(rankedwinrate_error_text_key) + (rankedwinrate_error_details ? " ("+rankedwinrate_error_details+")" : "")}}
     {{rankedwinrate_error_details}}
   </p>
-  <div *ngIf="masterypoints">
+  <h1>
+    <span *ngIf="scrolling_masteries_left_available">Scrolling LEFT is possible</span>
+    <span *ngIf="scrolling_masteries_right_available">Scrolling RIGHT is possible</span>
+  </h1>
+  <div *ngIf="masterypoints"
+       #lazy_mastery_scroller
+       class="PlayerChampionMasteryScroller"
+       (scroll)="onMasteriesScrolled($event)">
     <player-champion-mastery *ngFor="let mastery of masterypoints"
-        [mastery]="mastery">
+                             class="PlayerChampionMastery-container"
+                             [class.PlayerChampionMastery-container--level5]="mastery.level == 5"
+                             [class.PlayerChampionMastery-container--level6]="mastery.level == 6"
+                             [class.PlayerChampionMastery-container--level7]="mastery.level == 7"
+                             [mastery]="mastery">
     </player-champion-mastery>
   </div>
   <div *ngIf="rankedwinrate">

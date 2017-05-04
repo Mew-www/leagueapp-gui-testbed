@@ -3,6 +3,8 @@
       (selectedSummoner)="handleSummonerChanged($event)">
   </app-summoner-selector>
   <div *ngIf="selected_summoner">
+    <img src="{{selected_summoner.icon.url}}"/>
+    <br/>
     <p>
       {{selected_summoner.current_name}} #{{selected_summoner.id}}
     </p>

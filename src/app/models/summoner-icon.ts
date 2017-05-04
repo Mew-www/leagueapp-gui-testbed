@@ -1,3 +1,5 @@
+import {ApiRoutes} from "../constants/api-routes";
+
 export class SummonerIcon {
 
   public readonly id;
@@ -5,7 +7,7 @@ export class SummonerIcon {
 
   constructor(id) {
     this.id = id;
-    this.url = ""; // TODO server-side caching etc.
+    this.url = ApiRoutes.PROFILE_ICON_URI(id);
   }
 
 }
