@@ -268,31 +268,33 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.lazy_scroller_query.changes
       .subscribe((matching_queried_components: QueryList<ElementRef>) => {
-        // Kek
-        console.log("A wild scroller appeared!");
-        // Initialize new scroller here as it was successfully queried
-        this.masteryscroller = matching_queried_components.first;
-        let scroller = this.masteryscroller.nativeElement;
-        let masteries = <Array<Element>>Array.from(scroller.children);
+        if (matching_queried_components.length > 0) {
+          // Kek
+          console.log("A wild scroller appeared!");
+          // Initialize new scroller here as it was successfully queried
+          this.masteryscroller = matching_queried_components.first;
+          let scroller = this.masteryscroller.nativeElement;
+          let masteries = <Array<Element>>Array.from(scroller.children);
 
-        // Check right
-        let scrollerRightmostPoint = scroller.getBoundingClientRect().right;
-        let nonVisibleMasteriesToRight = masteries
-        // "mastery's right edge is before (smaller px position than) scroller's rightmost edge" * (NOT)
-          .filter(m => !(m.getBoundingClientRect().right < scrollerRightmostPoint));
-        this.scrolling_masteries_right_available = nonVisibleMasteriesToRight.length > 0;
+          // Check right
+          let scrollerRightmostPoint = scroller.getBoundingClientRect().right;
+          let nonVisibleMasteriesToRight = masteries
+          // "mastery's right edge is before (smaller px position than) scroller's rightmost edge" * (NOT)
+            .filter(m => !(m.getBoundingClientRect().right < scrollerRightmostPoint));
+          this.scrolling_masteries_right_available = nonVisibleMasteriesToRight.length > 0;
 
-        // Check left
-        let scrollerLeftmostPoint = scroller.getBoundingClientRect().left;
-        let nonVisibleMasteriesToLeft = masteries
-        // "mastery's left edge is after (bigger px position [more to right] than) scroller's leftmost edge" * (NOT)
-          .filter(m => !(m.getBoundingClientRect().left > scrollerLeftmostPoint));
-        this.scrolling_masteries_left_available = nonVisibleMasteriesToLeft.length > 0;
+          // Check left
+          let scrollerLeftmostPoint = scroller.getBoundingClientRect().left;
+          let nonVisibleMasteriesToLeft = masteries
+          // "mastery's left edge is after (bigger px position [more to right] than) scroller's leftmost edge" * (NOT)
+            .filter(m => !(m.getBoundingClientRect().left > scrollerLeftmostPoint));
+          this.scrolling_masteries_left_available = nonVisibleMasteriesToLeft.length > 0;
 
-        // WE UPDATED UI COMPONENT STATES RIGHT >AFTER CHANGE( DETECTION)<
-        // => UPDATE STATE BY MANUALLY DETECTING ANY NEW CHANGES
-        // ^p.i.t.a. to debug if gotten wrong in production mode... it alerts only in dev mode
-        this.changeDetector.detectChanges();
+          // WE UPDATED UI COMPONENT STATES RIGHT >AFTER CHANGE( DETECTION)<
+          // => UPDATE STATE BY MANUALLY DETECTING ANY NEW CHANGES
+          // ^p.i.t.a. to debug if gotten wrong in production mode... it alerts only in dev mode
+          this.changeDetector.detectChanges();
+        }
       });
   }
 
