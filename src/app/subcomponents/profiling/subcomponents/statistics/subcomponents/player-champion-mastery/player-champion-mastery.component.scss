@@ -56,16 +56,17 @@
   }
   &__point-counts {
     padding: 4px;
-    cursor: help;
   }
   &__points-total {
     font-size: 20px;
+    cursor: help;
     &--bigger {
       font-size: 36px;
     }
   }
   &__token {
     margin-left: 4px;
+    cursor: help;
   }
 
 }

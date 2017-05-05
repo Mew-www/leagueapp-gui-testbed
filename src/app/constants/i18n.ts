@@ -15,7 +15,11 @@ export class i18n {
       'n_of_losses': "losses",
       'no_games_played': "0 games played",
       'last_played': "last played",
+      'just_now': "Just now",
+      'hour_ago': "hour ago",
+      'minute_ago': "minute ago",
       'n_hours_ago': "hours ago",
+      'n_minutes_ago': "minutes ago",
       'yesterday': "yesterday",
       'emote_available': "Emote available",
       'chest_acquired': "Hextech chest acquired (S- or higher grade in same team per season)",
@@ -23,7 +27,8 @@ export class i18n {
       'scroll_next_masteries': "Click to auto-scroll the following set of masteries",
       'load_game_details': "Load details",
       'click_to_hide_game_details': "Hide details",
-      'click_to_show_game_details': "Show details"
+      'click_to_show_game_details': "Show details",
+      'tokens_acquired': "tokens acquired"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -39,7 +44,11 @@ export class i18n {
       'n_of_losses': "h\u00e4vi\u00f6t\u00e4",
       'no_games_played': "0 peli\u00e4 pelattu",
       'last_played': "viimeksi pelattu",
+      'just_now': "Juuri nyt",
+      'hour_ago': "tunti sitten",
+      'minute_ago': "minuutti sitten",
       'n_hours_ago': "tuntia sitten",
+      'n_minutes_ago': "minuuttia sitten",
       'yesterday': "eilen",
       'emote_available': "Emote k\u00e4ytett\u00e4viss\u00e4",
       'chest_acquired': "Hextech arkku saatu (S- tai korkeampi suoritus samassa tiimiss\u00e4 per season)",
@@ -47,7 +56,8 @@ export class i18n {
       'scroll_next_masteries': "Klikkaa n\u00e4ytt\u00e4\u00e4ksesi seuraavat",
       'load_game_details': "Lataa lis\u00e4tiedot",
       'click_to_hide_game_details': "Piilota lis\u00e4tiedot",
-      'click_to_show_game_details': "N\u00e4yt\u00e4 lis\u00e4tiedot"
+      'click_to_show_game_details': "N\u00e4yt\u00e4 lis\u00e4tiedot",
+      'tokens_acquired': "tokenia ansaittu"
     }
   }
 

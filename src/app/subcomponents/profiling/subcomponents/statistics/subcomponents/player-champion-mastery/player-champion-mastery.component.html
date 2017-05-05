@@ -24,12 +24,12 @@
             <img
                 *ngFor="let i of Array(mastery.tokens_earned_for_next_level)"
                 class="Mastery__token"
-                title="{{mastery.tokens_earned_for_next_level}} / 2 tokens acquired"
+                title="{{mastery.tokens_earned_for_next_level}} / 2 {{gettext('tokens_acquired')}}"
                 src="{{masterytoken_6_have_img_uri}}"
             /><img
               *ngFor="let i of Array(2-mastery.tokens_earned_for_next_level)"
               class="Mastery__token"
-              title="{{2-mastery.tokens_earned_for_next_level}}/3 tokens needed"
+              title="{{mastery.tokens_earned_for_next_level}} / 2 {{gettext('tokens_acquired')}}"
               src="{{masterytoken_6_need_img_uri}}"
           />
           </div>
@@ -37,12 +37,12 @@
             <img
                 *ngFor="let i of Array(mastery.tokens_earned_for_next_level)"
                 class="Mastery__token"
-                title="{{mastery.tokens_earned_for_next_level}} / 3 tokens acquired"
+                title="{{mastery.tokens_earned_for_next_level}} / 3 {{gettext('tokens_acquired')}}"
                 src="{{masterytoken_7_have_img_uri}}"
             /><img
               *ngFor="let i of Array(3-mastery.tokens_earned_for_next_level)"
               class="Mastery__token"
-              title="{{3-mastery.tokens_earned_for_next_level}}/3 tokens needed"
+              title="{{mastery.tokens_earned_for_next_level}} / 3 {{gettext('tokens_acquired')}}"
               src="{{masterytoken_7_need_img_uri}}"
             />
           </div>

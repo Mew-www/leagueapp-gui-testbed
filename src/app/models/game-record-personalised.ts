@@ -67,8 +67,8 @@ export class GameRecordPersonalised extends GameRecord {
                 final_champion_level: pstats.champLevel,
                 gold_earned: pstats.goldEarned,
                 creeps: {
-                  lane: pstats.minionsKilled, // TODO: confirm this isn't total CS, in which case reduce jungle cs
-                  jungle: pstats.neutralMinionsKilled, // TODO: confirm this doesn't count summons
+                  lane: pstats.minionsKilled,
+                  jungle: pstats.neutralMinionsKilled,
                   counterjungle: pstats.neutralMinionsKilledEnemyJungle,
                   allyjungle: pstats.neutralMinionsKilledTeamJungle
                 },

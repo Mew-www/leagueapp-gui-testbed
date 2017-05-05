@@ -74,6 +74,22 @@ export class PlayerGamePreviewComponent implements OnInit {
     if (time_difference_ms < 1000*60*60*24) {
       // Less-than-day ago
       let full_hours_ago = Math.floor(time_difference_ms / (1000*60*60));
+      if (full_hours_ago === 0) {
+        // Count minutes instead
+        let full_minutes_ago = Math.floor(time_difference_ms / (1000*60));
+        if (full_minutes_ago === 0) {
+          return `${this.gettext("just_now")}`;
+        }
+        if (full_minutes_ago === 1) {
+          return `1 ${this.gettext("minute_ago")}`;
+        }
+        // Else
+        return `${full_minutes_ago} ${this.gettext("n_minutes_ago")}`;
+      }
+      if (full_hours_ago === 1) {
+        return `1  ${this.gettext("hour_ago")}`;
+      }
+      // Else
       return `${full_hours_ago} ${this.gettext("n_hours_ago")}`;
 
     } else if (time_difference_ms < local_yesterday_begin) {
