@@ -28,6 +28,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
   private gamehistory: Array<GamePreview> = null;
   private gamehistory_error_text_key = "";
   private gamehistory_error_details = "";
+  private autoload_these_games = [];
 
   private masterypoints: Array<Mastery> = null;
   private masterypoints_error_text_key = "";
@@ -169,6 +170,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     switch (api_res.type) {
       case ResType.SUCCESS:
         this.gamehistory = api_res.data.map(record => new GamePreview(record, this.champions_metadata));
+        this.autoload_these_games = this.gamehistory.slice(0,30).map(g => g.game_id);
         break;
 
       case ResType.ERROR:

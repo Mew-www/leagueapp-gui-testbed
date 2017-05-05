@@ -54,6 +54,7 @@
     <player-game-preview *ngFor="let game of gamehistory"
                          class="PlayerGamePreview-container"
                          [game_preview]="game"
+                         [auto_start_loading_details]="autoload_these_games.indexOf(game.game_id) !== -1"
                          [summoner]="summoner"
                          [champions_metadata]="champions_metadata">
     </player-game-preview>

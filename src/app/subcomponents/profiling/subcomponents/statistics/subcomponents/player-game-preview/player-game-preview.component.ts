@@ -17,6 +17,7 @@ import {GameRecord} from "../../../../../../models/game-record";
 })
 export class PlayerGamePreviewComponent implements OnInit {
 
+  @Input() auto_start_loading_details = false;
   @Input() game_preview: GamePreview;
   @Input() summoner: Summoner;
   @Input() champions_metadata: Array<Champion>;
@@ -40,6 +41,7 @@ export class PlayerGamePreviewComponent implements OnInit {
     if (this.ongoing_request) {
       return;
     }
+    this.load_error = "";
     let region = this.preferencesService.preferences['region'];
     let game_id = this.game_preview.game_id;
     this.ongoing_request = this.game_api.getHistoricalGame(region, game_id)
@@ -55,10 +57,13 @@ export class PlayerGamePreviewComponent implements OnInit {
 
           case ResType.TRY_LATER:
             this.load_error = "Try again in " + api_res.wait + " seconds.";
+            this.ongoing_request = null;
             break;
 
           default:
             this.load_error = api_res.error;
+            this.ongoing_request = null;
+            break;
         }
       });
   }
@@ -83,6 +88,32 @@ export class PlayerGamePreviewComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.auto_start_loading_details) {
+      let region = this.preferencesService.preferences['region'];
+      let game_id = this.game_preview.game_id;
+      this.ongoing_request = this.game_api.getHistoricalGame(region, game_id)
+        .subscribe(api_res => {
+          switch (api_res.type) {
+            case ResType.SUCCESS:
+              this.game_details = new GameRecordPersonalised(
+                (<GameRecord> api_res.data).raw_origin,
+                this.summoner.id,
+                this.champions_metadata
+              );
+              break;
+
+            case ResType.TRY_LATER:
+              this.load_error = "Try again in " + api_res.wait + " seconds.";
+              this.ongoing_request = null;
+              break;
+
+            default:
+              this.load_error = api_res.error;
+              this.ongoing_request = null;
+              break;
+          }
+        });
+    }
   }
 
 }
