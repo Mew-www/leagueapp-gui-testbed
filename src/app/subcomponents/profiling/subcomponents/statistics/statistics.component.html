@@ -50,7 +50,12 @@
       </span>
     </p>
   </div>
-  <pre *ngIf="gamehistory">
-    {{gamehistory | json}}
-  </pre>
+  <div *ngIf="gamehistory">
+    <player-game-preview *ngFor="let game of gamehistory"
+                         class="PlayerGamePreview-container"
+                         [game_preview]="game"
+                         [summoner]="summoner"
+                         [champions_metadata]="champions_metadata">
+    </player-game-preview>
+  </div>
 </div>

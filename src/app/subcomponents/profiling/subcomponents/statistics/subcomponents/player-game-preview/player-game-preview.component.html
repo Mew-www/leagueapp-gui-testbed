@@ -1,0 +1,36 @@
+<div class="GamePreview">
+  <div class="clearfix">
+    <div class="GamePreview__champion-icon-container float-left">
+      <img
+          class="GamePreview__champion-icon"
+          src="{{game_preview.chosen_champion.images.square_url}}"
+          title="{{game_preview.chosen_champion.name}}"
+      />
+    </div>
+    <div class="GamePreview__infographics-container float-left">
+      <p class="GamePreview__queue-name">{{game_preview.game_type | stringifyGameType}}</p>
+      <p class="GamePreview__game-start-time">{{getTimeAgoAsString(game_preview.game_start_time)}}</p>
+      <button *ngIf="!game_details"
+              class="GamePreview__load-details-btn"
+              (click)="onClickLoadDetails()"
+              [disabled]="ongoing_request">
+        {{gettext('load_game_details')}}
+      </button>
+      <button *ngIf="game_details"
+              class="GamePreview__toggle-details-btn"
+              [class.GamePreview__toggle-details-btn--show]="!details_toggled"
+              [class.GamePreview__toggle-details-btn--hide]="details_toggled"
+              (click)="onClickToggleDetails()">
+        {{details_toggled ? gettext('click_to_hide_game_details') : gettext('click_to_show_game_details')}}
+      </button>
+    </div>
+  </div>
+  <p *ngIf="load_error"
+     class="GamePreview__load-error">
+    {{load_error}}
+  </p>
+  <div *ngIf="game_details && details_toggled"
+       class="GamePreview__details-container">
+    <pre>{{game_details | json}}</pre>
+  </div>
+</div>

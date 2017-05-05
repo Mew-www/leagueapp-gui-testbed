@@ -20,7 +20,10 @@ export class i18n {
       'emote_available': "Emote available",
       'chest_acquired': "Hextech chest acquired (S- or higher grade in same team per season)",
       'scroll_prev_masteries': "Click to auto-scroll the previous set of masteries",
-      'scroll_next_masteries': "Click to auto-scroll the following set of masteries"
+      'scroll_next_masteries': "Click to auto-scroll the following set of masteries",
+      'load_game_details': "Load details",
+      'click_to_hide_game_details': "Hide details",
+      'click_to_show_game_details': "Show details"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -41,7 +44,10 @@ export class i18n {
       'emote_available': "Emote k\u00e4ytett\u00e4viss\u00e4",
       'chest_acquired': "Hextech arkku saatu (S- tai korkeampi suoritus samassa tiimiss\u00e4 per season)",
       'scroll_prev_masteries': "Klikkaa n\u00e4ytt\u00e4\u00e4ksesi edelliset",
-      'scroll_next_masteries': "Klikkaa n\u00e4ytt\u00e4\u00e4ksesi seuraavat"
+      'scroll_next_masteries': "Klikkaa n\u00e4ytt\u00e4\u00e4ksesi seuraavat",
+      'load_game_details': "Lataa lis\u00e4tiedot",
+      'click_to_hide_game_details': "Piilota lis\u00e4tiedot",
+      'click_to_show_game_details': "N\u00e4yt\u00e4 lis\u00e4tiedot"
     }
   }
 

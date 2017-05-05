@@ -19,6 +19,8 @@ import { StatisticsComponent } from './subcomponents/profiling/subcomponents/sta
 import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
 import { PlayerChampionMasteryComponent } from './subcomponents/profiling/subcomponents/statistics/subcomponents/player-champion-mastery/player-champion-mastery.component';
 import { EmphasiseThousandsPipe } from './pipes/emphasise-thousands.pipe';
+import { PlayerGamePreviewComponent } from './subcomponents/profiling/subcomponents/statistics/subcomponents/player-game-preview/player-game-preview.component';
+import { StringifyGameTypePipe } from './pipes/stringify-game-type.pipe';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { EmphasiseThousandsPipe } from './pipes/emphasise-thousands.pipe';
     StatisticsComponent,
     QueuetypeDescriptionPipe,
     PlayerChampionMasteryComponent,
-    EmphasiseThousandsPipe
+    EmphasiseThousandsPipe,
+    PlayerGamePreviewComponent,
+    StringifyGameTypePipe
   ],
   imports: [
     BrowserModule,

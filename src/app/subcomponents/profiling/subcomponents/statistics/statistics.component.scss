@@ -92,3 +92,11 @@ $mastery-7-color: #21ADA6;
             1px 1px 2px 0px black inset; /* left-top inner line */
   }
 }
+
+.PlayerGamePreview-container {
+  display: block;
+  margin-top: 5px;
+  &:first-child {
+    margin-top: 0;
+  }
+}
