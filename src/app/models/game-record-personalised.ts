@@ -117,7 +117,7 @@ export class GameRecordPersonalised extends GameRecord {
                     all: pstats.totalDamageTaken
                   },
                   total_heal: pstats.totalHeal,
-                  total_units_healed: pstats.totalUnitsHealed, // TODO: figure difference between totalHeal
+                  total_units_healed: pstats.totalUnitsHealed, // nr of targets
                   cc_applied_seconds: pstats.totalTimeCrowdControlDealt,
                 },
                 vision: {

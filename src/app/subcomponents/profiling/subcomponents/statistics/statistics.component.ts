@@ -56,6 +56,12 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     this.Math = Math;
   }
 
+  private getFilteredLoadedGames() {
+    return this.gamehistory
+      .filter(g => g.game_details !== null)
+      .map(g => g.game_details);
+  }
+
   private onMasteriesScrolled(e) {
     let scroller = e.target;
 

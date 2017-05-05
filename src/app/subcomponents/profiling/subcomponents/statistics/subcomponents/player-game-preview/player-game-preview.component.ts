@@ -21,7 +21,6 @@ export class PlayerGamePreviewComponent implements OnInit {
   @Input() game_preview: GamePreview;
   @Input() summoner: Summoner;
   @Input() champions_metadata: Array<Champion>;
-  private game_details: GameRecordPersonalised;
   private details_toggled = false;
   private ongoing_request: Subscription = null;
   private load_error = "";
@@ -48,7 +47,7 @@ export class PlayerGamePreviewComponent implements OnInit {
       .subscribe(api_res => {
         switch (api_res.type) {
           case ResType.SUCCESS:
-            this.game_details = new GameRecordPersonalised(
+            this.game_preview.game_details = new GameRecordPersonalised(
               (<GameRecord> api_res.data).raw_origin,
               this.summoner.id,
               this.champions_metadata
@@ -95,7 +94,7 @@ export class PlayerGamePreviewComponent implements OnInit {
         .subscribe(api_res => {
           switch (api_res.type) {
             case ResType.SUCCESS:
-              this.game_details = new GameRecordPersonalised(
+              this.game_preview.game_details = new GameRecordPersonalised(
                 (<GameRecord> api_res.data).raw_origin,
                 this.summoner.id,
                 this.champions_metadata

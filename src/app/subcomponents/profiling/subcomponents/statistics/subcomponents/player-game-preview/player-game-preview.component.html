@@ -10,13 +10,13 @@
     <div class="GamePreview__infographics-container float-left">
       <p class="GamePreview__queue-name">{{game_preview.game_type | stringifyGameType}}</p>
       <p class="GamePreview__game-start-time">{{getTimeAgoAsString(game_preview.game_start_time)}}</p>
-      <button *ngIf="!game_details"
+      <button *ngIf="!game_preview.game_details"
               class="GamePreview__load-details-btn"
               (click)="onClickLoadDetails()"
               [disabled]="ongoing_request">
         {{gettext('load_game_details')}}
       </button>
-      <button *ngIf="game_details"
+      <button *ngIf="game_preview.game_details"
               class="GamePreview__toggle-details-btn"
               [class.GamePreview__toggle-details-btn--show]="!details_toggled"
               [class.GamePreview__toggle-details-btn--hide]="details_toggled"
@@ -29,8 +29,8 @@
      class="GamePreview__load-error">
     {{load_error}}
   </p>
-  <div *ngIf="game_details && details_toggled"
+  <div *ngIf="game_preview.game_details && details_toggled"
        class="GamePreview__details-container">
-    <pre>{{game_details | json}}</pre>
+    <pre>{{game_preview.game_details | json}}</pre>
   </div>
 </div>
