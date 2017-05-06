@@ -1,4 +1,6 @@
-<div class="GamePreview">
+<div class="GamePreview"
+     [class.GamePreview--game-won]="game_preview.game_details && game_preview.game_details.teams.ally.stats.isWinningTeam"
+     [class.GamePreview--game-lost]="game_preview.game_details && !game_preview.game_details.teams.ally.stats.isWinningTeam">
   <div class="clearfix">
     <div class="GamePreview__champion-icon-container float-left">
       <img
@@ -31,8 +33,16 @@
   </p>
   <div *ngIf="game_preview.game_details && details_toggled"
        class="GamePreview__details-container">
+    Ally bans {{game_preview.game_details.teams.ally.bans[0].banTurn == 1 ? "(first ban)":""}}:
     <champion-ban-icon *ngFor="let ban of game_preview.game_details.teams.ally.bans"
-                       [champion]="ban.champion" [title]="'Ally banned this'">
+                       [champion]="ban.champion"
+                       [title]="ban.champion.name">
+    </champion-ban-icon>
+    <br/>
+    Enemy bans {{game_preview.game_details.teams.enemy.bans[0].banTurn == 1 ? "(first ban)":""}}:
+    <champion-ban-icon *ngFor="let ban of game_preview.game_details.teams.enemy.bans"
+                       [champion]="ban.champion"
+                       [title]="ban.champion.name">
     </champion-ban-icon>
     <pre>{{game_preview.game_details | json}}</pre>
   </div>
