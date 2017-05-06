@@ -15,16 +15,6 @@
     {{rankedwinrate_error_details}}
   </p>
   <div *ngIf="masterypoints" class="MasteryScrollerContainer">
-    <div *ngIf="scrolling_masteries_left_available"
-         class="arrow-left"
-         title="{{gettext('scroll_prev_masteries')}}"
-         (click)="onClickMasteriesGotoLeft(lazy_mastery_scroller)">
-    </div>
-    <div *ngIf="scrolling_masteries_right_available"
-         class="arrow-right"
-         title="{{gettext('scroll_next_masteries')}}"
-         (click)="onClickMasteriesGotoRight(lazy_mastery_scroller)">
-    </div>
     <div #lazy_mastery_scroller
          class="PlayerChampionMasteryScroller"
          (scroll)="onMasteriesScrolled($event)">
@@ -35,6 +25,16 @@
                                [class.PlayerChampionMastery-container--level7]="mastery.level == 7"
                                [mastery]="mastery">
       </player-champion-mastery>
+    </div>
+    <div *ngIf="scrolling_masteries_left_available"
+         class="arrow-left"
+         title="{{gettext('scroll_prev_masteries')}}"
+         (click)="onClickMasteriesGotoLeft(lazy_mastery_scroller)">
+    </div>
+    <div *ngIf="scrolling_masteries_right_available"
+         class="arrow-right"
+         title="{{gettext('scroll_next_masteries')}}"
+         (click)="onClickMasteriesGotoRight(lazy_mastery_scroller)">
     </div>
   </div>
   <div *ngIf="rankedwinrate">

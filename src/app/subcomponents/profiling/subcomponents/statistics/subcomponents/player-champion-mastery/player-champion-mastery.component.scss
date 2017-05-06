@@ -64,6 +64,29 @@
       font-size: 36px;
     }
   }
+  &__points-until-next-level {
+    width: 100%;
+    border: 3px sandybrown ridge;
+    height: 14px;
+    position: relative;
+  }
+  &__points-until-next-level-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 14px;
+    background: lightgreen;
+    &--not-empty {
+      border-right: 2px #16ad16 ridge;
+    }
+  }
+  &__points-until-next-level-text {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
   &__token {
     margin-left: 4px;
     cursor: help;

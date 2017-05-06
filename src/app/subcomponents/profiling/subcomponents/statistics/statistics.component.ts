@@ -147,6 +147,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     let masteries = <Array<Element>>Array.from(scroller.children);
     let scrollOffset = scroller.scrollLeft;
     let scrollerLeftMargin = scroller.getBoundingClientRect().left;
+    let temporaryArrowMargin = 121;
     let scrollerWidth = scroller.getBoundingClientRect().right - scrollerLeftMargin;
     let scrollerRightmostPoint = scroller.getBoundingClientRect().right;
     let nonVisibleMasteriesToRight = masteries
@@ -157,7 +158,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
       return;
     }
     // Get the leftmost non-visible mastery and set el.scrollLeft there
-    let toScrollLeft = scrollOffset + nonVisibleMasteriesToRight[0].getBoundingClientRect().left - scrollerLeftMargin;
+    let toScrollLeft = scrollOffset + nonVisibleMasteriesToRight[0].getBoundingClientRect().left - scrollerLeftMargin - temporaryArrowMargin;
     if (toScrollLeft > (scroller.scrollWidth-scrollerWidth)) {
       console.log("This would go beyond max scrollWidth, resetting to scrollWidth.");
       toScrollLeft = scroller.scrollWidth-scrollerWidth;
@@ -177,6 +178,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     let masteries = <Array<Element>>Array.from(scroller.children);
     let scrollOffset = scroller.scrollLeft;
     let scrollerLeftMargin = scroller.getBoundingClientRect().left;
+    let temporaryArrowMargin = 121;
     let scrollerWidth = scroller.getBoundingClientRect().right - scrollerLeftMargin;
     let scrollerLeftmostPoint = scrollerLeftMargin;
     let nonVisibleMasteriesToLeft = masteries
@@ -194,7 +196,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     // Width - hidden
     let visibleAmount = (firstToTheLeftBoundingClient.right - firstToTheLeftBoundingClient.left) - howManyPixelsHidden;
     let amountToReduce = scrollerWidth - visibleAmount;
-    let toScrollLeft = scrollOffset - amountToReduce;
+    let toScrollLeft = scrollOffset - amountToReduce + temporaryArrowMargin;
     if (toScrollLeft < 0) {
       console.log("This would go below scrollLeft: 0, resetting to 0.");
       toScrollLeft = 0;

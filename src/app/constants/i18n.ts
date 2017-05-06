@@ -28,7 +28,9 @@ export class i18n {
       'load_game_details': "Load details",
       'click_to_hide_game_details': "Hide details",
       'click_to_show_game_details': "Show details",
-      'tokens_acquired': "tokens acquired"
+      'tokens_acquired': "tokens acquired",
+      'n_required_remaining': "required",
+      'for_level_n': "for level"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -57,7 +59,9 @@ export class i18n {
       'load_game_details': "Lataa lis\u00e4tiedot",
       'click_to_hide_game_details': "Piilota lis\u00e4tiedot",
       'click_to_show_game_details': "N\u00e4yt\u00e4 lis\u00e4tiedot",
-      'tokens_acquired': "tokenia ansaittu"
+      'tokens_acquired': "tokenia ansaittu",
+      'n_required_remaining': "j\u00e4ljell\u00e4",
+      'for_level_n': "tasoon"
     }
   }
 

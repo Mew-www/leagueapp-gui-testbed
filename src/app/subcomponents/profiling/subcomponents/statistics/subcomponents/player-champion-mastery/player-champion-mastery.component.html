@@ -16,9 +16,16 @@
                title="Total {{mastery.total_points | emphasiseThousands}} pts">
             + {{mastery.points_since_last_level | emphasiseThousands}} pts
           </div>
-          <div *ngIf="mastery.level < 5" class="Mastery__points-until-next-level">
-            {{mastery.points_until_next_level}} pts 4next
-            ({{Math.floor(mastery.points_since_last_level/(mastery.points_since_last_level+mastery.points_until_next_level)*100)}}% done)
+          <div *ngIf="mastery.level < 5" class="Mastery__points-until-next-level"
+               title="{{mastery.points_until_next_level}} pts {{gettext('n_required_remaining')}} {{gettext('for_level_n')}} {{mastery.level+1}}">
+            <div
+                class="Mastery__points-until-next-level-bar"
+                [class.Mastery__points-until-next-level-bar--not-empty]="mastery.points_since_last_level/(mastery.points_since_last_level+mastery.points_until_next_level)*100>=1"
+                [style.width.%]="Math.floor(mastery.points_since_last_level/(mastery.points_since_last_level+mastery.points_until_next_level)*100)"
+            ></div>
+            <div class="Mastery__points-until-next-level-text">
+              {{Math.floor(mastery.points_since_last_level/(mastery.points_since_last_level+mastery.points_until_next_level)*100)}}%
+            </div>
           </div>
           <div *ngIf="mastery.level == 5" class="Mastery__s_minus_tokens_remaining">
             <img
