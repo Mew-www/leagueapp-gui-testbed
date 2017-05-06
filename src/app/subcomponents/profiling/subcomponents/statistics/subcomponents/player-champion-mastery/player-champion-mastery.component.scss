@@ -1,3 +1,8 @@
+$mastery-default-color: #836B31;
+$mastery-5-color: #B12F19;
+$mastery-6-color: #B22CB6;
+$mastery-7-color: #21ADA6;
+
 .clearfix { &:after { content: " "; display: table; clear: both; } }
 .float-left { float: left; }
 .letter-spaced { letter-spacing: 1px; }
@@ -53,6 +58,16 @@
     margin-top: 4px;
     margin-right: 8px;
     margin-bottom: 5px;
+    background: rgba($mastery-default-color,0.45);
+    &--5 {
+      background: rgba($mastery-5-color,0.45);
+    }
+    &--6 {
+      background: rgba($mastery-6-color,0.45);
+    }
+    &--7 {
+      background: rgba($mastery-7-color,0.45);
+    }
   }
   &__point-counts {
     padding: 4px;

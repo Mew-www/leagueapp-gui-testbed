@@ -7,7 +7,10 @@
     </div>
     <div class="Mastery__infographics-container float-left">
       <div class="Mastery__infographics clearfix">
-        <div class="Mastery__level float-left">
+        <div class="Mastery__level float-left"
+             [class.Mastery__level--5]="mastery.level == 5"
+             [class.Mastery__level--6]="mastery.level == 6"
+             [class.Mastery__level--7]="mastery.level == 7">
           {{mastery.level}}
         </div>
         <div class="Mastery__point-counts float-left">
