@@ -26,6 +26,8 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
   private loading = true;
 
   private gamehistory: Array<GamePreview> = null;
+  private gamehistory_filter_queues: Array<GameType> = [];
+  private gamehistory_filter_champion_ids: Array<number> = [];
   private gamehistory_error_text_key = "";
   private gamehistory_error_details = "";
   private autoload_these_games = [];
@@ -56,8 +58,36 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     this.Math = Math;
   }
 
+  private getFilteredGames() {
+    return this.gamehistory
+      .filter(g => {
+        if (this.gamehistory_filter_queues.length === 0) {
+          return true;
+        }
+        return this.gamehistory_filter_queues.indexOf(g.game_type) !== -1;
+      })
+      .filter(g => {
+        if (this.gamehistory_filter_champion_ids.length === 0) {
+          return true;
+        }
+        return this.gamehistory_filter_champion_ids.indexOf(g.chosen_champion.id) !== -1;
+      });
+  }
+
   private getFilteredLoadedGames() {
     return this.gamehistory
+      .filter(g => {
+        if (this.gamehistory_filter_queues.length === 0) {
+          return true;
+        }
+        return this.gamehistory_filter_queues.indexOf(g.game_type) !== -1;
+      })
+      .filter(g => {
+        if (this.gamehistory_filter_champion_ids.length === 0) {
+          return true;
+        }
+        return this.gamehistory_filter_champion_ids.indexOf(g.chosen_champion.id) !== -1;
+      })
       .filter(g => g.game_details !== null)
       .map(g => g.game_details);
   }

@@ -1,13 +1,21 @@
-<div>
-  <app-summoner-selector
-      (selectedSummoner)="handleSummonerChanged($event)">
+<div class="Profiling">
+  <app-summoner-selector class="Profiling__summoner-selector-container"
+                         (selectedSummoner)="handleSummonerChanged($event)">
   </app-summoner-selector>
   <div *ngIf="selected_summoner">
-    <img src="{{selected_summoner.icon.url}}"/>
-    <br/>
-    <p>
-      {{selected_summoner.current_name}} #{{selected_summoner.id}}
-    </p>
+    <div class="Profiling__selected-summoner clearfix">
+      <div class="Profiling__selected-summoner-icon-container float-left">
+        <img class="Profiling__selected-summoner-icon" src="{{selected_summoner.icon.url}}" />
+      </div>
+      <div class="Profiling__selected-summoner-details float-left">
+        <p class="Profiling__selected-summoner-name">
+          {{selected_summoner.current_name}}
+        </p>
+        <p class="Profiling__selected-summoner-id">
+          #{{selected_summoner.id}}
+        </p>
+      </div>
+    </div>
     <statistics
         [champions_metadata]="champions_metadata"
         [summoner]="selected_summoner">

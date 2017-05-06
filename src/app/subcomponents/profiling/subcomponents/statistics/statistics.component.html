@@ -51,7 +51,9 @@
     </p>
   </div>
   <div *ngIf="gamehistory">
-    <p>{{getFilteredLoadedGames().length}} games loaded</p>
+    <p>{{gamehistory.length}} games total available</p>
+    <p>{{getFilteredGames().length}} filtered games</p>
+    <p>{{getFilteredLoadedGames().length}} filtered games loaded</p>
     <player-game-preview *ngFor="let game of gamehistory"
                          class="PlayerGamePreview-container"
                          [game_preview]="game"
