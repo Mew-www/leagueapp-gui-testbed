@@ -31,6 +31,9 @@
   </p>
   <div *ngIf="game_preview.game_details && details_toggled"
        class="GamePreview__details-container">
+    <champion-ban-icon *ngFor="let ban of game_preview.game_details.teams.ally.bans"
+                       [champion]="ban.champion" [title]="'Ally banned this'">
+    </champion-ban-icon>
     <pre>{{game_preview.game_details | json}}</pre>
   </div>
 </div>

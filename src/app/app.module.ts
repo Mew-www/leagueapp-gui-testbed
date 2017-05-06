@@ -21,6 +21,7 @@ import { PlayerChampionMasteryComponent } from './subcomponents/profiling/subcom
 import { EmphasiseThousandsPipe } from './pipes/emphasise-thousands.pipe';
 import { PlayerGamePreviewComponent } from './subcomponents/profiling/subcomponents/statistics/subcomponents/player-game-preview/player-game-preview.component';
 import { StringifyGameTypePipe } from './pipes/stringify-game-type.pipe';
+import { ChampionBanIconComponent } from './subcommoncomponents/champion-ban-icon/champion-ban-icon.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { StringifyGameTypePipe } from './pipes/stringify-game-type.pipe';
     PlayerChampionMasteryComponent,
     EmphasiseThousandsPipe,
     PlayerGamePreviewComponent,
-    StringifyGameTypePipe
+    StringifyGameTypePipe,
+    ChampionBanIconComponent
   ],
   imports: [
     BrowserModule,
