@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {PreferencesService} from "../../services/preferences.service";
+import {TranslatorService} from "../../services/translator.service";
 
 @Component({
   selector: 'app-setup',
@@ -15,7 +16,8 @@ export class SetupComponent implements OnInit {
   private current_language_code = null;
   private current_region = null;
 
-  constructor(private preferencesService: PreferencesService) { }
+  constructor(private preferencesService: PreferencesService,
+              private translator: TranslatorService) { }
 
   public changeLanguage(new_language_code) {
     this.preferencesService.preferences = {'language_code': new_language_code};
@@ -23,8 +25,16 @@ export class SetupComponent implements OnInit {
   }
 
   public changeRegion(new_region) {
-    this.preferencesService.preferences = {'region': new_region};
-    console.log("Setup changed region to " + new_region);
+    if (this.current_region === null) {
+      this.preferencesService.preferences = {'region': new_region};
+      console.log("Setup changed region to " + new_region);
+    } else {
+      let sure = window.confirm(this.translator.getTranslation('are_you_sure_to_change_region'));
+      if (sure) {
+        this.preferencesService.preferences = {'region': new_region};
+        console.log("Setup changed region to " + new_region);
+      }
+    }
   }
 
   ngOnInit() {

@@ -3,6 +3,7 @@ import {Summoner} from "../../models/summoner";
 import {TranslatorService} from "../../services/translator.service";
 import {Champion} from "../../models/champion";
 import {ApiRoutes} from "../../constants/api-routes";
+import {PreferencesService} from "../../services/preferences.service";
 
 @Component({
   selector: 'profiling',
@@ -15,15 +16,26 @@ export class ProfilingComponent implements OnInit {
   @Input() items_metadata;
   private selected_summoner: Summoner = null;
   private gettext: Function;
+  private current_region;
 
-  constructor(private translator: TranslatorService) { }
+  constructor(private translator: TranslatorService,
+              private preferencesService: PreferencesService) {
+    this.gettext = this.translator.getTranslation;
+  }
 
   public handleSummonerChanged(new_selected_summoner) {
     this.selected_summoner = new_selected_summoner;
   }
 
   ngOnInit() {
-    this.gettext = this.translator.getTranslation;
+    this.current_region = this.preferencesService['region']; // Expected to be set before init (see: Setup -component)
+    this.preferencesService.preferences$
+      .subscribe(new_prefs => {
+        if (new_prefs.hasOwnProperty('region') && new_prefs.region !== this.current_region) {
+          this.current_region = new_prefs.region;
+          this.selected_summoner = null;
+        }
+      });
   }
 
 }

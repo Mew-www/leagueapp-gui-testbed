@@ -46,8 +46,10 @@ export class GameApiService {
 
   public getHistoricalGame(region, game_id): Observable<ApiResponse<GameRecord, string, Number>> {
     // #1 check if cached
+    console.log("checking if game #"+game_id+" is cached");
     if (region in this._cached_historic_games && game_id in this._cached_historic_games[region]) {
-      return Observable.of(this._cached_historic_games[region][game_id]);
+      console.log("found - returning game #"+game_id);
+      return Observable.of(new ApiResponseSuccess(this._cached_historic_games[region][game_id]));
     }
     // #2 check if already requested
     if (region in this._historic_game_requests && game_id in this._historic_game_requests[region]) {

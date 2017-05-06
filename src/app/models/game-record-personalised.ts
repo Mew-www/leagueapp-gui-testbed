@@ -10,7 +10,7 @@ export class GameRecordPersonalised extends GameRecord {
   public readonly league_season: string;
   public readonly teams;
 
-  constructor(game_json, looked_up_summoner_id, champions_list: Array<Champion>) {
+  constructor(game_json, looked_up_summoner: Summoner, champions_list: Array<Champion>) {
     super(game_json);
 
     // All of the following ASSUMES the JSON structure is like so
@@ -144,8 +144,8 @@ export class GameRecordPersonalised extends GameRecord {
 
     let self_participant_id = null;
     let player_map = game_json.participantIdentities.reduce((mapping, p) => {
-      mapping[p.participantId] = new Summoner(p.player.summonerId, p.player.summonerName, p.player.profileIcon);
-      if (p.player.summonerId === looked_up_summoner_id) {
+      mapping[p.participantId] = new Summoner(looked_up_summoner.region, p.player.summonerId, p.player.summonerName, p.player.profileIcon);
+      if (p.player.summonerId === looked_up_summoner.id) {
         self_participant_id = p.participantId;
       }
       return mapping;

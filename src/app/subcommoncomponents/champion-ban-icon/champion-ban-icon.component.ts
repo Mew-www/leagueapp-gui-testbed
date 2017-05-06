@@ -10,7 +10,6 @@ export class ChampionBanIconComponent implements OnInit {
 
   @Input() size = "50"; // px
   @Input() champion: Champion;
-  @Input() title: string = "";
   constructor() { }
 
   ngOnInit() {

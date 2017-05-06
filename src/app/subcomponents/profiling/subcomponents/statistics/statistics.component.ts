@@ -2,7 +2,6 @@ import {
   AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChildren
 } from '@angular/core';
 import {Summoner} from "../../../../models/summoner";
-import {PreferencesService} from "../../../../services/preferences.service";
 import {PlayerApiService} from "../../../../services/player-api.service";
 import {GameType} from "../../../../enums/game-type";
 import {ResType} from "../../../../enums/api-response-type";
@@ -32,7 +31,8 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
   private gamehistory_error_details = "";
   private autoload_these_games = [];
 
-  private masterypoints: Array<Mastery> = null;
+  private masterypoints: Array<Mastery> = null
+  private masterypoints_toggled = true;
   private masterypoints_error_text_key = "";
   private masterypoints_error_details = "";
 
@@ -50,8 +50,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
   private scrolling_masteries_right_available = false;
   private scrolling_masteries_left_available = false;
 
-  constructor(private preferences_service: PreferencesService,
-              private player_api: PlayerApiService,
+  constructor(private player_api: PlayerApiService,
               private translator: TranslatorService,
               private changeDetector: ChangeDetectorRef) {
     this.gettext = this.translator.getTranslation;
@@ -134,6 +133,9 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
     console.log(nonVisibleMasteriesToLeft.length + " non-visible Masteries to the LEFT");
   }
 
+  private onClickToggleMasteries() {
+    this.masterypoints_toggled = !this.masterypoints_toggled;
+  }
   private onClickMasteriesGotoRight(scroller) {
     // If the 1s scrolling timeout still exists, cancel scrolling immediately
     if (this.scrolling_masteries) {
@@ -285,7 +287,7 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
         this.ongoing_request.unsubscribe();
       }
 
-      let region = this.preferences_service.preferences['region'];
+      let region = this.summoner.region;
       let summoner_id = this.summoner.id;
       this.ongoing_request = Observable.forkJoin([
         this.player_api.getListOfRankedGamesJson(region, summoner_id, GameType.SOLO_AND_FLEXQUEUE),

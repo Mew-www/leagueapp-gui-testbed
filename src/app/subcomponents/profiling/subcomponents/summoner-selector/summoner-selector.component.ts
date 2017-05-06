@@ -1,7 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Summoner} from "../../../../models/summoner";
 import {PlayerApiService} from "../../../../services/player-api.service";
-import {PreferencesService} from "../../../../services/preferences.service";
 import {ResType} from "../../../../enums/api-response-type";
 import {TranslatorService} from "../../../../services/translator.service";
 
@@ -13,18 +12,19 @@ import {TranslatorService} from "../../../../services/translator.service";
 export class SummonerSelectorComponent implements OnInit {
 
   @Output() selectedSummoner = new EventEmitter<Summoner>();
+  @Input() region;
+  private search_term = "";
   private search_in_progress = false;
   private error_text_key = "";
   private error_details = "";
   private gettext: Function;
 
-  constructor(private preferences_service: PreferencesService,
-              private player_api: PlayerApiService,
+  constructor(private player_api: PlayerApiService,
               private translator: TranslatorService) {
     this.gettext = this.translator.getTranslation;
   }
 
-  private searchSummoner(name) {
+  private searchSummoner() {
     if (this.search_in_progress) {
       return;
     }
@@ -33,24 +33,28 @@ export class SummonerSelectorComponent implements OnInit {
     this.error_text_key = "";
     this.error_details = "";
 
-    this.player_api.getSummonerByName(this.preferences_service.preferences['region'], name)
+    this.player_api.getSummonerByName(this.region, this.search_term)
       .subscribe(api_res => {
         switch (api_res.type) {
           case ResType.NOT_FOUND:
             this.error_text_key = "summoner_not_found";
+            // Leave search_term to remind what went wrong
             break;
 
           case ResType.TRY_LATER:
             this.error_text_key = "try_again_in_a_minute";
+            // No point in clearing search_term
             break;
 
           case ResType.ERROR:
             this.error_text_key = "internal_server_error";
             this.error_details = api_res.error;
+            // No point in clearing search_term
             break;
 
           case ResType.SUCCESS:
             this.selectedSummoner.emit(api_res.data);
+            this.search_term = "";
             break;
         }
         this.search_in_progress = false;

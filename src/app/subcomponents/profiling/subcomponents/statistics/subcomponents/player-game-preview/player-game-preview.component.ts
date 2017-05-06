@@ -5,7 +5,6 @@ import {GameRecordPersonalised} from "../../../../../../models/game-record-perso
 import {GameApiService} from "../../../../../../services/game-api.service";
 import {Summoner} from "../../../../../../models/summoner";
 import {Subscription} from "rxjs/Subscription";
-import {PreferencesService} from "../../../../../../services/preferences.service";
 import {ResType} from "../../../../../../enums/api-response-type";
 import {Champion} from "../../../../../../models/champion";
 import {GameRecord} from "../../../../../../models/game-record";
@@ -27,8 +26,7 @@ export class PlayerGamePreviewComponent implements OnInit {
   private gettext: Function;
 
   constructor(private translator: TranslatorService,
-              private game_api: GameApiService,
-              private preferencesService: PreferencesService) {
+              private game_api: GameApiService) {
     this.gettext = this.translator.getTranslation;
   }
 
@@ -41,7 +39,7 @@ export class PlayerGamePreviewComponent implements OnInit {
       return;
     }
     this.load_error = "";
-    let region = this.preferencesService.preferences['region'];
+    let region = this.summoner.region;
     let game_id = this.game_preview.game_id;
     this.ongoing_request = this.game_api.getHistoricalGame(region, game_id)
       .subscribe(api_res => {
@@ -49,7 +47,7 @@ export class PlayerGamePreviewComponent implements OnInit {
           case ResType.SUCCESS:
             this.game_preview.game_details = new GameRecordPersonalised(
               (<GameRecord> api_res.data).raw_origin,
-              this.summoner.id,
+              this.summoner,
               this.champions_metadata
             );
             break;
@@ -104,7 +102,7 @@ export class PlayerGamePreviewComponent implements OnInit {
 
   ngOnInit() {
     if (this.auto_start_loading_details) {
-      let region = this.preferencesService.preferences['region'];
+      let region = this.summoner.region;
       let game_id = this.game_preview.game_id;
       this.ongoing_request = this.game_api.getHistoricalGame(region, game_id)
         .subscribe(api_res => {
@@ -112,7 +110,7 @@ export class PlayerGamePreviewComponent implements OnInit {
             case ResType.SUCCESS:
               this.game_preview.game_details = new GameRecordPersonalised(
                 (<GameRecord> api_res.data).raw_origin,
-                this.summoner.id,
+                this.summoner,
                 this.champions_metadata
               );
               break;

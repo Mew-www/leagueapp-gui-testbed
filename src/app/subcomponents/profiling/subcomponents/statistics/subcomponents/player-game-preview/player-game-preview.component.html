@@ -36,13 +36,13 @@
     Ally bans {{game_preview.game_details.teams.ally.bans[0].banTurn == 1 ? "(first ban)":""}}:
     <champion-ban-icon *ngFor="let ban of game_preview.game_details.teams.ally.bans"
                        [champion]="ban.champion"
-                       [title]="ban.champion.name">
+                       title="{{ban.champion.name}}">
     </champion-ban-icon>
     <br/>
     Enemy bans {{game_preview.game_details.teams.enemy.bans[0].banTurn == 1 ? "(first ban)":""}}:
     <champion-ban-icon *ngFor="let ban of game_preview.game_details.teams.enemy.bans"
                        [champion]="ban.champion"
-                       [title]="ban.champion.name">
+                       title="{{ban.champion.name}}">
     </champion-ban-icon>
     <pre>{{game_preview.game_details | json}}</pre>
   </div>

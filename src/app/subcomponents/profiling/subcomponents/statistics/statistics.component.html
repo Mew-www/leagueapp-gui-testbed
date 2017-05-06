@@ -14,7 +14,14 @@
     {{gettext(rankedwinrate_error_text_key) + (rankedwinrate_error_details ? " ("+rankedwinrate_error_details+")" : "")}}
     {{rankedwinrate_error_details}}
   </p>
-  <div *ngIf="masterypoints" class="MasteryScrollerContainer">
+  <p *ngIf="masterypoints" class="Masteries-header">
+    <span class="Masteries-header__text">Champion masteries</span>
+    <button (click)="onClickToggleMasteries()">
+      {{masterypoints_toggled ? gettext('minimize') : gettext('show')}}
+    </button>
+  </p>
+  <div *ngIf="masterypoints && masterypoints_toggled"
+       class="MasteryScrollerContainer">
     <div #lazy_mastery_scroller
          class="PlayerChampionMasteryScroller"
          (scroll)="onMasteriesScrolled($event)">

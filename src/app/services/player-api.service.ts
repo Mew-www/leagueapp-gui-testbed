@@ -19,7 +19,7 @@ export class PlayerApiService {
     return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_NAME_URI(region, name))
       .map(res => {
         let summoner_json = res.json();
-        return new ApiResponseSuccess(new Summoner(summoner_json['id'], summoner_json['name'], summoner_json['icon']));
+        return new ApiResponseSuccess(new Summoner(region, summoner_json['id'], summoner_json['name'], summoner_json['icon']));
       }).catch(error_res => {
         switch (error_res.status) {
 
@@ -42,7 +42,7 @@ export class PlayerApiService {
     return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_SUMMID_URI(region, summoner_id))
       .map(res => {
         let summoner_json = res.json();
-        return new ApiResponseSuccess(new Summoner(summoner_json['id'], summoner_json['name'], summoner_json['icon']));
+        return new ApiResponseSuccess(new Summoner(region, summoner_json['id'], summoner_json['name'], summoner_json['icon']));
       }).catch(error_res => {
         switch (error_res.status) {
 

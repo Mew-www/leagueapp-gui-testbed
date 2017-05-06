@@ -1,0 +1,36 @@
+:host {
+  display: inline-block;
+}
+
+.clearfix { &:after { content: " "; display: table; clear: both; } }
+.float-left { float: left; }
+
+.Summoner {
+
+  /* First half */
+  &__icon-container {
+    width: 50px;
+  }
+  &__icon {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+  }
+
+  /* Second half */
+  &__details {
+  }
+  &__name {
+    margin: 0;
+    padding: 0;
+    margin-top: 6px;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+  }
+  &__id {
+    margin: 0;
+    padding: 0;
+    margin-left: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+}

@@ -4,6 +4,7 @@ export class i18n {
     'en': {
       'supported_regions': "Supported regions:",
       'alternative_languages': "Alternative languages",
+      'are_you_sure_to_change_region': "Are you sure you wish to change active region? (This will clear any processed statistics below)",
       'summoner_s_full_name': "Summoner's full name",
       'find': "Find",
       'summoner_not_found': "Summoner with that name wasn't found.",
@@ -29,12 +30,15 @@ export class i18n {
       'click_to_hide_game_details': "Hide details",
       'click_to_show_game_details': "Show details",
       'tokens_acquired': "tokens acquired",
-      'n_required_remaining': "required",
-      'for_level_n': "for level"
+      'n_required_remaining': "more required",
+      'for_level_n': "for level",
+      'minimize': "minimize",
+      'show': "show"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
       'alternative_languages': "Muut kielivaihtoehdot",
+      'are_you_sure_to_change_region': "Tahdotko varmasti vaihtaa sovelluksen Regionin? (Tu\u00e4m\u00e4 tyhjent\u00e4\u00e4 mahdolliset allaolevat prosessoidut statistiikat)",
       'summoner_s_full_name': "Summonerin kokonimi",
       'find': "Hae",
       'summoner_not_found': "Hakemaasi summoneria ei l\u00f6ytynyt.",
@@ -61,7 +65,9 @@ export class i18n {
       'click_to_show_game_details': "N\u00e4yt\u00e4 lis\u00e4tiedot",
       'tokens_acquired': "tokenia ansaittu",
       'n_required_remaining': "j\u00e4ljell\u00e4",
-      'for_level_n': "tasoon"
+      'for_level_n': "tasoon",
+      'minimize': "pienenn\u00e4",
+      'show': "n\u00e4yt\u00e4"
     }
   }
 

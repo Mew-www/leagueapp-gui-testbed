@@ -3,6 +3,17 @@ $mastery-5-color: #B12F19;
 $mastery-6-color: #B22CB6;
 $mastery-7-color: #21ADA6;
 
+.Masteries-header {
+  margin: 0;
+  margin-bottom: 0px;
+  padding: 0;
+  font-size: 20px;
+
+  &__text {
+    text-decoration: underline;
+  }
+}
+
 .PlayerChampionMasteryScroller {
   overflow-x: auto;
   white-space: nowrap;
