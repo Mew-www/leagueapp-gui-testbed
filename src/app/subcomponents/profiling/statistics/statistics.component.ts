@@ -1,16 +1,16 @@
 import {
   AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChildren
 } from '@angular/core';
-import {Summoner} from "../../../../models/summoner";
-import {PlayerApiService} from "../../../../services/player-api.service";
-import {GameType} from "../../../../enums/game-type";
-import {ResType} from "../../../../enums/api-response-type";
+import {Summoner} from "../../../models/summoner";
+import {PlayerApiService} from "../../../services/player-api.service";
+import {GameType} from "../../../enums/game-type";
+import {ResType} from "../../../enums/api-response-type";
 import {Subscription} from "rxjs/Subscription";
-import {TranslatorService} from "../../../../services/translator.service";
+import {TranslatorService} from "../../../services/translator.service";
 import {Observable} from "rxjs/Observable";
-import {Champion} from "../../../../models/champion";
-import {Mastery} from "../../../../models/mastery";
-import {GamePreview} from "../../../../models/game-preview";
+import {Champion} from "../../../models/champion";
+import {Mastery} from "../../../models/mastery";
+import {GamePreview} from "../../../models/game-preview";
 
 @Component({
   selector: 'statistics',

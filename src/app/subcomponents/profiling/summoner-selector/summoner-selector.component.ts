@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Summoner} from "../../../../models/summoner";
-import {PlayerApiService} from "../../../../services/player-api.service";
-import {ResType} from "../../../../enums/api-response-type";
-import {TranslatorService} from "../../../../services/translator.service";
+import {Summoner} from "../../../models/summoner";
+import {PlayerApiService} from "../../../services/player-api.service";
+import {ResType} from "../../../enums/api-response-type";
+import {TranslatorService} from "../../../services/translator.service";
 
 @Component({
   selector: 'app-summoner-selector',

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Settings} from "../../../../constants/settings";
-import {TranslatorService} from "../../../../services/translator.service";
+import {Settings} from "../../../constants/settings";
+import {TranslatorService} from "../../../services/translator.service";
 
 @Component({
   selector: 'app-region-selector',

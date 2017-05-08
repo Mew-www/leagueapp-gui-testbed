@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GamePreview} from "../../../../../../models/game-preview";
-import {TranslatorService} from "../../../../../../services/translator.service";
-import {GameRecordPersonalised} from "../../../../../../models/game-record-personalised";
-import {GameApiService} from "../../../../../../services/game-api.service";
-import {Summoner} from "../../../../../../models/summoner";
+import {GamePreview} from "../../../../models/game-preview";
+import {TranslatorService} from "../../../../services/translator.service";
+import {GameRecordPersonalised} from "../../../../models/game-record-personalised";
+import {GameApiService} from "../../../../services/game-api.service";
+import {Summoner} from "../../../../models/summoner";
 import {Subscription} from "rxjs/Subscription";
-import {ResType} from "../../../../../../enums/api-response-type";
-import {Champion} from "../../../../../../models/champion";
-import {GameRecord} from "../../../../../../models/game-record";
+import {ResType} from "../../../../enums/api-response-type";
+import {Champion} from "../../../../models/champion";
+import {GameRecord} from "../../../../models/game-record";
 
 @Component({
   selector: 'player-game-preview',

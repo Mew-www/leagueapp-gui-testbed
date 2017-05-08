@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {i18n} from "../../../../constants/i18n";
-import {TranslatorService} from "../../../../services/translator.service";
+import {i18n} from "../../../constants/i18n";
+import {TranslatorService} from "../../../services/translator.service";
 
 @Component({
   selector: 'app-language-selector',

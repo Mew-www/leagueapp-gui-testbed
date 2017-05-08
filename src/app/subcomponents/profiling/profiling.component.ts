@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Summoner} from "../../models/summoner";
 import {TranslatorService} from "../../services/translator.service";
 import {Champion} from "../../models/champion";
-import {ApiRoutes} from "../../constants/api-routes";
 import {PreferencesService} from "../../services/preferences.service";
 
 @Component({
