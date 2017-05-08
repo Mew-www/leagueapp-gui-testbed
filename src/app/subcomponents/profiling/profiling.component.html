@@ -1,7 +1,8 @@
 <div class="Profiling">
-  <app-summoner-selector class="Profiling__summoner-selector-container"
-                         [region]="current_region"
-                         (selectedSummoner)="handleSummonerChanged($event)">
+  <app-summoner-selector
+      class="Profiling__summoner-selector-container"
+      [region]="current_region"
+      (selectedSummoner)="handleSummonerChanged($event)">
   </app-summoner-selector>
   <div *ngIf="selected_summoner">
     <summoner

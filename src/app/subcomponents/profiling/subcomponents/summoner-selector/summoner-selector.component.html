@@ -1,17 +1,22 @@
 <div class="SummonerSelector">
-  <input class="SummonerSelector__name-input"
-         [(ngModel)]="search_term"
-         (keyup.enter)="searchSummoner()"
-         type="text"
-         [disabled]="search_in_progress"
-         placeholder="{{gettext('summoner_s_full_name')}}"
-  />
-  <button class="SummonerSelector__search-btn"
-          (click)="searchSummoner()"
-          [disabled]="search_in_progress">
-    {{gettext("find")}}
-  </button>
-  <p class="SummonerSelector__error-text">
-    {{error_text_key ? (gettext(error_text_key) + (error_details ? " ("+error_details+")" : "")) : ""}}
-  </p>
+  <div class="SummonerSelector__search">
+    <input class="SummonerSelector__search-name-input"
+           [(ngModel)]="search_term"
+           (keyup.enter)="searchSummoner()"
+           type="text"
+           [disabled]="search_in_progress"
+           placeholder="{{gettext('summoner_s_full_name')}}"
+    />
+    <button class="SummonerSelector__search-btn"
+            (click)="searchSummoner()"
+            [disabled]="search_in_progress">
+      {{gettext("find")}}
+    </button>
+    <p class="SummonerSelector__search-error-text">
+      {{error_text_key ? (gettext(error_text_key) + (error_details ? " ("+error_details+")" : "")) : ""}}
+    </p>
+  </div>
+  <div class="SummonerSelector__history">
+
+  </div>
 </div>

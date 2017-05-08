@@ -1,5 +1,10 @@
 .SummonerSelector {
-  &__name-input {
+
+  /* First half */
+  &__search {
+
+  }
+  &__search-name-input {
     font-family: 'Roboto Mono', monospace;
     height: 24px;
     padding-left: 12px;
@@ -29,11 +34,14 @@
     font-family: 'Roboto', 'sans-serif';
     height: 30px;
   }
-  &__error-text {
+  &__search-error-text {
     margin: 0;
     margin-left: 1px;
     padding: 0;
     font-family: 'Roboto Condensed', 'sans-serif';
     color: #d10000;
   }
+
+  /* Second half */
+
 }
