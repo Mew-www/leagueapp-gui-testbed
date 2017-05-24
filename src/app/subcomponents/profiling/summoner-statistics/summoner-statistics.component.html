@@ -10,10 +10,6 @@
     {{gettext(masterypoints_error_text_key) + (masterypoints_error_details ? " ("+masterypoints_error_details+")" : "")}}
     {{masterypoints_error_details}}
   </p>
-  <p *ngIf="rankedwinrate_error_text_key">
-    {{gettext(rankedwinrate_error_text_key) + (rankedwinrate_error_details ? " ("+rankedwinrate_error_details+")" : "")}}
-    {{rankedwinrate_error_details}}
-  </p>
   <p *ngIf="masterypoints" class="Masteries-header">
     <span class="Masteries-header__text">Champion masteries</span>
     <button (click)="onClickToggleMasteries()">
@@ -25,13 +21,13 @@
     <div #lazy_mastery_scroller
          class="PlayerChampionMasteryScroller"
          (scroll)="onMasteriesScrolled($event)">
-      <player-champion-mastery *ngFor="let mastery of masterypoints"
+      <summoner-champion-mastery *ngFor="let mastery of masterypoints"
                                class="PlayerChampionMastery-container"
                                [class.PlayerChampionMastery-container--level5]="mastery.level == 5"
                                [class.PlayerChampionMastery-container--level6]="mastery.level == 6"
                                [class.PlayerChampionMastery-container--level7]="mastery.level == 7"
                                [mastery]="mastery">
-      </player-champion-mastery>
+      </summoner-champion-mastery>
     </div>
     <div *ngIf="scrolling_masteries_left_available"
          class="arrow-left"
@@ -43,19 +39,6 @@
          title="{{gettext('scroll_next_masteries')}}"
          (click)="onClickMasteriesGotoRight(lazy_mastery_scroller)">
     </div>
-  </div>
-  <div *ngIf="rankedwinrate">
-    <p *ngFor="let queue of rankedwinrate">
-      Season {{queue.season}} {{queue.queue_type | queuetypeDescription}}:
-      <span *ngIf="queue.wins+queue.losses > 0">
-        {{queue.wins}} {{gettext("n_of_wins")}},
-        {{queue.losses}} {{gettext("n_of_losses")}}
-        ({{this.Math.round((queue.wins/(queue.losses+queue.wins))*100)}}% winrate)
-      </span>
-      <span *ngIf="queue.wins+queue.losses === 0">
-        {{gettext("no_games_played")}}
-      </span>
-    </p>
   </div>
   <div *ngIf="gamehistory">
     <p>{{gamehistory.length}} games total available</p>

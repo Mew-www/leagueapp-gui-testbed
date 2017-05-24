@@ -13,11 +13,11 @@ import {Mastery} from "../../../models/mastery";
 import {GamePreview} from "../../../models/game-preview";
 
 @Component({
-  selector: 'statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.scss']
+  selector: 'summoner-statistics',
+  templateUrl: './summoner-statistics.component.html',
+  styleUrls: ['./summoner-statistics.component.scss']
 })
-export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
+export class SummonerStatisticsComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() champions_metadata: Array<Champion>;
   @Input() summoner: Summoner;
@@ -31,14 +31,10 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
   private gamehistory_error_details = "";
   private autoload_these_games = [];
 
-  private masterypoints: Array<Mastery> = null
+  private masterypoints: Array<Mastery> = null;
   private masterypoints_toggled = true;
   private masterypoints_error_text_key = "";
   private masterypoints_error_details = "";
-
-  private rankedwinrate = null;
-  private rankedwinrate_error_text_key = "";
-  private rankedwinrate_error_details = "";
 
   private Math;
   private gettext: Function;
@@ -248,26 +244,6 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
         break;
     }
   }
-  private _processRankedstatsResponse(api_res) {
-    switch (api_res.type) {
-      case ResType.SUCCESS:
-        this.rankedwinrate = api_res.data;
-        break;
-
-      case ResType.ERROR:
-        this.rankedwinrate_error_text_key = "internal_server_error";
-        this.rankedwinrate_error_details = api_res.error;
-        break;
-
-      case ResType.NOT_FOUND:
-        this.rankedwinrate_error_text_key = "gamehistory_not_found";
-        break;
-
-      case ResType.TRY_LATER:
-        this.rankedwinrate_error_text_key = "try_again_in_a_minute";
-        break;
-    }
-  }
 
   ngOnChanges(changes) {
     // If [summoner] changed
@@ -278,9 +254,6 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
       this.masterypoints = null;
       this.masterypoints_error_text_key = "";
       this.masterypoints_error_details = "";
-      this.rankedwinrate = null;
-      this.rankedwinrate_error_text_key = "";
-      this.rankedwinrate_error_details = "";
       this.loading = true;
 
       if (this.ongoing_request) {
@@ -288,31 +261,27 @@ export class StatisticsComponent implements OnInit, OnChanges, AfterViewInit {
       }
 
       let region = this.summoner.region;
+      let account_id = this.summoner.account_id;
       let summoner_id = this.summoner.id;
       this.ongoing_request = Observable.forkJoin([
-        this.player_api.getListOfRankedGamesJson(region, summoner_id, GameType.SOLO_AND_FLEXQUEUE),
-        this.player_api.getMasteryPointCountsJson(region, summoner_id),
-        this.player_api.getRankedWinrate(region, summoner_id)
+        this.player_api.getListOfRankedGamesJson(region, account_id, GameType.SOLO_AND_FLEXQUEUE),
+        this.player_api.getMasteryPointCountsJson(region, summoner_id)
       ])
         .subscribe(api_responses => {
           this._processGamehistoryJsonResponse(api_responses[0]);
           this._processMasterypointsJsonResponse(api_responses[1]);
-          this._processRankedstatsResponse(api_responses[2]);
 
           this.loading = false;
         });
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.lazy_scroller_query.changes
       .subscribe((matching_queried_components: QueryList<ElementRef>) => {
         if (matching_queried_components.length > 0) {
-          // Kek
-          console.log("A wild scroller appeared!");
           // Initialize new scroller here as it was successfully queried
           this.masteryscroller = matching_queried_components.first;
           let scroller = this.masteryscroller.nativeElement;

@@ -1,13 +1,14 @@
 import {GameRecord} from "./game-record";
 import {Summoner} from "./summoner";
 import {Champion} from "./champion";
+import {Season} from "../enums/rito/season";
 
 export class GameRecordPersonalised extends GameRecord {
 
   public readonly match_start_time: Date;
   public readonly match_duration_seconds: Number;
   public readonly league_version: string;
-  public readonly league_season: string;
+  public readonly league_season: Season;
   public readonly teams;
 
   constructor(game_json, looked_up_summoner: Summoner, champions_list: Array<Champion>) {
@@ -21,7 +22,7 @@ export class GameRecordPersonalised extends GameRecord {
           .filter(t => (get_ally_data ? t.teamId === ally_team_id : t.teamId !== ally_team_id))
           .map(team => {
             return {
-              isWinningTeam: team.winner,
+              isWinningTeam: team.win === "Win",
               gotFirstBlood: team.firstBlood,
               gotFirstTower: team.firstTower,
               gotRiftHerald: team.firstRiftHerald,
@@ -57,6 +58,7 @@ export class GameRecordPersonalised extends GameRecord {
             let pstats = p.stats;
             return {
               summoner: player_map[p.participantId],
+              is_the_target: player_map[p.participantId].id === looked_up_summoner.id,
               border: p.highestAchievedSeasonTier,
               champion: champions_list.filter(c => c.id === p.championId)[0],
               summoner_spell1: p.spell1Id, // TODO SummSpell class
@@ -144,7 +146,7 @@ export class GameRecordPersonalised extends GameRecord {
 
     let self_participant_id = null;
     let player_map = game_json.participantIdentities.reduce((mapping, p) => {
-      mapping[p.participantId] = new Summoner(looked_up_summoner.region, p.player.summonerId, p.player.summonerName, p.player.profileIcon);
+      mapping[p.participantId] = new Summoner(looked_up_summoner.region, p.player.summonerId, p.player.accountId, p.player.summonerName, p.player.profileIcon);
       if (p.player.summonerId === looked_up_summoner.id) {
         self_participant_id = p.participantId;
       }
@@ -152,10 +154,10 @@ export class GameRecordPersonalised extends GameRecord {
     }, {});
     let ally_team_id = game_json.participants.filter(p => p.participantId === self_participant_id)[0].teamId;
 
-    this.match_start_time = new Date(game_json.matchCreation);
-    this.match_duration_seconds = game_json.matchDuration;
-    this.league_version = game_json.matchVersion.split('.').slice(0,2).join('.');
-    this.league_season = game_json.season;
+    this.match_start_time = new Date(game_json.gameCreation);
+    this.match_duration_seconds = game_json.gameDuration;
+    this.league_version = game_json.gameVersion.split('.').slice(0,2).join('.');
+    this.league_season = game_json.seasonId;
     this.teams = {
       ally: parse_teamdata(ally_team_id, true),
       enemy: parse_teamdata(ally_team_id, false)

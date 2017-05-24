@@ -4,11 +4,11 @@ import {Mastery} from "../../../../models/mastery";
 import {Settings} from "../../../../constants/settings";
 
 @Component({
-  selector: 'player-champion-mastery',
-  templateUrl: './player-champion-mastery.component.html',
-  styleUrls: ['./player-champion-mastery.component.scss']
+  selector: 'summoner-champion-mastery',
+  templateUrl: './summoner-champion-mastery.component.html',
+  styleUrls: ['./summoner-champion-mastery.component.scss']
 })
-export class PlayerChampionMasteryComponent implements OnInit {
+export class SummonerChampionMasteryComponent implements OnInit {
 
   @Input() mastery: Mastery;
   private gettext: Function;

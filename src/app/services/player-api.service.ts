@@ -8,7 +8,6 @@ import {
   ApiResponseTryLater
 } from "../helpers/api-response";
 import {GameType} from "../enums/game-type";
-import {Mastery} from "../models/mastery";
 
 @Injectable()
 export class PlayerApiService {
@@ -19,7 +18,7 @@ export class PlayerApiService {
     return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_NAME_URI(region, name))
       .map(res => {
         let summoner_json = res.json();
-        return new ApiResponseSuccess(new Summoner(region, summoner_json['id'], summoner_json['name'], summoner_json['icon']));
+        return new ApiResponseSuccess(new Summoner(region, summoner_json['id'], summoner_json['account'], summoner_json['name'], summoner_json['icon']));
       }).catch(error_res => {
         switch (error_res.status) {
 
@@ -38,11 +37,11 @@ export class PlayerApiService {
         }
       });
   }
-  public getSummonerById(region, summoner_id): Observable<ApiResponse<Summoner, string, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_SUMMID_URI(region, summoner_id))
+  public getSummonerById(region, account_id): Observable<ApiResponse<Summoner, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_BASIC_DATA_BY_ACCOUNTID_URI(region, account_id))
       .map(res => {
         let summoner_json = res.json();
-        return new ApiResponseSuccess(new Summoner(region, summoner_json['id'], summoner_json['name'], summoner_json['icon']));
+        return new ApiResponseSuccess(new Summoner(region, summoner_json['id'], summoner_json['account'], summoner_json['name'], summoner_json['icon']));
       }).catch(error_res => {
         switch (error_res.status) {
 
@@ -61,8 +60,8 @@ export class PlayerApiService {
         }
       });
   }
-  public getListOfRankedGamesJson(region, summoner_id, gametype): Observable<ApiResponse<Object, string, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, summoner_id))
+  public getListOfRankedGamesJson(region, account_id, gametype): Observable<ApiResponse<Object, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, account_id))
       .map(res => {
         let historical_data = res.json();
         let total_existing_records = historical_data['totalGames'];
@@ -71,14 +70,14 @@ export class PlayerApiService {
         }
         let records = historical_data['matches'].map(match => {
           return {
-            match_id: match['matchId'],
+            game_id: match['gameId'],
             timestamp: match['timestamp'],
             chosen_champion_id: match['champion'],
-            game_type: ((type: String) => {
-              switch (type) {
-                case "RANKED_FLEX_SR":
+            game_type: ((queue_const: number) => {
+              switch (queue_const) {
+                case 440:
                   return GameType.FLEX_QUEUE;
-                case "TEAM_BUILDER_RANKED_SOLO":
+                case 420:
                   return GameType.SOLO_QUEUE;
                 default:
                   return GameType.UNKNOWN_UNDEFINED;
@@ -110,26 +109,6 @@ export class PlayerApiService {
       .map(res => {
         let masteries_json = res.json();
         return new ApiResponseSuccess(masteries_json);
-      }).catch(error_res => {
-        switch (error_res.status) {
-
-          case 500:
-            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
-              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
-            } else {
-              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
-            }
-
-          default:
-            return Observable.of(new ApiResponseError(error_res.text()));
-        }
-      });
-  }
-  public getRankedWinrate(region, summoner_id): Observable<ApiResponse<Object, string, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_RANKEDSTATS_URI(region, summoner_id))
-      .map(res => {
-        let stats_json = res.json();
-        return new ApiResponseSuccess(stats_json);
       }).catch(error_res => {
         switch (error_res.status) {
 

@@ -13,19 +13,14 @@ export class ApiRoutes {
       + "?region=" + region
       + "&name=" + name;
   };
-  public static PLAYER_BASIC_DATA_BY_SUMMID_URI = (region, summoner_id) => {
+  public static PLAYER_BASIC_DATA_BY_ACCOUNTID_URI = (region, account_id) => {
     return Settings.API_BASE_URI + "player/basic_data_by_id"
       + "?region=" + region
-      + "&summoner_id=" + summoner_id;
+      + "&account_id=" + account_id;
   };
 
   public static PLAYER_MASTERIES_URI = (region, summoner_id) => {
-    return Settings.API_BASE_URI + "player/masteries"
-      + "?region=" + region
-      + "&summoner_id=" + summoner_id;
-  };
-  public static PLAYER_RANKEDSTATS_URI = (region, summoner_id) => {
-    return Settings.API_BASE_URI + "player/rankedsummary"
+    return Settings.API_BASE_URI + "player/championmasteries"
       + "?region=" + region
       + "&summoner_id=" + summoner_id;
   };
@@ -36,24 +31,24 @@ export class ApiRoutes {
     + "&summoner_id=" + summoner_id;
   };
 
-  public static PLAYER_RANKED_GAME_HISTORY_URI = (game_type: GameType, region, summoner_id) => {
+  public static PLAYER_RANKED_GAME_HISTORY_URI = (game_type: GameType, region, account_id) => {
     switch (game_type) {
       case GameType.FLEX_QUEUE:
         return Settings.API_BASE_URI + "player/history/flex/preview"
           + "?region=" + region
-          + "&summoner_id=" + summoner_id;
+          + "&account_id=" + account_id;
       case GameType.SOLO_QUEUE:
         return Settings.API_BASE_URI + "player/history/solo/preview"
           + "?region=" + region
-          + "&summoner_id=" + summoner_id;
+          + "&account_id=" + account_id;
       case GameType.SOLO_AND_FLEXQUEUE:
         return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
-          + "&summoner_id=" + summoner_id;
+          + "&account_id=" + account_id;
       default:
         return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
-          + "&summoner_id=" + summoner_id;
+          + "&account_id=" + account_id;
     }
   };
 

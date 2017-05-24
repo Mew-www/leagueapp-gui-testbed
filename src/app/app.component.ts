@@ -2,11 +2,6 @@ import { Component } from '@angular/core';
 import {StaticApiService} from "./services/static-api.service";
 import {ResType} from "./enums/api-response-type";
 import {Champion} from "./models/champion";
-import {PlayerApiService} from "./services/player-api.service";
-import {Summoner} from "./models/summoner";
-import {GameType} from "./enums/game-type";
-import {GameApiService} from "./services/game-api.service";
-import {GameRecordPersonalised} from "./models/game-record-personalised";
 import {Observable} from "rxjs/Observable";
 
 @Component({

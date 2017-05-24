@@ -1,0 +1,15 @@
+<div>
+  Ally bans {{details.teams.ally.bans[0].banTurn == 1 ? "(first ban)":""}}:
+  <champion-ban-icon *ngFor="let ban of details.teams.ally.bans"
+                     [champion]="ban.champion"
+                     title="{{ban.champion.name}}">
+  </champion-ban-icon>
+  <br/>
+  Enemy bans {{details.teams.enemy.bans[0].banTurn == 1 ? "(first ban)":""}}:
+  <champion-ban-icon *ngFor="let ban of details.teams.enemy.bans"
+                     [champion]="ban.champion"
+                     title="{{ban.champion.name}}">
+  </champion-ban-icon>
+  <canvas #allyDeathsChart height="200" width="500"></canvas>
+  <canvas #enemyDeathsChart height="200" width="500"></canvas>
+</div>

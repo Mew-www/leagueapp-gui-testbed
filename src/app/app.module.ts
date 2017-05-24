@@ -15,14 +15,15 @@ import { LanguageSelectorComponent } from './subcomponents/setup/language-select
 import { RegionSelectorComponent } from './subcomponents/setup/region-selector/region-selector.component';
 import { ProfilingComponent } from './subcomponents/profiling/profiling.component';
 import { SummonerSelectorComponent } from './subcomponents/profiling/summoner-selector/summoner-selector.component';
-import { StatisticsComponent } from './subcomponents/profiling/statistics/statistics.component';
+import { SummonerStatisticsComponent } from './subcomponents/profiling/summoner-statistics/summoner-statistics.component';
 import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
-import { PlayerChampionMasteryComponent } from './subcomponents/profiling/statistics/player-champion-mastery/player-champion-mastery.component';
+import { SummonerChampionMasteryComponent } from './subcomponents/profiling/summoner-statistics/summoner-champion-mastery/summoner-champion-mastery.component';
 import { EmphasiseThousandsPipe } from './pipes/emphasise-thousands.pipe';
-import { PlayerGamePreviewComponent } from './subcomponents/profiling/statistics/player-game-preview/player-game-preview.component';
+import { PlayerGamePreviewComponent } from './subcomponents/profiling/summoner-statistics/player-game-preview/player-game-preview.component';
 import { StringifyGameTypePipe } from './pipes/stringify-game-type.pipe';
 import { ChampionBanIconComponent } from './genericcomponents/champion-ban-icon/champion-ban-icon.component';
 import { SummonerComponent } from './genericcomponents/summoner/summoner.component';
+import { PlayerGameDetailsComponent } from './subcomponents/profiling/summoner-statistics/player-game-preview/player-game-details/player-game-details.component';
 
 @NgModule({
   declarations: [
@@ -31,11 +32,11 @@ import { SummonerComponent } from './genericcomponents/summoner/summoner.compone
     ProfilingComponent,
     SummonerSelectorComponent,
     SummonerComponent,
-    StatisticsComponent,
-    PlayerChampionMasteryComponent,
+    SummonerStatisticsComponent,
+    SummonerChampionMasteryComponent,
     PlayerGamePreviewComponent,
     ChampionBanIconComponent,
-    QueuetypeDescriptionPipe, EmphasiseThousandsPipe, StringifyGameTypePipe
+    QueuetypeDescriptionPipe, EmphasiseThousandsPipe, StringifyGameTypePipe, PlayerGameDetailsComponent
   ],
   imports: [
     BrowserModule,
