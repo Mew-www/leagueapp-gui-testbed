@@ -16,7 +16,7 @@ export class GameRecordPersonalised extends GameRecord {
 
     // All of the following ASSUMES the JSON structure is like so
 
-    function parse_teamdata(ally_team_id, get_ally_data: boolean) {
+    function parse_teamdata(ally_team_id, get_ally_data: boolean, player_map) {
       return {
         stats: game_json.teams
           .filter(t => (get_ally_data ? t.teamId === ally_team_id : t.teamId !== ally_team_id))
@@ -146,9 +146,11 @@ export class GameRecordPersonalised extends GameRecord {
 
     let self_participant_id = null;
     let player_map = game_json.participantIdentities.reduce((mapping, p) => {
-      mapping[p.participantId] = new Summoner(looked_up_summoner.region, p.player.summonerId, p.player.accountId, p.player.summonerName, p.player.profileIcon);
       if (p.player.summonerId === looked_up_summoner.id) {
         self_participant_id = p.participantId;
+        mapping[p.participantId] = looked_up_summoner;
+      } else {
+        mapping[p.participantId] = new Summoner(looked_up_summoner.region, p.player.summonerId, p.player.accountId, p.player.summonerName, p.player.profileIcon);
       }
       return mapping;
     }, {});
@@ -159,8 +161,8 @@ export class GameRecordPersonalised extends GameRecord {
     this.league_version = game_json.gameVersion.split('.').slice(0,2).join('.');
     this.league_season = game_json.seasonId;
     this.teams = {
-      ally: parse_teamdata(ally_team_id, true),
-      enemy: parse_teamdata(ally_team_id, false)
+      ally: parse_teamdata(ally_team_id, true, player_map),
+      enemy: parse_teamdata(ally_team_id, false, player_map)
     };
 
   }
