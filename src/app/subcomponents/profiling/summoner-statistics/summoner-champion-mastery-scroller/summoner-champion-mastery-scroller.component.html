@@ -1,0 +1,23 @@
+<div class="MasteryScrollerContainer">
+  <div #lazy_mastery_scroller
+       class="PlayerChampionMasteryScroller"
+       (scroll)="onMasteriesScrolled($event)">
+    <summoner-champion-mastery *ngFor="let mastery of masterypoints"
+                               class="PlayerChampionMastery-container"
+                               [class.PlayerChampionMastery-container--level5]="mastery.level == 5"
+                               [class.PlayerChampionMastery-container--level6]="mastery.level == 6"
+                               [class.PlayerChampionMastery-container--level7]="mastery.level == 7"
+                               [mastery]="mastery">
+    </summoner-champion-mastery>
+  </div>
+  <div *ngIf="scrolling_masteries_left_available"
+       class="arrow-left"
+       title="{{gettext('scroll_prev_masteries')}}"
+       (click)="onClickMasteriesGotoLeft(lazy_mastery_scroller)">
+  </div>
+  <div *ngIf="scrolling_masteries_right_available"
+       class="arrow-right"
+       title="{{gettext('scroll_next_masteries')}}"
+       (click)="onClickMasteriesGotoRight(lazy_mastery_scroller)">
+  </div>
+</div>

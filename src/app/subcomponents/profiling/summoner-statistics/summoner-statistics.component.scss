@@ -1,8 +1,3 @@
-$mastery-default-color: #836B31;
-$mastery-5-color: #B12F19;
-$mastery-6-color: #B22CB6;
-$mastery-7-color: #21ADA6;
-
 .Masteries-header {
   margin: 0;
   margin-bottom: 0px;
@@ -12,96 +7,6 @@ $mastery-7-color: #21ADA6;
 
   &__text {
     text-decoration: underline;
-  }
-}
-
-.PlayerChampionMasteryScroller {
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.MasteryScrollerContainer {
-  position: relative;
-
-  .arrow-right {
-    cursor: pointer;
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    border-right: 15px solid #000;
-    border-bottom: 15px solid #000;
-    transform: rotate(-45deg);
-    position: absolute;
-    top: 45px;
-    right: 30px;
-    opacity: 0;
-    transition: opacity 1s linear, box-shadow 0.5s linear;
-
-    &:hover {
-      box-shadow: 4px 4px 2px 0px blue, 6px 6px 2px 0px cyan;
-    }
-  }
-  &:hover .arrow-right {
-    opacity: 1;
-  }
-  .arrow-left {
-    cursor: pointer;
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    border-left: 15px solid #000;
-    border-bottom: 15px solid #000;
-    transform: rotate(45deg);
-    position: absolute;
-    top: 45px;
-    left: 30px;
-    opacity: 0;
-    transition: opacity 1s linear, box-shadow 0.5s linear;
-    &:hover {
-      box-shadow: -4px 4px 2px 0px blue, -6px 6px 2px 0px cyan;
-    }
-  }
-  &:hover .arrow-left {
-    opacity: 1;
-  }
-}
-
-.PlayerChampionMastery-container {
-  display: inline-block;
-  margin: 4px;
-  padding: 0 4px;
-  border-radius: 4px;
-  border: 4px solid $mastery-default-color;
-  box-shadow:
-          -1px -1px 1px 0px rgba($mastery-default-color,0.45) inset, /* bottom-right outer line */
-          1px 1px 2px 0px black, /*bottom-right outer line*/
-          -1px -1px 1px 0px rgba($mastery-default-color,0.50), /* left-top outer line */
-          1px 1px 2px 0px black inset; /* left-top inner line */
-
-
-  &--level5 {
-    border: 4px solid $mastery-5-color;
-    box-shadow:
-            -1px -1px 1px 0px rgba($mastery-5-color,0.45) inset, /* bottom-right outer line */
-            1px 1px 2px 0px black, /*bottom-right outer line*/
-            -1px -1px 1px 0px rgba($mastery-5-color,0.50), /* left-top outer line */
-            1px 1px 2px 0px black inset; /* left-top inner line */
-  }
-  &--level6 {
-    border: 4px solid $mastery-6-color;
-    box-shadow:
-            -1px -1px 1px 0px rgba($mastery-6-color,0.45) inset, /* bottom-right outer line */
-            1px 1px 2px 0px black, /*bottom-right outer line*/
-            -1px -1px 1px 0px rgba($mastery-6-color,0.50), /* left-top outer line */
-            1px 1px 2px 0px black inset; /* left-top inner line */
-  }
-  &--level7 {
-    border: 4px solid $mastery-7-color;
-    box-shadow:
-            -1px -1px 1px 0px rgba($mastery-7-color,0.45) inset, /* bottom-right outer line */
-            1px 1px 2px 0px black, /*bottom-right outer line*/
-            -1px -1px 1px 0px rgba($mastery-7-color,0.50), /* left-top outer line */
-            1px 1px 2px 0px black inset; /* left-top inner line */
   }
 }
 

@@ -25,6 +25,7 @@ import { ChampionBanIconComponent } from './genericcomponents/champion-ban-icon/
 import { SummonerComponent } from './genericcomponents/summoner/summoner.component';
 import { PlayerGameDetailsComponent } from './subcomponents/profiling/summoner-statistics/player-game-preview/player-game-details/player-game-details.component';
 import { ProfileTypeSelectorComponent } from './subcomponents/profiling/profile-type-selector/profile-type-selector.component';
+import { SummonerChampionMasteryScrollerComponent } from './subcomponents/profiling/summoner-statistics/summoner-champion-mastery-scroller/summoner-champion-mastery-scroller.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { ProfileTypeSelectorComponent } from './subcomponents/profiling/profile-
     SummonerChampionMasteryComponent,
     PlayerGamePreviewComponent,
     ChampionBanIconComponent,
-    QueuetypeDescriptionPipe, EmphasiseThousandsPipe, StringifyGameTypePipe, PlayerGameDetailsComponent, ProfileTypeSelectorComponent
+    QueuetypeDescriptionPipe, EmphasiseThousandsPipe, StringifyGameTypePipe, PlayerGameDetailsComponent, ProfileTypeSelectorComponent, SummonerChampionMasteryScrollerComponent
   ],
   imports: [
     BrowserModule,
