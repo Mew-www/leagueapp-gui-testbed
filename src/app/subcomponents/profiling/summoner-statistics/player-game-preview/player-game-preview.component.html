@@ -1,6 +1,7 @@
 <div class="GamePreview"
-     [class.GamePreview--game-won]="game_preview.game_details && game_preview.game_details.teams.ally.stats.isWinningTeam"
-     [class.GamePreview--game-lost]="game_preview.game_details && !game_preview.game_details.teams.ally.stats.isWinningTeam">
+     [class.GamePreview--game-won]="game_preview.game_details && game_preview.game_details.teams.ally.stats.isWinningTeam === true"
+     [class.GamePreview--game-lost]="game_preview.game_details && game_preview.game_details.teams.ally.stats.isWinningTeam === false"
+     [class.GamePreview--game-remake]="game_preview.game_details && game_preview.game_details.teams.ally.stats.isWinningTeam === null">
   <div class="clearfix">
     <div class="GamePreview__champion-icon-container float-left">
       <img

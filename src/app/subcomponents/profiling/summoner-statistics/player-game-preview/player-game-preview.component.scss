@@ -14,7 +14,9 @@
   &--game-lost {
     background: rgba(80,0,0,0.33);
   }
-
+  &--game-remake {
+    background: rgba(185, 124, 0, 0.33);
+  }
 
   /* First half (icon) */
   &__champion-icon-container {

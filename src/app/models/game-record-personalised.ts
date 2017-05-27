@@ -24,7 +24,7 @@ export class GameRecordPersonalised extends GameRecord {
           .filter(t => (get_ally_data ? t.teamId === ally_team_id : t.teamId !== ally_team_id))
           .map(team => {
             return {
-              isWinningTeam: team.win === "Win",
+              isWinningTeam: game_json.gameDuration > 271 ? team.win === "Win" : null, // null means remake
               gotFirstBlood: team.firstBlood,
               gotFirstTower: team.firstTower,
               gotRiftHerald: team.firstRiftHerald,
