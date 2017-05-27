@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Champion} from "../../models/champion";
+import {Champion} from "../../models/dto/champion";
 
 @Component({
   selector: 'champion-ban-icon',

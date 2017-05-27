@@ -6,7 +6,7 @@ import {
   ApiResponse, ApiResponseError, ApiResponseNotFound, ApiResponseSuccess,
   ApiResponseTryLater
 } from "../helpers/api-response";
-import {GameRecord} from "../models/game-record";
+import {GameRecord} from "../models/dto/game-record";
 
 @Injectable()
 export class GameApiService {

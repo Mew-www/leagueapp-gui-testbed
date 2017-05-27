@@ -62,7 +62,15 @@ export class ApiRoutes {
     return Settings.API_BASE_URI + "static/assets/profile_icons/"+icon_id+".png";
   };
   public static CHAMPION_SQUARE_URI = (champion_ddragon_name) => {
+    if (champion_ddragon_name === "404") {
+      return "404.png"
+    }
     return Settings.API_BASE_URI + "static/assets/champion_squares/"+champion_ddragon_name+".png";
   };
-
+  public static ITEM_SQUARE_URI = (item_ddragon_filename) => {
+    if (item_ddragon_filename === "404") {
+      return "404.png"
+    }
+    return Settings.API_BASE_URI + "static/assets/item_icons/"+item_ddragon_filename;
+  };
 }

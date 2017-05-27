@@ -8,6 +8,7 @@ export class i18n {
       'summoner_s_full_name': "Summoner's full name",
       'find': "Find",
       'summoner_not_found': "Summoner with that name wasn't found.",
+      'summoner_id_not_found': "Summoner with that account id wasn't found.",
       'try_again_in_a_minute': "Too many requests being done right now. Try again in a minute.",
       'internal_server_error': "Server error.",
       'loading_statistics': "Loading summoner-statistics . . .",
@@ -33,7 +34,9 @@ export class i18n {
       'n_required_remaining': "more required",
       'for_level_n': "for level",
       'minimize': "minimize",
-      'show': "show"
+      'show': "show",
+      'historical_searches_title': "Previous searches",
+      'clear_historical_searches': "clear"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -42,6 +45,7 @@ export class i18n {
       'summoner_s_full_name': "Summonerin kokonimi",
       'find': "Hae",
       'summoner_not_found': "Hakemaasi summoneria ei l\u00f6ytynyt.",
+      'summoner_id_not_found': "Hakemaasi summoneria (IDn perusteella) ei l\u00f6ytynyt.",
       'try_again_in_a_minute': "Palvelimelle tulee liikaa pyynt\u00f6j\u00e4. Yrit\u00e4 uudelleen minuutin kuluttua.",
       'internal_server_error': "Palvelinvirhe.",
       'loading_statistics': "Ladataan statistiikkoja . . .",
@@ -67,7 +71,9 @@ export class i18n {
       'n_required_remaining': "j\u00e4ljell\u00e4",
       'for_level_n': "tasoon",
       'minimize': "pienenn\u00e4",
-      'show': "n\u00e4yt\u00e4"
+      'show': "n\u00e4yt\u00e4",
+      'historical_searches_title': "Aiemmat haut",
+      'clear_historical_searches': "tyhjenn\u00e4"
     }
   }
 

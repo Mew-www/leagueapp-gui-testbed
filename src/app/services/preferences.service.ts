@@ -17,19 +17,18 @@ export class PreferencesService {
     }
   }
 
-  // Setter: this.preferences = {language_code: "en"};
-  set preferences(new_preference_keyvals) {
+  // this.setPref('language_code', "en")
+  public setPref = (pref_key, pref_val) => {
     let preferences_object = this.preferences_source.value;
-    for (let key in new_preference_keyvals) {
-      preferences_object[key] = new_preference_keyvals[key];
-    }
+    preferences_object[pref_key] = pref_val;
     window.localStorage.setItem("preferences", JSON.stringify(preferences_object));
     this.preferences_source.next(preferences_object);
-  }
+  };
 
-  // Getter: var prefs = this.preferences;
-  get preferences() {
-    return this.preferences_source.value;
+  // this.getPref('language_code')
+  public getPref(pref_key) {
+    let preferences_object = this.preferences_source.value;
+    return preferences_object.hasOwnProperty(pref_key) ? preferences_object[pref_key] : null;
   }
 
 }

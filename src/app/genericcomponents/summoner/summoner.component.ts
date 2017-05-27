@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Summoner} from "../../models/summoner";
+import {Summoner} from "../../models/dto/summoner";
 
 @Component({
   selector: 'summoner',

@@ -13,26 +13,23 @@ export class SetupComponent implements OnInit {
 
   private initial_preferences_loaded: boolean = false;
   private initialised: boolean                = false;
-  private current_language_code = null;
-  private current_region = null;
+  private current_language_code               = null;
+  private current_region                      = null;
 
   constructor(private preferencesService: PreferencesService,
               private translator: TranslatorService) { }
 
   public changeLanguage(new_language_code) {
-    this.preferencesService.preferences = {'language_code': new_language_code};
-    console.log("Setup changed language to " + new_language_code);
+    this.preferencesService.setPref('language_code', new_language_code);
   }
 
   public changeRegion(new_region) {
     if (this.current_region === null) {
-      this.preferencesService.preferences = {'region': new_region};
-      console.log("Setup changed region to " + new_region);
+      this.preferencesService.setPref('region', new_region);
     } else {
       let sure = window.confirm(this.translator.getTranslation('are_you_sure_to_change_region'));
       if (sure) {
-        this.preferencesService.preferences = {'region': new_region};
-        console.log("Setup changed region to " + new_region);
+        this.preferencesService.setPref('region', new_region);
       }
     }
   }

@@ -1,7 +1,8 @@
-import {GameRecord} from "./game-record";
-import {Summoner} from "./summoner";
-import {Champion} from "./champion";
+import {GameRecord} from "./dto/game-record";
+import {Summoner} from "./dto/summoner";
 import {Season} from "../enums/rito/season";
+import {ChampionsContainer} from "./dto/containers/champions-container";
+import {ItemsContainer} from "./dto/containers/items-container";
 
 export class GameRecordPersonalised extends GameRecord {
 
@@ -11,11 +12,12 @@ export class GameRecordPersonalised extends GameRecord {
   public readonly league_season: Season;
   public readonly teams;
 
-  constructor(game_json, looked_up_summoner: Summoner, champions_list: Array<Champion>) {
+  constructor(game_json, looked_up_summoner: Summoner,
+              champions: ChampionsContainer, items: ItemsContainer) {
+
     super(game_json);
 
-    // All of the following ASSUMES the JSON structure is like so
-
+    // https://developer.riotgames.com/api-methods/#match-v3/GET_getMatch
     function parse_teamdata(ally_team_id, get_ally_data: boolean, player_map) {
       return {
         stats: game_json.teams
@@ -48,7 +50,7 @@ export class GameRecordPersonalised extends GameRecord {
             .sort((a,b)=>a.pickTurn-b.pickTurn)
             .map(ban => {
               return {
-                champion: champions_list.filter(c => c.id === ban.championId)[0],
+                champion: champions.getChampionById(ban.championId),
                 banTurn: ban.pickTurn
               };
             }),
@@ -60,7 +62,7 @@ export class GameRecordPersonalised extends GameRecord {
               summoner: player_map[p.participantId],
               is_the_target: player_map[p.participantId].id === looked_up_summoner.id,
               border: p.highestAchievedSeasonTier,
-              champion: champions_list.filter(c => c.id === p.championId)[0],
+              champion: champions.getChampionById(p.championId),
               summoner_spell1: p.spell1Id, // TODO SummSpell class
               summoner_spell2: p.spell2Id,
               masterypage: p.masteries, // TODO MasteryPage class
@@ -76,13 +78,13 @@ export class GameRecordPersonalised extends GameRecord {
                 },
                 gold_spent: pstats.goldSpent,
                 final_items: [
-                  pstats.item0,
-                  pstats.item1,
-                  pstats.item2,
-                  pstats.item3,
-                  pstats.item4,
-                  pstats.item5,
-                  pstats.item6
+                  items.getItemById(pstats.item0),
+                  items.getItemById(pstats.item1),
+                  items.getItemById(pstats.item2),
+                  items.getItemById(pstats.item3),
+                  items.getItemById(pstats.item4),
+                  items.getItemById(pstats.item5),
+                  items.getItemById(pstats.item6)
                 ],
                 kda: {
                   kills: pstats.kills,

@@ -1,16 +1,17 @@
 import {
   AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, QueryList, ViewChildren
 } from '@angular/core';
-import {Summoner} from "../../../models/summoner";
+import {Summoner} from "../../../models/dto/summoner";
 import {PlayerApiService} from "../../../services/player-api.service";
 import {GameType} from "../../../enums/game-type";
 import {ResType} from "../../../enums/api-response-type";
 import {Subscription} from "rxjs/Subscription";
 import {TranslatorService} from "../../../services/translator.service";
 import {Observable} from "rxjs/Observable";
-import {Champion} from "../../../models/champion";
-import {Mastery} from "../../../models/mastery";
-import {GamePreview} from "../../../models/game-preview";
+import {Championmastery} from "../../../models/dto/championmastery";
+import {GameReference} from "../../../models/dto/game-reference";
+import {ChampionsContainer} from "app/models/dto/containers/champions-container";
+import {ItemsContainer} from "../../../models/dto/containers/items-container";
 
 @Component({
   selector: 'summoner-statistics',
@@ -19,19 +20,20 @@ import {GamePreview} from "../../../models/game-preview";
 })
 export class SummonerStatisticsComponent implements OnInit, OnChanges, AfterViewInit {
 
-  @Input() champions_metadata: Array<Champion>;
+  @Input() champions: ChampionsContainer;
+  @Input() items: ItemsContainer;
   @Input() summoner: Summoner;
   private ongoing_request: Subscription = null;
   private loading = true;
 
-  private gamehistory: Array<GamePreview> = null;
+  private gamehistory: Array<GameReference> = null;
   private gamehistory_filter_queues: Array<GameType> = [];
   private gamehistory_filter_champion_ids: Array<number> = [];
   private gamehistory_error_text_key = "";
   private gamehistory_error_details = "";
   private autoload_these_games = [];
 
-  private masterypoints: Array<Mastery> = null;
+  private masterypoints: Array<Championmastery> = null;
   private masterypoints_toggled = true;
   private masterypoints_error_text_key = "";
   private masterypoints_error_details = "";
@@ -205,7 +207,7 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges, AfterView
   private _processGamehistoryJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
-        this.gamehistory = api_res.data.map(record => new GamePreview(record, this.champions_metadata));
+        this.gamehistory = api_res.data.map(record => new GameReference(record, this.champions));
         this.autoload_these_games = this.gamehistory.slice(0,30).map(g => g.game_id);
         break;
 
@@ -226,7 +228,7 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges, AfterView
   private _processMasterypointsJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
-        this.masterypoints = api_res.data.map(m_json => new Mastery(m_json, this.champions_metadata))
+        this.masterypoints = api_res.data.map(m_json => new Championmastery(m_json, this.champions))
           .sort((a,b) => b.total_points - a.total_points);
         break;
 

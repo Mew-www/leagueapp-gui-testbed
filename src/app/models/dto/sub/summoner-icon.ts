@@ -1,4 +1,4 @@
-import {ApiRoutes} from "../constants/api-routes";
+import {ApiRoutes} from "../../../constants/api-routes";
 
 export class SummonerIcon {
 

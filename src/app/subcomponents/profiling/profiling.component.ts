@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Summoner} from "../../models/summoner";
+import {Summoner} from "../../models/dto/summoner";
 import {TranslatorService} from "../../services/translator.service";
-import {Champion} from "../../models/champion";
+import {Champion} from "../../models/dto/champion";
 import {PreferencesService} from "../../services/preferences.service";
+import {ChampionsContainer} from "../../models/dto/containers/champions-container";
+import {ItemsContainer} from "../../models/dto/containers/items-container";
 
 @Component({
   selector: 'profiling',
@@ -11,8 +13,8 @@ import {PreferencesService} from "../../services/preferences.service";
 })
 export class ProfilingComponent implements OnInit {
 
-  @Input() champions_metadata: Array<Champion>;
-  @Input() items_metadata;
+  @Input() champions: ChampionsContainer;
+  @Input() items: ItemsContainer;
   private selected_summoner: Summoner = null;
   private gettext: Function;
   private current_region;

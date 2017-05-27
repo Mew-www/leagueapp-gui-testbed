@@ -2,10 +2,10 @@
     (setupReady)="handleSetupReady($event)">
 </app-setup>
 
-<div *ngIf="is_setup_ready">
+<div *ngIf="is_setup_ready && is_metadata_ready">
   <profiling
-      [champions_metadata]="champions"
-      [items_metadata]="items">
+      [champions]="champions"
+      [items]="items">
   </profiling>
 </div>
 

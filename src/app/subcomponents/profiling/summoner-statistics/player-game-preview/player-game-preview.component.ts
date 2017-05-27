@@ -1,13 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GamePreview} from "../../../../models/game-preview";
+import {GameReference} from "../../../../models/dto/game-reference";
 import {TranslatorService} from "../../../../services/translator.service";
 import {GameRecordPersonalised} from "../../../../models/game-record-personalised";
 import {GameApiService} from "../../../../services/game-api.service";
-import {Summoner} from "../../../../models/summoner";
+import {Summoner} from "../../../../models/dto/summoner";
 import {Subscription} from "rxjs/Subscription";
 import {ResType} from "../../../../enums/api-response-type";
-import {Champion} from "../../../../models/champion";
-import {GameRecord} from "../../../../models/game-record";
+import {GameRecord} from "../../../../models/dto/game-record";
+import {ChampionsContainer} from "../../../../models/dto/containers/champions-container";
+import {ItemsContainer} from "../../../../models/dto/containers/items-container";
 
 @Component({
   selector: 'player-game-preview',
@@ -17,9 +18,10 @@ import {GameRecord} from "../../../../models/game-record";
 export class PlayerGamePreviewComponent implements OnInit {
 
   @Input() auto_start_loading_details = false;
-  @Input() game_preview: GamePreview;
+  @Input() game_preview: GameReference;
   @Input() summoner: Summoner;
-  @Input() champions_metadata: Array<Champion>;
+  @Input() champions: ChampionsContainer;
+  @Input() items: ItemsContainer;
   private details_toggled = false;
   private ongoing_request: Subscription = null;
   private load_error = "";
@@ -48,7 +50,8 @@ export class PlayerGamePreviewComponent implements OnInit {
             this.game_preview.game_details = new GameRecordPersonalised(
               (<GameRecord> api_res.data).raw_origin,
               this.summoner,
-              this.champions_metadata
+              this.champions,
+              this.items
             );
             break;
 
@@ -111,7 +114,8 @@ export class PlayerGamePreviewComponent implements OnInit {
               this.game_preview.game_details = new GameRecordPersonalised(
                 (<GameRecord> api_res.data).raw_origin,
                 this.summoner,
-                this.champions_metadata
+                this.champions,
+                this.items
               );
               break;
 

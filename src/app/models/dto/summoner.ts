@@ -1,4 +1,4 @@
-import {SummonerIcon} from "./summoner-icon";
+import {SummonerIcon} from "./sub/summoner-icon";
 
 export class Summoner {
 
@@ -8,6 +8,7 @@ export class Summoner {
   public readonly icon: SummonerIcon;
   public current_name;
 
+  // https://developer.riotgames.com/api-methods/#summoner-v3/GET_getBySummonerName
   constructor(region, id, account_id, name, icon_id) {
     this.region = region;
     this.id = id;

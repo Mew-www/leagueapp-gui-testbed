@@ -1,37 +1,39 @@
 import { Injectable } from '@angular/core';
 import {Http, Response} from "@angular/http";
 import {ApiRoutes} from "../constants/api-routes";
-import {Champion} from "../models/champion";
+import {Champion} from "../models/dto/champion";
 import {Observable} from "rxjs";
 import {ApiResponse, ApiResponseError, ApiResponseSuccess} from "../helpers/api-response";
+import {ChampionsContainer} from "../models/dto/containers/champions-container";
+import {ItemsContainer} from "app/models/dto/containers/items-container";
 
 @Injectable()
 export class StaticApiService {
 
-  private _champions: Array<Champion> = null;
-  private _champions_request: Observable<ApiResponse<Array<Champion>, string, any>> = null;
-  private _item_table: Object = null;
-  private _item_request: Observable<ApiResponse<Object, String, any>> = null;
+  private _champions: ChampionsContainer = null;
+  private _champions_request: Observable<ApiResponse<ChampionsContainer, string, any>> = null;
+  private _items: ItemsContainer = null;
+  private _items_request: Observable<ApiResponse<ItemsContainer, String, any>> = null;
 
   constructor(private http: Http) { }
 
-  private _cacheAndWrapChampionApiResponse(res: Response): ApiResponse<Array<Champion>, string, any> {
-    let array_of_champions = res.json().map(dataset => new Champion(dataset['id'], dataset['name'], dataset['ddragon_key']));
+  private _cacheAndWrapChampionApiResponse(res: Response): ApiResponse<ChampionsContainer, string, any> {
+    let champion_list = new ChampionsContainer(res.json());
     // Cache
-    this._champions = array_of_champions;
+    this._champions = champion_list;
     // ..and return
-    return new ApiResponseSuccess(array_of_champions);
+    return new ApiResponseSuccess(champion_list);
   }
-  private _cacheAndWrapItemsApiResponse(res: Response): ApiResponse<Object, string, any> {
+  private _cacheAndWrapItemsApiResponse(res: Response): ApiResponse<ItemsContainer, string, any> {
     let items_json = res.json();
-    let item_table = items_json['data'];
+    let items = new ItemsContainer(items_json);
     // Cache
-    this._item_table = item_table;
+    this._items = items;
     // ..and return
-    return new ApiResponseSuccess(item_table);
+    return new ApiResponseSuccess(items);
   }
 
-  public getChampions(): Observable<ApiResponse<Array<Champion>, string, any>> {
+  public getChampions(): Observable<ApiResponse<ChampionsContainer, string, any>> {
     // #1 retrieve data from cache
     if (this._champions) {
       return Observable.of(new ApiResponseSuccess(this._champions));
@@ -47,21 +49,21 @@ export class StaticApiService {
       .share();
     return this._champions_request;
   }
-  public getItemMap(): Observable<ApiResponse<Object, string, any>> {
+  public getItems(): Observable<ApiResponse<ItemsContainer, string, any>> {
     // #1 retrieve data from cache
-    if (this._item_table) {
-      return Observable.of(new ApiResponseSuccess<Object>(this._item_table));
+    if (this._items) {
+      return Observable.of(new ApiResponseSuccess(this._items));
     }
     // #2 retrieve an ongoing request for data
-    if (this._item_request) {
-      return this._item_request;
+    if (this._items_request) {
+      return this._items_request;
     }
     // #3 create a request and return it
-    this._item_request = this.http.get(ApiRoutes.ITEM_LIST_URI)
+    this._items_request = this.http.get(ApiRoutes.ITEM_LIST_URI)
       .map(res => this._cacheAndWrapItemsApiResponse(res))
       .catch(error => Observable.of(new ApiResponseError(`Error when requesting URI "${ApiRoutes.ITEM_LIST_URI}"`)))
       .share();
-    return this._item_request;
+    return this._items_request;
   }
   public reloadChampions() {
     this._champions = null;
@@ -70,8 +72,8 @@ export class StaticApiService {
       .share();
   }
   public reloadItemMap() {
-    this._item_table = null;
-    this._item_request = this.http.get(ApiRoutes.ITEM_LIST_URI)
+    this._items = null;
+    this._items_request = this.http.get(ApiRoutes.ITEM_LIST_URI)
       .map(res => this._cacheAndWrapItemsApiResponse(res))
       .share();
   }

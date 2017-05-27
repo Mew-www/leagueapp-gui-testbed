@@ -2,13 +2,15 @@
   display: inline-block;
 }
 
-.clearfix { &:after { content: " "; display: table; clear: both; } }
-.float-left { float: left; }
+%clearfix { &:after { content: " "; display: table; clear: both; } }
+%float-left { float: left; }
 
 .Summoner {
+  @extend %clearfix;
 
   /* First half */
   &__icon-container {
+    float: left;
     width: 50px;
   }
   &__icon {
@@ -19,6 +21,7 @@
 
   /* Second half */
   &__details {
+    float: left;
   }
   &__name {
     margin: 0;

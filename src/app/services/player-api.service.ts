@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Summoner} from "../models/summoner";
+import {Summoner} from "../models/dto/summoner";
 import {ApiRoutes} from "../constants/api-routes";
 import {
   ApiResponse, ApiResponseError, ApiResponseNotFound, ApiResponseSuccess,

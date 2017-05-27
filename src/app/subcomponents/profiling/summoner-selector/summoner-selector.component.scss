@@ -1,8 +1,15 @@
+%clearfix { &:after { content: " "; display: table; clear: both; } }
+
 .SummonerSelector {
+  /* center */
+  display: table;
+  margin: 0 auto;
+
+  @extend %clearfix;
 
   /* First half */
   &__search {
-
+    float: left;
   }
   &__search-name-input {
     font-family: 'Roboto Mono', monospace;
@@ -43,5 +50,39 @@
   }
 
   /* Second half */
-
+  &__history {
+    float: left;
+    margin-left: 20px;
+  }
+  &__history-title {
+    margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+  }
+  &__history-title-text {
+    padding: 0;
+    margin: 0;
+    display: inline-block; // Makes underline not-overflow
+    color: black;
+    text-decoration: underline;
+    font-variant: small-caps;
+  }
+  &__history-title-clear-btn {
+  }
+  &__history-link {
+    display: block;
+    margin-bottom: 5px;
+    color: #1a0dab;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+    &:visited {
+      color: #660099;
+    }
+  }
+  &__history-link-name {
+  }
+  &__history-link-uid {
+  }
 }

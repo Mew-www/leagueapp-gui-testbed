@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TranslatorService} from "../../../../services/translator.service";
-import {Mastery} from "../../../../models/mastery";
+import {Championmastery} from "../../../../models/dto/championmastery";
 import {Settings} from "../../../../constants/settings";
 
 @Component({
@@ -10,7 +10,7 @@ import {Settings} from "../../../../constants/settings";
 })
 export class SummonerChampionMasteryComponent implements OnInit {
 
-  @Input() mastery: Mastery;
+  @Input() mastery: Championmastery;
   private gettext: Function;
   private Math;
   private Array;
