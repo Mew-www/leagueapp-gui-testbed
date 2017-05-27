@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Summoner} from "../../models/dto/summoner";
 import {TranslatorService} from "../../services/translator.service";
-import {Champion} from "../../models/dto/champion";
 import {PreferencesService} from "../../services/preferences.service";
 import {ChampionsContainer} from "../../models/dto/containers/champions-container";
 import {ItemsContainer} from "../../models/dto/containers/items-container";
+import {ProfileType} from "../../enums/profile-type";
 
 @Component({
   selector: 'profiling',
@@ -16,6 +16,8 @@ export class ProfilingComponent implements OnInit {
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;
   private selected_summoner: Summoner = null;
+  private profileTypeEnum = ProfileType;
+  private selected_profile_type: ProfileType = null;
   private gettext: Function;
   private current_region;
 
@@ -26,6 +28,10 @@ export class ProfilingComponent implements OnInit {
 
   public handleSummonerChanged(new_selected_summoner) {
     this.selected_summoner = new_selected_summoner;
+  }
+
+  public handleProfileTypeChanged(new_type) {
+    this.selected_profile_type = new_type;
   }
 
   ngOnInit() {

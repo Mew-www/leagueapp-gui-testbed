@@ -1,0 +1,6 @@
+export enum ProfileType {
+  HISTORICAL,
+  CURRENT_GAME,
+  THIRD_PLACEHOLDER,
+  FOURTH_PLACEHOLDER
+}

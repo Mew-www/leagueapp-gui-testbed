@@ -36,7 +36,9 @@ export class i18n {
       'minimize': "minimize",
       'show': "show",
       'historical_searches_title': "Previous searches",
-      'clear_historical_searches': "clear"
+      'clear_historical_searches': "clear",
+      'show_current_game': "Show current game",
+      'show_historical_stats': "Show historical stats"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -73,7 +75,9 @@ export class i18n {
       'minimize': "pienenn\u00e4",
       'show': "n\u00e4yt\u00e4",
       'historical_searches_title': "Aiemmat haut",
-      'clear_historical_searches': "tyhjenn\u00e4"
+      'clear_historical_searches': "tyhjenn\u00e4",
+      'show_current_game': "N\u00e4yt\u00e4 nykyhetken peli",
+      'show_historical_stats': "N\u00e4yt\u00e4 k\u00e4ytt\u00e4j\u00e4n tiedot"
     }
   }
 

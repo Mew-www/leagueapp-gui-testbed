@@ -4,14 +4,29 @@
       [region]="current_region"
       (selectedSummoner)="handleSummonerChanged($event)">
   </app-summoner-selector>
-  <div *ngIf="selected_summoner">
+  <div *ngIf="selected_summoner" class="Profiling__profile-target-container">
     <summoner
         [summoner]="selected_summoner">
     </summoner>
+    <app-profile-type-selector
+        (selectedProfileType)="handleProfileTypeChanged($event)">
+    </app-profile-type-selector>
+  </div>
+  <div>
+    <p *ngIf="selected_profile_type == profileTypeEnum.CURRENT_GAME">
+      current game (TODO)
+    </p>
     <summoner-statistics
+        *ngIf="selected_profile_type == profileTypeEnum.HISTORICAL"
         [champions]="champions"
         [items]="items"
         [summoner]="selected_summoner">
     </summoner-statistics>
+    <p *ngIf="selected_profile_type == profileTypeEnum.THIRD_PLACEHOLDER">
+      3rd placeholder (TODO / testing dynamic ProfileTypes)
+    </p>
+    <p *ngIf="selected_profile_type == profileTypeEnum.FOURTH_PLACEHOLDER">
+      4th placeholder (TODO / testing dynamic ProfileTypes)
+    </p>
   </div>
 </div>

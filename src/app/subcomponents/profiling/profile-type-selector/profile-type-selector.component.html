@@ -1,0 +1,8 @@
+<div>
+  <select (change)="onProfileTypeChange($event.target.value)">
+    <option value="" selected="" disabled="">{{"..."}}</option>
+    <option *ngFor="let t of profile_types_available" value={{t.val}}>
+      {{gettext(t.text_key)}}
+    </option>
+  </select>
+</div>
