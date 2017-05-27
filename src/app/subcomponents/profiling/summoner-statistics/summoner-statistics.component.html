@@ -10,29 +10,30 @@
     {{gettext(masterypoints_error_text_key) + (masterypoints_error_details ? " ("+masterypoints_error_details+")" : "")}}
     {{masterypoints_error_details}}
   </p>
-  <p *ngIf="masterypoints" class="Masteries-header">
-    <span class="Masteries-header__text">Champion masteries</span>
-    <button (click)="onClickToggleMasteries()">
+  <p *ngIf="masterypoints" class="Championmasteries-header">
+    <span class="Championmasteries-header__text">Champion masteries</span>
+    <button (click)="onClickToggleChampionmasteries()">
       {{masterypoints_toggled ? gettext('minimize') : gettext('show')}}
     </button>
   </p>
   <summoner-champion-mastery-scroller
-      *ngIf="masterypoints && masterypoints_toggled"
+      *ngIf="masterypoints"
+      [hidden]="!masterypoints_toggled"
       [masterypoints]="masterypoints">
   </summoner-champion-mastery-scroller>
   <hr/>
-  <div *ngIf="gamehistory">
-    <p>{{gamehistory.length}} games total available</p>
-    <p>{{getFilteredGames().length}} filtered games</p>
-    <p>{{getFilteredLoadedGames().length}} filtered games loaded</p>
-    <player-game-preview
-        *ngFor="let game of gamehistory"
-        class="PlayerGamePreview-container"
-        [game_preview]="game"
-        [auto_start_loading_details]="autoload_these_games.indexOf(game.game_id) !== -1"
-        [summoner]="summoner"
-        [champions]="champions"
-        [items]="items">
-    </player-game-preview>
-  </div>
+  <p *ngIf="gamehistory" class="Gamehistory-header">
+    <span class="Gamehistory-header__text">Game history</span>
+    <button (click)="onClickToggleGamehistory()">
+      {{gamehistory_toggled ? gettext('minimize') : gettext('show')}}
+    </button>
+  </p>
+  <summoner-gamehistory
+      *ngIf="gamehistory"
+      [hidden]="!gamehistory_toggled"
+      [summoner]="summoner"
+      [gamehistory]="gamehistory"
+      [champions]="champions"
+      [items]="items">
+  </summoner-gamehistory>
 </div>

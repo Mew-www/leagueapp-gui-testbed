@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TranslatorService} from "../../../../services/translator.service";
-import {Championmastery} from "../../../../models/dto/championmastery";
-import {Settings} from "../../../../constants/settings";
+import {TranslatorService} from "../../../../../services/translator.service";
+import {Championmastery} from "../../../../../models/dto/championmastery";
+import {Settings} from "../../../../../constants/settings";
 
 @Component({
   selector: 'summoner-champion-mastery',

@@ -1,0 +1,7 @@
+.PlayerGamePreview-container {
+  display: block;
+  margin-top: 5px;
+  &:first-child {
+    margin-top: 0;
+  }
+}

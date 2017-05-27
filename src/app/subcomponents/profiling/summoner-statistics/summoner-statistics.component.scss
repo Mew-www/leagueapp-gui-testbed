@@ -1,4 +1,5 @@
-.Masteries-header {
+.Championmasteries-header,
+.Gamehistory-header {
   margin: 0;
   margin-bottom: 0px;
   padding: 0;
@@ -7,13 +8,5 @@
 
   &__text {
     text-decoration: underline;
-  }
-}
-
-.PlayerGamePreview-container {
-  display: block;
-  margin-top: 5px;
-  &:first-child {
-    margin-top: 0;
   }
 }

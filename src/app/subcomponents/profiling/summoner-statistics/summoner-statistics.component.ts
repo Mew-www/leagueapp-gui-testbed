@@ -18,18 +18,16 @@ import {ItemsContainer} from "../../../models/dto/containers/items-container";
 })
 export class SummonerStatisticsComponent implements OnInit, OnChanges {
 
+  @Input() summoner: Summoner;
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;
-  @Input() summoner: Summoner;
   private ongoing_request: Subscription = null;
   private loading = true;
 
   private gamehistory: Array<GameReference> = null;
-  private gamehistory_filter_queues: Array<GameType> = [];
-  private gamehistory_filter_champion_ids: Array<number> = [];
+  private gamehistory_toggled = true;
   private gamehistory_error_text_key = "";
   private gamehistory_error_details = "";
-  private autoload_these_games = [];
 
   private masterypoints: Array<Championmastery> = null;
   private masterypoints_toggled = true;
@@ -43,49 +41,18 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
     this.gettext = this.translator.getTranslation;
   }
 
-  private getFilteredGames() {
-    return this.gamehistory
-      .filter(g => {
-        if (this.gamehistory_filter_queues.length === 0) {
-          return true;
-        }
-        return this.gamehistory_filter_queues.indexOf(g.game_type) !== -1;
-      })
-      .filter(g => {
-        if (this.gamehistory_filter_champion_ids.length === 0) {
-          return true;
-        }
-        return this.gamehistory_filter_champion_ids.indexOf(g.chosen_champion.id) !== -1;
-      });
-  }
-
-  private getFilteredLoadedGames() {
-    return this.gamehistory
-      .filter(g => {
-        if (this.gamehistory_filter_queues.length === 0) {
-          return true;
-        }
-        return this.gamehistory_filter_queues.indexOf(g.game_type) !== -1;
-      })
-      .filter(g => {
-        if (this.gamehistory_filter_champion_ids.length === 0) {
-          return true;
-        }
-        return this.gamehistory_filter_champion_ids.indexOf(g.chosen_champion.id) !== -1;
-      })
-      .filter(g => g.game_details !== null)
-      .map(g => g.game_details);
-  }
-
-  private onClickToggleMasteries() {
+  private onClickToggleChampionmasteries() {
     this.masterypoints_toggled = !this.masterypoints_toggled;
+  }
+
+  private onClickToggleGamehistory() {
+    this.gamehistory_toggled = !this.gamehistory_toggled;
   }
 
   private _processGamehistoryJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
         this.gamehistory = api_res.data.map(record => new GameReference(record, this.champions));
-        this.autoload_these_games = this.gamehistory.slice(0,30).map(g => g.game_id);
         break;
 
       case ResType.ERROR:
