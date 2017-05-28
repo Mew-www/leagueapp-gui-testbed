@@ -9,6 +9,7 @@ export class GameReference {
   public readonly game_start_time: Date;
   public readonly chosen_champion: Champion;
   public readonly game_type: GameType;
+  public readonly chosen_lane;
 
   public game_details: GameRecordPersonalised = null;
 
@@ -18,5 +19,6 @@ export class GameReference {
     this.game_start_time = new Date(game_ref_json.timestamp);
     this.chosen_champion = champions.getChampionById(game_ref_json.chosen_champion_id);
     this.game_type = game_ref_json.game_type;
+    this.chosen_lane = game_ref_json.lane;
   }
 }
