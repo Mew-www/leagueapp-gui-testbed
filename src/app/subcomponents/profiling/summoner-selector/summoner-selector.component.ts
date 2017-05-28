@@ -88,11 +88,6 @@ export class SummonerSelectorComponent implements OnInit {
             // Leave search_term to remind what went wrong
             break;
 
-          case ResType.TRY_LATER:
-            this.error_text_key = "try_again_in_a_minute";
-            // No point in clearing search_term
-            break;
-
           case ResType.ERROR:
             this.error_text_key = "internal_server_error";
             this.error_details = api_res.error;
