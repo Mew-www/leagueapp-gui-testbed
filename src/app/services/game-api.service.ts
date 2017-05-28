@@ -33,7 +33,7 @@ export class GameApiService {
         return Observable.of(new ApiResponseNotFound());
 
       case 500:
-        if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 503) {
+        if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 418) {
           return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
         } else {
           return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));

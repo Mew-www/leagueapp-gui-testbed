@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import Chart from 'chart.js';
-import {GameRecordPersonalised} from "../../../../../models/game-record-personalised";
+import {GameRecordPersonalised} from "../../../../../../models/game-record-personalised";
 
 @Component({
   selector: 'player-game-details',

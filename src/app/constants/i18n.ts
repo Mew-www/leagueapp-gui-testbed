@@ -38,7 +38,12 @@ export class i18n {
       'historical_searches_title': "Previous searches",
       'clear_historical_searches': "clear",
       'show_current_game': "Show current game",
-      'show_historical_stats': "Show historical stats"
+      'show_historical_stats': "Show historical stats",
+      'solo_queue': "Solo queue",
+      'flex_queue': "Flex queue",
+      'games_displayed': "games displayed",
+      'filtered_away': "filtered away",
+      'filters_available': "Filters available"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -77,7 +82,12 @@ export class i18n {
       'historical_searches_title': "Aiemmat haut",
       'clear_historical_searches': "tyhjenn\u00e4",
       'show_current_game': "N\u00e4yt\u00e4 nykyhetken peli",
-      'show_historical_stats': "N\u00e4yt\u00e4 k\u00e4ytt\u00e4j\u00e4n tiedot"
+      'show_historical_stats': "N\u00e4yt\u00e4 k\u00e4ytt\u00e4j\u00e4n tiedot",
+      'solo_queue': "Solo queue",
+      'flex_queue': "Flex queue",
+      'games_displayed': "peli\u00e4 n\u00e4kyvill\u00e4",
+      'filtered_away': "suodatettu pois",
+      'filters_available': "K\u00e4ytett\u00e4v\u00e4t suodattimet"
     }
   }
 

@@ -1,14 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameReference} from "../../../../models/dto/game-reference";
-import {TranslatorService} from "../../../../services/translator.service";
-import {GameRecordPersonalised} from "../../../../models/game-record-personalised";
-import {GameApiService} from "../../../../services/game-api.service";
-import {Summoner} from "../../../../models/dto/summoner";
+import {GameReference} from "../../../../../models/dto/game-reference";
+import {TranslatorService} from "../../../../../services/translator.service";
+import {GameRecordPersonalised} from "../../../../../models/game-record-personalised";
+import {GameApiService} from "../../../../../services/game-api.service";
+import {Summoner} from "../../../../../models/dto/summoner";
 import {Subscription} from "rxjs/Subscription";
-import {ResType} from "../../../../enums/api-response-type";
-import {GameRecord} from "../../../../models/dto/game-record";
-import {ChampionsContainer} from "../../../../models/dto/containers/champions-container";
-import {ItemsContainer} from "../../../../models/dto/containers/items-container";
+import {ResType} from "../../../../../enums/api-response-type";
+import {GameRecord} from "../../../../../models/dto/game-record";
+import {ChampionsContainer} from "../../../../../models/dto/containers/champions-container";
+import {ItemsContainer} from "../../../../../models/dto/containers/items-container";
+import {RatelimitedRequestsService} from "../../../../../services/ratelimited-requests.service";
 
 @Component({
   selector: 'player-game-preview',
@@ -28,7 +29,8 @@ export class PlayerGamePreviewComponent implements OnInit {
   private gettext: Function;
 
   constructor(private translator: TranslatorService,
-              private game_api: GameApiService) {
+              private game_api: GameApiService,
+              private ratelimitedRequests: RatelimitedRequestsService) {
     this.gettext = this.translator.getTranslation;
   }
 
@@ -43,7 +45,7 @@ export class PlayerGamePreviewComponent implements OnInit {
     this.load_error = "";
     let region = this.summoner.region;
     let game_id = this.game_preview.game_id;
-    this.ongoing_request = this.game_api.getHistoricalGame(region, game_id)
+    this.ongoing_request = this.ratelimitedRequests.buffer(() => {return this.game_api.getHistoricalGame(region, game_id)})
       .subscribe(api_res => {
         switch (api_res.type) {
           case ResType.SUCCESS:
@@ -107,7 +109,7 @@ export class PlayerGamePreviewComponent implements OnInit {
     if (this.auto_start_loading_details) {
       let region = this.summoner.region;
       let game_id = this.game_preview.game_id;
-      this.ongoing_request = this.game_api.getHistoricalGame(region, game_id)
+      this.ongoing_request = this.ratelimitedRequests.buffer(() => {return this.game_api.getHistoricalGame(region, game_id)})
         .subscribe(api_res => {
           switch (api_res.type) {
             case ResType.SUCCESS:

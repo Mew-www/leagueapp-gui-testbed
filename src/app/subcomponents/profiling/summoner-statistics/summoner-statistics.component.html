@@ -1,12 +1,12 @@
 <div>
-  <p *ngIf="loading">
+  <p class="infotext" *ngIf="loading">
     {{gettext("loading_statistics")}}
   </p>
-  <p *ngIf="gamehistory_error_text_key">
+  <p class="infotext" *ngIf="gamehistory_error_text_key">
     {{gettext(gamehistory_error_text_key) + (gamehistory_error_details ? " ("+gamehistory_error_details+")" : "")}}
     {{gamehistory_error_details}}
   </p>
-  <p *ngIf="masterypoints_error_text_key">
+  <p class="infotext" *ngIf="masterypoints_error_text_key">
     {{gettext(masterypoints_error_text_key) + (masterypoints_error_details ? " ("+masterypoints_error_details+")" : "")}}
     {{masterypoints_error_details}}
   </p>

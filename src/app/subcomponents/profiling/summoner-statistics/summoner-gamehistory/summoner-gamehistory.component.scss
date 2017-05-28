@@ -1,3 +1,66 @@
+%clearfix { &:after { content: " "; display: table; clear: both; } }
+%float-left { float: left; }
+
+.filters-title {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 4px;
+  text-decoration: underline;
+}
+
+.QueueFilter {
+  display: inline-block;
+  padding: 4px;
+  border: 2px groove grey;
+  cursor: pointer;
+  &--active {
+    border: 2px groove lightblue;
+  }
+}
+
+.ChampionFilter {
+  display: inline-block;
+  padding: 4px;
+  border: 2px groove grey;
+  cursor: pointer;
+  &--active {
+    border: 2px groove lightgreen;
+  }
+
+  @extend %clearfix;
+
+  /* First half */
+  &__champion {
+    @extend %float-left;
+  }
+  &__champion-image-container {
+    width: 40px;
+    height: 40px;
+  }
+  &__champion-image {
+    width: 100%; height: auto;
+    border-radius: 50%;
+    border: 2px groove #fdf5e6;
+  }
+
+  /* Second half */
+  &__details {
+    @extend %float-left;
+    font-family: Roboto, 'sans-serif';
+    line-height: 40px;
+    font-size: 40px;
+    margin: 0 4px;
+  }
+
+  /* Below */
+  &__champion-name {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto Condensed', 'sans-serif';
+    text-align: center;
+  }
+}
+
 .PlayerGamePreview-container {
   display: block;
   margin-top: 5px;

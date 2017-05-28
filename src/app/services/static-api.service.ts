@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Http, Response} from "@angular/http";
 import {ApiRoutes} from "../constants/api-routes";
-import {Champion} from "../models/dto/champion";
 import {Observable} from "rxjs";
 import {ApiResponse, ApiResponseError, ApiResponseSuccess} from "../helpers/api-response";
 import {ChampionsContainer} from "../models/dto/containers/champions-container";

@@ -1,9 +1,37 @@
 <div>
-  <p>{{gamehistory.length}} games total available</p>
-  <p>{{getFilteredGames().length}} filtered games</p>
-  <p>{{getFilteredLoadedGames().length}} filtered games loaded</p>
+  <p class="filters-title">{{gettext('filters_available')}}</p>
+  <div *ngFor="let q of available_queue_filters"
+       class="QueueFilter"
+       [class.QueueFilter--active]="filtered_queues.indexOf(q.val) !== -1"
+       (click)="toggleFilteredQueue(q.val)"
+  >
+    {{gettext(q.text_key)}}
+  </div>
+  <br/>
+  <div
+      *ngFor="let c of available_champion_filters(filtered_queues)"
+      class="ChampionFilter"
+      [class.ChampionFilter--active]="filtered_champion_ids.indexOf(c.champion.id) !== -1"
+      (click)="toggleFilteredChampion(c.champion.id)">
+    <div class="ChampionFilter__champion">
+      <div class="ChampionFilter__champion-image-container">
+        <img class="ChampionFilter__champion-image"
+             src="{{c.champion.images.square_url}}"/>
+      </div>
+    </div>
+    <div class="ChampionFilter__details">
+      {{c.nr_of_games}}
+    </div>
+    <p class="ChampionFilter__champion-name">{{c.champion.name}}</p>
+  </div>
+  <p>
+    {{getFilteredGames().length}} {{gettext("games_displayed")}}
+    {{gamehistory.length-getFilteredGames().length > 0 ?
+      '('+(gamehistory.length-getFilteredGames().length)+' '+gettext('filtered_away')+')'
+      : ""}}
+  </p>
   <player-game-preview
-      *ngFor="let game of gamehistory"
+      *ngFor="let game of getFilteredGames()"
       class="PlayerGamePreview-container"
       [game_preview]="game"
       [auto_start_loading_details]="autoload_these_games.indexOf(game.game_id) !== -1"

@@ -19,14 +19,15 @@ import { SummonerStatisticsComponent } from './subcomponents/profiling/summoner-
 import { QueuetypeDescriptionPipe } from './pipes/queuetype-description.pipe';
 import { SummonerChampionMasteryComponent } from './subcomponents/profiling/summoner-statistics/summoner-champion-mastery-scroller/summoner-champion-mastery/summoner-champion-mastery.component';
 import { EmphasiseThousandsPipe } from './pipes/emphasise-thousands.pipe';
-import { PlayerGamePreviewComponent } from './subcomponents/profiling/summoner-statistics/player-game-preview/player-game-preview.component';
+import { PlayerGamePreviewComponent } from './subcomponents/profiling/summoner-statistics/summoner-gamehistory/player-game-preview/player-game-preview.component';
 import { StringifyGameTypePipe } from './pipes/stringify-game-type.pipe';
 import { ChampionBanIconComponent } from './genericcomponents/champion-ban-icon/champion-ban-icon.component';
 import { SummonerComponent } from './genericcomponents/summoner/summoner.component';
-import { PlayerGameDetailsComponent } from './subcomponents/profiling/summoner-statistics/player-game-preview/player-game-details/player-game-details.component';
+import { PlayerGameDetailsComponent } from './subcomponents/profiling/summoner-statistics/summoner-gamehistory/player-game-preview/player-game-details/player-game-details.component';
 import { ProfileTypeSelectorComponent } from './subcomponents/profiling/profile-type-selector/profile-type-selector.component';
 import { SummonerChampionMasteryScrollerComponent } from './subcomponents/profiling/summoner-statistics/summoner-champion-mastery-scroller/summoner-champion-mastery-scroller.component';
 import { SummonerGamehistoryComponent } from './subcomponents/profiling/summoner-statistics/summoner-gamehistory/summoner-gamehistory.component';
+import {RatelimitedRequestsService} from "./services/ratelimited-requests.service";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,11 @@ import { SummonerGamehistoryComponent } from './subcomponents/profiling/summoner
     SummonerChampionMasteryComponent,
     PlayerGamePreviewComponent,
     ChampionBanIconComponent,
-    QueuetypeDescriptionPipe, EmphasiseThousandsPipe, StringifyGameTypePipe, PlayerGameDetailsComponent, ProfileTypeSelectorComponent, SummonerChampionMasteryScrollerComponent, SummonerGamehistoryComponent
+    QueuetypeDescriptionPipe, EmphasiseThousandsPipe, StringifyGameTypePipe,
+    PlayerGameDetailsComponent,
+    ProfileTypeSelectorComponent,
+    SummonerChampionMasteryScrollerComponent,
+    SummonerGamehistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,8 @@ import { SummonerGamehistoryComponent } from './subcomponents/profiling/summoner
   ],
   providers: [
     PreferencesService, TranslatorService,
-    StaticApiService, PlayerApiService, GameApiService
+    StaticApiService, PlayerApiService, GameApiService,
+    RatelimitedRequestsService
   ],
   bootstrap: [AppComponent]
 })
