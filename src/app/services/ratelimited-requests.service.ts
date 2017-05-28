@@ -29,7 +29,6 @@ export class RatelimitedRequestsService {
   }
 
   private executeRemainingRequests() {
-    console.log("executing next bunch (if any), window size="+this.window_size);
     if (this.buffered_requests.length === 0) {
       this.ongoing = false;
       return;
