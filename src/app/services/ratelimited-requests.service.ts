@@ -59,12 +59,10 @@ export class RatelimitedRequestsService {
           // Increase window size and recursively do next requests
           let proposed_size = Math.round(this.window_size * this.window_size_multiplier);
           this.window_size = (proposed_size < this.max_window_size ? proposed_size : this.max_window_size);
-          console.log("Not rate limited, try with window size "+this.window_size);
           this.executeRemainingRequests();
         } else {
           // Decrease window size and wait before recursively doing next requests
           this.window_size = Math.round(this.window_size / this.window_size_multiplier);
-          console.log("Got rate limited, try with smaller window size "+this.window_size+" after "+(rate_limit_wait)+" seconds");
           window.setTimeout(this.executeRemainingRequests.bind(this), rate_limit_wait*1000);
         }
       });

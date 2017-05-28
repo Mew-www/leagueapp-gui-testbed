@@ -10,6 +10,7 @@ import {Championmastery} from "../../../models/dto/championmastery";
 import {GameReference} from "../../../models/dto/game-reference";
 import {ChampionsContainer} from "app/models/dto/containers/champions-container";
 import {ItemsContainer} from "../../../models/dto/containers/items-container";
+import {RatelimitedRequestsService} from "../../../services/ratelimited-requests.service";
 
 @Component({
   selector: 'summoner-statistics',
@@ -37,7 +38,8 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
   private gettext: Function;
 
   constructor(private player_api: PlayerApiService,
-              private translator: TranslatorService) {
+              private translator: TranslatorService,
+              private ratelimitedRequests: RatelimitedRequestsService) {
     this.gettext = this.translator.getTranslation;
   }
 
@@ -63,10 +65,6 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
       case ResType.NOT_FOUND:
         this.gamehistory_error_text_key = "gamehistory_not_found";
         break;
-
-      case ResType.TRY_LATER:
-        this.gamehistory_error_text_key = "try_again_in_a_minute";
-        break;
     }
   }
   private _processMasterypointsJsonResponse(api_res) {
@@ -83,10 +81,6 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
 
       case ResType.NOT_FOUND:
         this.masterypoints_error_text_key = "gamehistory_not_found";
-        break;
-
-      case ResType.TRY_LATER:
-        this.masterypoints_error_text_key = "try_again_in_a_minute";
         break;
     }
   }
@@ -110,8 +104,8 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
       let account_id = this.summoner.account_id;
       let summoner_id = this.summoner.id;
       this.ongoing_request = Observable.forkJoin([
-        this.player_api.getListOfRankedGamesJson(region, account_id, GameType.SOLO_AND_FLEXQUEUE),
-        this.player_api.getMasteryPointCountsJson(region, summoner_id)
+        this.ratelimitedRequests.buffer(() => {return this.player_api.getListOfRankedGamesJson(region, account_id, GameType.SOLO_AND_FLEXQUEUE)}),
+        this.ratelimitedRequests.buffer(() => {return this.player_api.getMasteryPointCountsJson(region, summoner_id)})
       ])
         .subscribe(api_responses => {
           this._processGamehistoryJsonResponse(api_responses[0]);
@@ -122,6 +116,6 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

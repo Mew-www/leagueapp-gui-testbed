@@ -57,11 +57,6 @@ export class PlayerGamePreviewComponent implements OnInit {
             );
             break;
 
-          case ResType.TRY_LATER:
-            this.load_error = "Try again in " + api_res.wait + " seconds.";
-            this.ongoing_request = null;
-            break;
-
           default:
             this.load_error = api_res.error;
             this.ongoing_request = null;

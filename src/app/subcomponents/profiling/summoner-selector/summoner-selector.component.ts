@@ -4,6 +4,7 @@ import {PlayerApiService} from "../../../services/player-api.service";
 import {ResType} from "../../../enums/api-response-type";
 import {TranslatorService} from "../../../services/translator.service";
 import {PreferencesService} from "../../../services/preferences.service";
+import {RatelimitedRequestsService} from "app/services/ratelimited-requests.service";
 
 @Component({
   selector: 'app-summoner-selector',
@@ -23,7 +24,8 @@ export class SummonerSelectorComponent implements OnInit {
 
   constructor(private player_api: PlayerApiService,
               private translator: TranslatorService,
-              private preferencesService: PreferencesService) {
+              private preferencesService: PreferencesService,
+              private ratelimitedRequests: RatelimitedRequestsService) {
     this.gettext = this.translator.getTranslation;
   }
 
@@ -36,17 +38,12 @@ export class SummonerSelectorComponent implements OnInit {
     this.error_text_key = "";
     this.error_details = "";
 
-    this.player_api.getSummonerByName(this.region, this.search_term)
+    this.ratelimitedRequests.buffer(() => {return this.player_api.getSummonerByName(this.region, this.search_term)})
       .subscribe(api_res => {
         switch (api_res.type) {
           case ResType.NOT_FOUND:
             this.error_text_key = "summoner_not_found";
             // Leave search_term to remind what went wrong
-            break;
-
-          case ResType.TRY_LATER:
-            this.error_text_key = "try_again_in_a_minute";
-            // No point in clearing search_term
             break;
 
           case ResType.ERROR:
@@ -83,7 +80,7 @@ export class SummonerSelectorComponent implements OnInit {
     this.error_text_key = "";
     this.error_details = "";
 
-    this.player_api.getSummonerById(region, account_id)
+    this.ratelimitedRequests.buffer(() => {return this.player_api.getSummonerById(region, account_id)})
       .subscribe(api_res => {
         switch (api_res.type) {
           case ResType.NOT_FOUND:
