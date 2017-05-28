@@ -7,6 +7,7 @@ import {
   ApiResponseTryLater
 } from "../helpers/api-response";
 import {GameRecord} from "../models/dto/game-record";
+import {CurrentGame} from "../models/dto/current-game";
 
 @Injectable()
 export class GameApiService {
@@ -62,5 +63,28 @@ export class GameApiService {
       .catch(error_res => this._wrapGamedetailApiError(error_res))
       .share();
     return this._historic_game_requests[region][game_id];
+  }
+  public getCurrentGame(region, summoner_id, champions): Observable<ApiResponse<CurrentGame, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_CURRENT_GAME_URI(region, summoner_id))
+      .map(res => {
+        let current_game_json = res.json();
+        return new ApiResponseSuccess(new CurrentGame(current_game_json, summoner_id, champions));
+      }).catch(error_res => {
+        switch (error_res.status) {
+
+          case 404:
+            return Observable.of(new ApiResponseNotFound()); // Not currently in game or invalid region/summoner_id
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 418) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
+        }
+      });
   }
 }

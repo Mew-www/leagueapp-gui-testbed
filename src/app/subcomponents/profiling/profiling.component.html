@@ -13,9 +13,11 @@
     </app-profile-type-selector>
   </div>
   <div>
-    <p *ngIf="selected_profile_type == profileTypeEnum.CURRENT_GAME">
-      current game (TODO)
-    </p>
+    <current-game
+        *ngIf="selected_profile_type == profileTypeEnum.CURRENT_GAME"
+        [champions]="champions"
+        [summoner]="selected_summoner">
+    </current-game>
     <summoner-statistics
         *ngIf="selected_profile_type == profileTypeEnum.HISTORICAL"
         [champions]="champions"

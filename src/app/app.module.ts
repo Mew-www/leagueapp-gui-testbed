@@ -28,6 +28,7 @@ import { ProfileTypeSelectorComponent } from './subcomponents/profiling/profile-
 import { SummonerChampionMasteryScrollerComponent } from './subcomponents/profiling/summoner-statistics/summoner-champion-mastery-scroller/summoner-champion-mastery-scroller.component';
 import { SummonerGamehistoryComponent } from './subcomponents/profiling/summoner-statistics/summoner-gamehistory/summoner-gamehistory.component';
 import {RatelimitedRequestsService} from "./services/ratelimited-requests.service";
+import { CurrentGameComponent } from './subcomponents/profiling/current-game/current-game.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {RatelimitedRequestsService} from "./services/ratelimited-requests.servic
     PlayerGameDetailsComponent,
     ProfileTypeSelectorComponent,
     SummonerChampionMasteryScrollerComponent,
-    SummonerGamehistoryComponent
+    SummonerGamehistoryComponent,
+    CurrentGameComponent
   ],
   imports: [
     BrowserModule,

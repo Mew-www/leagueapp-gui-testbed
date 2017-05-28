@@ -43,7 +43,8 @@ export class i18n {
       'flex_queue': "Flex queue",
       'games_displayed': "games displayed",
       'filtered_away': "filtered away",
-      'filters_available': "Filters available"
+      'filters_available': "Filters available",
+      'current_game_not_found': "Current game not found. Player is not currently in game."
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -87,7 +88,8 @@ export class i18n {
       'flex_queue': "Flex queue",
       'games_displayed': "peli\u00e4 n\u00e4kyvill\u00e4",
       'filtered_away': "suodatettu pois",
-      'filters_available': "K\u00e4ytett\u00e4v\u00e4t suodattimet"
+      'filters_available': "K\u00e4ytett\u00e4v\u00e4t suodattimet",
+      'current_game_not_found': "Nykyhetken peli\u00e4 ei l\u00f6ytynyt. Pelaaja ei ole t\u00e4ll\u00e4 hetkell\u00e4 pelaamassa."
     }
   }
 
