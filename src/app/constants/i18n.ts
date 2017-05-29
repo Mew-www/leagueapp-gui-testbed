@@ -44,7 +44,10 @@ export class i18n {
       'games_displayed': "games displayed",
       'filtered_away': "filtered away",
       'filters_available': "Filters available",
-      'current_game_not_found': "Current game not found. Player is not currently in game."
+      'current_game_not_found': "Current game not found. Player is not currently in game.",
+      'preferred_lanes': "Preferred lanes",
+      'nr_of_games': "Games",
+      'lane_allocation': "Lane allocation"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -89,7 +92,10 @@ export class i18n {
       'games_displayed': "peli\u00e4 n\u00e4kyvill\u00e4",
       'filtered_away': "suodatettu pois",
       'filters_available': "K\u00e4ytett\u00e4v\u00e4t suodattimet",
-      'current_game_not_found': "Nykyhetken peli\u00e4 ei l\u00f6ytynyt. Pelaaja ei ole t\u00e4ll\u00e4 hetkell\u00e4 pelaamassa."
+      'current_game_not_found': "Nykyhetken peli\u00e4 ei l\u00f6ytynyt. Pelaaja ei ole t\u00e4ll\u00e4 hetkell\u00e4 pelaamassa.",
+      'preferred_lanes': "Yleisimm\u00e4t lanet",
+      'nr_of_games': "Pelattu",
+      'lane_allocation': "Lane jakauma"
     }
   }
 

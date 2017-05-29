@@ -83,6 +83,7 @@ export class PlayerApiService {
                   return GameType.UNKNOWN_UNDEFINED;
               }
             })(match['queue']),
+            lane: match['lane'],
           }
         }).sort((a, b) => b['timestamp'] - a['timestamp']);
         return new ApiResponseSuccess(records);

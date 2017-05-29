@@ -10,7 +10,8 @@ export class CurrentGame {
   public readonly game_type: GameType;
   public readonly game_start_time: Date;
   public readonly bans: Array<BannedChampion>;
-  public readonly players: Array<CurrentGameParticipant>;
+  public readonly allies: Array<CurrentGameParticipant>;
+  public readonly enemies: Array<CurrentGameParticipant>;
   public readonly looked_up_summoner;
 
   // https://developer.riotgames.com/api-methods/#spectator-v3/GET_getCurrentGameInfoBySummoner
@@ -32,9 +33,17 @@ export class CurrentGame {
     this.bans = currentgame_json.bannedChampions.map(b => {
       return new BannedChampion(b, champions);
     });
-    this.players = currentgame_json.participants.map(p => {
-      return new CurrentGameParticipant(p, champions, summonerspells);
-    });
+    let ally_team_id = currentgame_json.participants.find(p => p.summonerId === looked_up_summoner.id).teamId;
+    this.allies = currentgame_json.participants
+      .filter(p => p.teamId === ally_team_id)
+      .map(p => {
+        return new CurrentGameParticipant(p, champions, summonerspells);
+      });
+    this.enemies = currentgame_json.participants
+      .filter(p => p.teamId !== ally_team_id)
+      .map(p => {
+        return new CurrentGameParticipant(p, champions, summonerspells);
+      });
     this.looked_up_summoner = looked_up_summoner;
 
   }

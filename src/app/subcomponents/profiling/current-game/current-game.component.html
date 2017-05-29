@@ -1,10 +1,26 @@
-<div *ngIf="current_game">
-  <current-game-participant-statistics
-      *ngFor="let p of current_game.players"
-      [player]="p"
-      [region]="current_game.looked_up_summoner.region"
-      [gametype]="current_game.game_type"
-      [champions]="champions"
-      [summonerspells]="summonerspells">
-  </current-game-participant-statistics>
+<div *ngIf="current_game" class="CurrentGame">
+  <div class="CurrentGame__allies">
+    <current-game-participant-statistics
+        *ngFor="let p of current_game.allies"
+        (moveup)="handleMoveupAlly(p)"
+        (movedown)="handleMovedownAlly(p)"
+        [player]="p"
+        [region]="current_game.looked_up_summoner.region"
+        [gametype]="current_game.game_type"
+        [champions]="champions"
+        [summonerspells]="summonerspells">
+    </current-game-participant-statistics>
+  </div>
+  <div class="CurrentGame__enemies">
+    <current-game-participant-statistics
+        *ngFor="let p of current_game.enemies"
+        (moveup)="handleMoveupEnemy(p)"
+        (movedown)="handleMovedownEnemy(p)"
+        [player]="p"
+        [region]="current_game.looked_up_summoner.region"
+        [gametype]="current_game.game_type"
+        [champions]="champions"
+        [summonerspells]="summonerspells">
+    </current-game-participant-statistics>
+  </div>
 </div>

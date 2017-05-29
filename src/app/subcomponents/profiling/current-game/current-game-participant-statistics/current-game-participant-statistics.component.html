@@ -1,14 +1,50 @@
+<div class="ParticipantControls">
+  <button (click)="moveup.emit()">&uarr;</button>
+  <br/>
+  <button (click)="movedown.emit()">&darr;</button>
+</div>
 <div class="Participant">
-  <div class="Participant__champion-icon-container">
-    <img class="Participant__champion-icon" src="{{player.champion.images.square_url}}" />
+  <div class="Participant__summary">
+    <div class="Participant__champion-icon-container">
+      <img class="Participant__champion-icon" src="{{player.champion.images.square_url}}" />
+    </div>
+    <div class="Participant__summoner-spells">
+      <summoner-spell-icon [summoner_spell]="player.summonerspell_1"></summoner-spell-icon>
+      <summoner-spell-icon [summoner_spell]="player.summonerspell_2"></summoner-spell-icon>
+    </div>
+    <div class="Participant__description">
+      <span class="Participant__description-name">{{player.summoner_name}}</span>
+      <br/>
+      <span class="Participant__lane-mains">
+      <span *ngIf="loading_player_data">Loading player's account data ...</span>
+      <span *ngIf="loading_gamehistory">Loading player's game history ...</span>
+      <span *ngIf="preferred_lanes">
+        {{gettext('preferred_lanes')}}: 
+        <span *ngFor="let l of preferred_lanes; let i = index" class="Participant__lane-main">
+          {{l.lane_name}}
+          (<span class="Participant__lane-main-percentages">{{l.percentage}}%</span>)
+          {{i!==preferred_lanes.length-1 ? ', ' : ''}}
+        </span>
+      </span>
+    </span>
+    </div>
   </div>
-  <div class="Participant__summoner-spells">
-    <summoner-spell-icon [summoner_spell]="player.summonerspell_1"></summoner-spell-icon>
-    <summoner-spell-icon [summoner_spell]="player.summonerspell_2"></summoner-spell-icon>
-  </div>
-  <div class="Participant__description">
-    <span class="Participant__description-name">{{player.summoner_name}}</span>
-    <br/>
-    <span class="Participant__description-league">league tier todo promos12345</span>
+  <div *ngIf="most_played_champions" class="Participant__champion-mains">
+    <div class="Participant__champion-mains-heading">
+      <div class="Participant__champion-mains-name"></div>
+      <div class="Participant__champion-mains-lanes">{{gettext('lane_allocation')}}</div>
+      <div class="Participant__champion-mains-nr-of-games">{{gettext('nr_of_games')}}</div>
+    </div>
+    <div *ngFor="let c of most_played_champions"
+        class="Participant__champion-main"
+        [class.Participant__champion-main--current]="c.champion.id === player.champion.id">
+      <div class="Participant__champion-main-name">{{c.champion.name}}</div>
+      <div class="Participant__champion-main-lanes">
+        (<span
+          *ngFor="let l of c.lanes; let i = index"
+          class="Participant__mains-champion-percentages">{{l.lane_name}} {{l.times_played_percent}}%{{i!==c.lanes.length-1 ? ', ' : ''}}</span>)
+      </div>
+      <div class="Participant__champion-main-nr-of-games">{{c.nr_of_games}}</div>
+    </div>
   </div>
 </div>

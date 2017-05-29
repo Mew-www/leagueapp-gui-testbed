@@ -1,8 +1,33 @@
 %clearfix { &:after { content: ' '; display: table; clear: both; } }
 
-.Participant {
+:host {
   @extend %clearfix;
+}
 
+.ParticipantControls {
+  float: left;
+  button {
+    background: transparent;
+    border: none;
+    font-family: Roboto, 'sans-serif';
+    font-size: 22px;
+    transition: background 1s ease;
+    cursor: pointer;
+    &:hover {
+      background: #6cc5c5;
+    }
+  }
+}
+
+.Participant {
+  float: left;
+
+  /* First box */
+  &__summary {
+    @extend %clearfix;
+  }
+
+  /* 1/3 */
   &__champion-icon-container {
     float: left;
     width: 50px;
@@ -15,12 +40,14 @@
     border: 2px groove #9c6f1b;
   }
 
+  /* 2/3 */
   &__summoner-spells {
     float: left;
     margin-top: 6px;
     margin-left: 1px;
   }
 
+  /* 3/3 */
   &__description {
     float: left;
     margin-top: 12px;
@@ -29,7 +56,64 @@
   &__description-name {
     font-family: "Roboto Mono", monospace;
   }
-  &__description-league {
+  &__lane-mains {
+    font-family: Roboto, 'sans-serif';
+  }
+  &__lane-main{
+    text-transform: lowercase;
+  }
+  &__lane-main-percentages {
     font-family: 'Roboto Condensed', 'sans-serif';
+  }
+
+  /* Table */
+  &__champion-mains {
+    display: table;
+  }
+  // thead > tr
+  &__champion-mains-heading {
+    display: table-row;
+    font-family: Roboto, 'sans-serif';
+    text-decoration: underline;
+  }
+  // th
+  &__champion-mains-name {
+    display: table-cell;
+  }
+  // th
+  &__champion-mains-lanes {
+    display: table-cell;
+  }
+  // th
+  &__champion-mains-nr-of-games {
+    display: table-cell;
+    padding: 0 5px;
+  }
+  // tbody > tr
+  &__champion-main {
+    display: table-row;
+    &--current {
+      background: #ff00004d;
+    }
+  }
+  // td
+  &__champion-main-name {
+    display: table-cell;
+    padding: 0 5px;
+    font-family: Roboto, 'sans-serif';
+  }
+  // td
+  &__champion-main-lanes {
+    display: table-cell;
+    padding: 0 5px;
+    font-size: 14px;
+    font-family: 'Roboto Condensed', 'sans-serif';
+  }
+  // td
+  &__champion-main-nr-of-games {
+    display: table-cell;
+    padding: 0 5px;
+    text-align: center;
+    font-family: Roboto, 'sans-serif';
   }
 }

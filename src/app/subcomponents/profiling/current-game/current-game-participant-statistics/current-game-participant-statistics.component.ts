@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CurrentGameParticipant} from "../../../../models/dto/current-game-participant";
 import {GameReference} from "../../../../models/dto/game-reference";
 import {GameApiService} from "../../../../services/game-api.service";
@@ -9,6 +9,7 @@ import {Summoner} from "../../../../models/dto/summoner";
 import {GameType} from "../../../../enums/game-type";
 import {ChampionsContainer} from "../../../../models/dto/containers/champions-container";
 import {SummonerspellsContainer} from "../../../../models/dto/containers/summonerspells-container";
+import {TranslatorService} from "../../../../services/translator.service";
 
 @Component({
   selector: 'current-game-participant-statistics',
@@ -22,17 +23,26 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
   @Input() gametype: GameType;
   @Input() champions: ChampionsContainer;
   @Input() summonerspells: SummonerspellsContainer;
+  @Output() moveup = new EventEmitter();
+  @Output() movedown = new EventEmitter();
+
   private loading_player_data = true;
   private loading_gamehistory = false;
 
   private summoner: Summoner;
-  private gamehistory: Array<GameReference> = null;
+  private preferred_lanes: Array<any> = null;
+  private most_played_champions: Array<any> = null;
   private error_text_key = "";
   private error_details = "";
 
+  private gettext: Function;
+
   constructor(private player_api: PlayerApiService,
               private game_api: GameApiService,
-              private ratelimitedRequests: RatelimitedRequestsService) { }
+              private ratelimitedRequests: RatelimitedRequestsService,
+              private translator: TranslatorService) {
+    this.gettext = this.translator.getTranslation;
+  }
 
   ngOnInit() {
     this.ratelimitedRequests.buffer(() => {return this.player_api.getSummonerByName(this.region, this.player.summoner_name)})
@@ -42,11 +52,58 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
             this.summoner = summ_api_res.data;
             this.loading_player_data = false;
             this.loading_gamehistory = true;
-            this.ratelimitedRequests.buffer(() => {return this.player_api.getListOfRankedGamesJson(this.region, this.summoner.account_id, this.gametype)})
+            this.ratelimitedRequests.buffer(() => {return this.player_api.getListOfRankedGamesJson(this.region, this.summoner.account_id, GameType.SOLO_AND_FLEXQUEUE)})
               .subscribe(gamehistory_api_res => {
                 switch (gamehistory_api_res.type) {
                   case ResType.SUCCESS:
-                    this.gamehistory = gamehistory_api_res.data.map(record => new GameReference(record, this.champions));
+                    let gamehistory = gamehistory_api_res.data.map(record => new GameReference(record, this.champions));
+                    this.preferred_lanes = gamehistory.reduce((seen_lanes, gameref: GameReference) => {
+                      let seen_lane = seen_lanes.find(s => s.lane_name === gameref.in_select_lane);
+                      if (!seen_lane) {
+                        seen_lane = {
+                          lane_name: gameref.in_select_lane,
+                          nr_of_games: 0
+                        };
+                        seen_lanes.push(seen_lane);
+                      }
+                      seen_lane.nr_of_games++;
+                      return seen_lanes;
+                    }, [])
+                      .sort((a,b) => b.nr_of_games - a.nr_of_games)
+                      .slice(0,2)
+                      .map(preferred_lane => {
+                        preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / gamehistory.length * 100);
+                        return preferred_lane;
+                      });
+                    this.most_played_champions = gamehistory.reduce((seen_champions, gameref: GameReference) => {
+                      let seen_champion = seen_champions.find(s => s.champion.id === gameref.chosen_champion.id);
+                      let lane = gameref.in_select_lane;
+                      if (!seen_champion) {
+                        seen_champion = {
+                          champion: this.champions.getChampionById(gameref.chosen_champion.id),
+                          nr_of_games: 0,
+                          lanes: {}
+                        };
+                        seen_champions.push(seen_champion);
+                      }
+                      if (Object.keys(seen_champion.lanes).indexOf(lane) === -1) {
+                        seen_champion.lanes[lane] = 0;
+                      }
+                      seen_champion.nr_of_games++;
+                      seen_champion.lanes[lane]++;
+                      return seen_champions;
+                    }, [])
+                      .sort((a, b) => b.nr_of_games - a.nr_of_games)
+                      .slice(0, 5)
+                      .map(most_played_champion => {
+                        most_played_champion.lanes = Object.keys(most_played_champion.lanes).map(lane => {
+                          return {
+                            lane_name: lane,
+                            times_played_percent: Math.round(most_played_champion.lanes[lane] / most_played_champion.nr_of_games * 100)
+                          };
+                        }).sort((a,b) => b.times_played_percent - a.times_played_percent);
+                        return most_played_champion;
+                      });
                     break;
 
                   case ResType.ERROR:
@@ -55,7 +112,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                     break;
 
                   case ResType.NOT_FOUND:
-                    this.gamehistory = [];
+                    this.most_played_champions = [];
                     break;
                 }
                 this.loading_gamehistory = false;

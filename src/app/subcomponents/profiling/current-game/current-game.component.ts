@@ -29,6 +29,58 @@ export class CurrentGameComponent implements OnInit, OnChanges {
               private ratelimitedRequests: RatelimitedRequestsService) {
   }
 
+  handleMoveupAlly(p) {
+    let idx = 0;
+    this.current_game.allies.forEach((ally, i) => {
+      if (ally.summoner_id === p.summoner_id) {
+        idx = i;
+      }
+    });
+    if (idx === 0) {
+      return;
+    }
+    this.current_game.allies.splice((idx-1), 0, this.current_game.allies.splice(idx,1)[0]);
+  }
+
+  handleMovedownAlly(p) {
+    let idx = 4;
+    this.current_game.allies.forEach((ally, i) => {
+      if (ally.summoner_id === p.summoner_id) {
+        idx = i;
+      }
+    });
+    if (idx === 4) {
+      return;
+    }
+    this.current_game.allies.splice((idx+1), 0, this.current_game.allies.splice(idx,1)[0]);
+  }
+
+  handleMoveupEnemy(p) {
+    let idx = 0;
+    this.current_game.enemies.forEach((enemy, i) => {
+      if (enemy.summoner_id === p.summoner_id) {
+        idx = i;
+      }
+    });
+    if (idx === 0) {
+      return;
+    }
+    this.current_game.enemies.splice((idx-1), 0, this.current_game.enemies.splice(idx,1)[0]);
+  }
+
+  handleMovedownEnemy(p) {
+    let idx = 4;
+    this.current_game.enemies.forEach((enemy, i) => {
+      if (enemy.summoner_id === p.summoner_id) {
+        idx = i;
+      }
+    });
+    if (idx === 4) {
+      return;
+    }
+    this.current_game.enemies.splice((idx+1), 0, this.current_game.enemies.splice(idx,1)[0]);
+  }
+
   ngOnChanges(changes) {
     // If [summoner] changed
     if (changes['summoner'].currentValue != changes['summoner'].previousValue) {
@@ -48,6 +100,84 @@ export class CurrentGameComponent implements OnInit, OnChanges {
             switch (api_res.type) {
               case ResType.SUCCESS:
                 this.current_game = api_res.data;
+                this.current_game.allies.sort((p1, p2) => {
+                  // Top
+                  if (p1.summonerspell_1.name === "Teleport" || p1.summonerspell_2.name === "Teleport") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Teleport" || p2.summonerspell_2.name === "Teleport") {
+                    return 1;
+                  }
+                  // Jungle
+                  if (p1.summonerspell_1.name === "Smite" || p1.summonerspell_2.name === "Smite") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Smite" || p2.summonerspell_2.name === "Smite") {
+                    return 1;
+                  }
+                  // Mid
+                  if (p1.summonerspell_1.name === "Ghost" || p1.summonerspell_2.name === "Ghost"
+                    || p1.summonerspell_1.name === "Cleanse" || p1.summonerspell_2.name === "Cleanse"
+                    || p1.summonerspell_1.name === "Barrier" || p1.summonerspell_2.name === "Barrier"
+                    || p1.summonerspell_1.name === "Ignite" || p1.summonerspell_2.name === "Ignite") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Ghost" || p2.summonerspell_2.name === "Ghost"
+                    || p2.summonerspell_1.name === "Cleanse" || p2.summonerspell_2.name === "Cleanse"
+                    || p2.summonerspell_1.name === "Barrier" || p2.summonerspell_2.name === "Barrier"
+                    || p2.summonerspell_1.name === "Ignite" || p2.summonerspell_2.name === "Ignite") {
+                    return 1;
+                  }
+                  // ADC
+                  if (p1.summonerspell_1.name === "Heal" || p1.summonerspell_2.name === "Heal") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Heal" || p2.summonerspell_2.name === "Heal") {
+                    return 1;
+                  }
+                  // Support
+                  if (p1.summonerspell_1.name === "Exhaust" || p1.summonerspell_2.name === "Exhaust") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Exhaust" || p2.summonerspell_2.name === "Exhaust") {
+                    return 1;
+                  }
+                  return 0;
+                });
+                this.current_game.enemies.sort((p1, p2) => {
+                  // Top
+                  if (p1.summonerspell_1.name === "Teleport" || p1.summonerspell_2.name === "Teleport") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Teleport" || p2.summonerspell_2.name === "Teleport") {
+                    return 1;
+                  }
+                  // Jungle
+                  if (p1.summonerspell_1.name === "Smite" || p1.summonerspell_2.name === "Smite") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Smite" || p2.summonerspell_2.name === "Smite") {
+                    return 1;
+                  }
+                  // Mid
+                  if (p1.summonerspell_1.name === "Sprint" || p1.summonerspell_2.name === "Sprint"
+                    || p1.summonerspell_1.name === "Cleanse" || p1.summonerspell_2.name === "Cleanse"
+                    || p1.summonerspell_1.name === "Barrier" || p1.summonerspell_2.name === "Barrier"
+                    || p1.summonerspell_1.name === "Ignite" || p1.summonerspell_2.name === "Ignite") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Sprint" || p2.summonerspell_2.name === "Sprint"
+                    || p2.summonerspell_1.name === "Cleanse" || p2.summonerspell_2.name === "Cleanse"
+                    || p2.summonerspell_1.name === "Barrier" || p2.summonerspell_2.name === "Barrier"
+                    || p2.summonerspell_1.name === "Ignite" || p2.summonerspell_2.name === "Ignite") {
+                    return 1;
+                  }
+                  // ADC
+                  if (p1.summonerspell_1.name === "Heal" || p1.summonerspell_2.name === "Heal") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Heal" || p2.summonerspell_2.name === "Heal") {
+                    return 1;
+                  }
+                  // Support
+                  if (p1.summonerspell_1.name === "Exhaust" || p1.summonerspell_2.name === "Exhaust") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Exhaust" || p2.summonerspell_2.name === "Exhaust") {
+                    return 1;
+                  }
+                  return 0;
+                });
                 break;
 
               case ResType.ERROR:

@@ -2,6 +2,7 @@ import {Champion} from "./champion";
 import {SummonerIcon} from "./sub/summoner-icon";
 import {ChampionsContainer} from "./containers/champions-container";
 import {SummonerspellsContainer} from "./containers/summonerspells-container";
+import {SummonerSpell} from "./summoner-spell";
 
 export class CurrentGameParticipant {
 
@@ -10,8 +11,8 @@ export class CurrentGameParticipant {
   public readonly summoner_name;
   public readonly summoner_icon: SummonerIcon;
   public readonly champion: Champion;
-  public readonly summonerspell_1;
-  public readonly summonerspell_2;
+  public readonly summonerspell_1: SummonerSpell;
+  public readonly summonerspell_2: SummonerSpell;
   public readonly masteries;
   public readonly runes;
 

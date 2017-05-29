@@ -1,0 +1,15 @@
+.CurrentGame {
+  display: table;
+  margin: 0 auto;
+
+  &__allies {
+    display: inline-block;
+    padding-right: 5px;
+    margin-right: 5px;
+    border-right: 1px solid #333;
+  }
+
+  &__enemies {
+    display: inline-block;
+  }
+}
