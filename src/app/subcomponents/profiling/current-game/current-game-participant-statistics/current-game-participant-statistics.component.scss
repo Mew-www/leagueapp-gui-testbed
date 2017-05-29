@@ -1,0 +1,35 @@
+%clearfix { &:after { content: ' '; display: table; clear: both; } }
+
+.Participant {
+  @extend %clearfix;
+
+  &__champion-icon-container {
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin: 4px;
+  }
+  &__champion-icon {
+    width: 100%; height: auto;
+    border-radius: 50%;
+    border: 2px groove #9c6f1b;
+  }
+
+  &__summoner-spells {
+    float: left;
+    margin-top: 6px;
+    margin-left: 1px;
+  }
+
+  &__description {
+    float: left;
+    margin-top: 12px;
+    margin-left: 3px;
+  }
+  &__description-name {
+    font-family: "Roboto Mono", monospace;
+  }
+  &__description-league {
+    font-family: 'Roboto Condensed', 'sans-serif';
+  }
+}

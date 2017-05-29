@@ -1,0 +1,10 @@
+.SummonerSpell {
+  position: relative;
+  cursor: help;
+  border: 1px solid #008069;
+  margin: 2px;
+  &__icon {
+    width: 100%;
+    height: auto;
+  }
+}

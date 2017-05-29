@@ -29,6 +29,8 @@ import { SummonerChampionMasteryScrollerComponent } from './subcomponents/profil
 import { SummonerGamehistoryComponent } from './subcomponents/profiling/summoner-statistics/summoner-gamehistory/summoner-gamehistory.component';
 import {RatelimitedRequestsService} from "./services/ratelimited-requests.service";
 import { CurrentGameComponent } from './subcomponents/profiling/current-game/current-game.component';
+import { CurrentGameParticipantStatisticsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/current-game-participant-statistics.component';
+import { SummonerSpellIconComponent } from './genericcomponents/summoner-spell-icon/summoner-spell-icon.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { CurrentGameComponent } from './subcomponents/profiling/current-game/cur
     ProfileTypeSelectorComponent,
     SummonerChampionMasteryScrollerComponent,
     SummonerGamehistoryComponent,
-    CurrentGameComponent
+    CurrentGameComponent,
+    CurrentGameParticipantStatisticsComponent,
+    SummonerSpellIconComponent
   ],
   imports: [
     BrowserModule,

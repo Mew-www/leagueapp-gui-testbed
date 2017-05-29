@@ -1,3 +1,10 @@
-<div>
-  <pre>{{current_game | json}}</pre>
+<div *ngIf="current_game">
+  <current-game-participant-statistics
+      *ngFor="let p of current_game.players"
+      [player]="p"
+      [region]="current_game.looked_up_summoner.region"
+      [gametype]="current_game.game_type"
+      [champions]="champions"
+      [summonerspells]="summonerspells">
+  </current-game-participant-statistics>
 </div>

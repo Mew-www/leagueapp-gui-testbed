@@ -8,6 +8,9 @@ export class ApiRoutes {
   public static ITEM_LIST_URI = Settings.API_BASE_URI + "static/items";
   public static ITEM_REFRESH_URI = Settings.API_BASE_URI + "static/items/refresh";
 
+  public static SUMMONERSPELL_LIST_URI = Settings.API_BASE_URI + "static/summonerspells";
+  public static SUMMONERSPELL_REFRESH_URI = Settings.API_BASE_URI + "static/summonerspells/refresh";
+
   public static PLAYER_BASIC_DATA_BY_NAME_URI = (region, name) => {
     return Settings.API_BASE_URI + "player/basic_data_by_name"
       + "?region=" + region
@@ -72,5 +75,11 @@ export class ApiRoutes {
       return "404.png"
     }
     return Settings.API_BASE_URI + "static/assets/item_icons/"+item_ddragon_filename;
+  };
+  public static SUMMONER_SPELL_URI = (summonerspell_ddragon_name) => {
+    if (summonerspell_ddragon_name === "404") {
+      return "404.png"
+    }
+    return Settings.API_BASE_URI + "static/assets/summonerspell_icons/"+summonerspell_ddragon_name+".png";
   };
 }

@@ -3,10 +3,10 @@ import {GameApiService} from "../../../services/game-api.service";
 import {ChampionsContainer} from "../../../models/dto/containers/champions-container";
 import {Summoner} from "../../../models/dto/summoner";
 import {Subscription} from "rxjs/Subscription";
-import {TranslatorService} from "../../../services/translator.service";
 import {RatelimitedRequestsService} from "../../../services/ratelimited-requests.service";
 import {CurrentGame} from "../../../models/dto/current-game";
 import {ResType} from "../../../enums/api-response-type";
+import {SummonerspellsContainer} from "../../../models/dto/containers/summonerspells-container";
 
 @Component({
   selector: 'current-game',
@@ -16,6 +16,7 @@ import {ResType} from "../../../enums/api-response-type";
 export class CurrentGameComponent implements OnInit, OnChanges {
 
   @Input() champions: ChampionsContainer;
+  @Input() summonerspells: SummonerspellsContainer;
   @Input() summoner: Summoner;
   private ongoing_request: Subscription = null;
   private loading = true;
@@ -24,12 +25,8 @@ export class CurrentGameComponent implements OnInit, OnChanges {
   private current_game_error_text_key = "";
   private current_game_error_details = "";
 
-  private gettext: Function;
-
   constructor(private game_api: GameApiService,
-              private translator: TranslatorService,
               private ratelimitedRequests: RatelimitedRequestsService) {
-    this.gettext = this.translator.getTranslation;
   }
 
   ngOnChanges(changes) {
@@ -44,9 +41,9 @@ export class CurrentGameComponent implements OnInit, OnChanges {
         this.ongoing_request.unsubscribe();
       }
 
-      let region = this.summoner.region;
-      let summoner_id = this.summoner.id;
-      this.ongoing_request = this.ratelimitedRequests.buffer(() => {return this.game_api.getCurrentGame(region, summoner_id, this.champions)})
+      this.ongoing_request = this.ratelimitedRequests.buffer(() => {
+        return this.game_api.getCurrentGame(this.summoner, this.champions, this.summonerspells)
+      })
         .subscribe(api_res => {
             switch (api_res.type) {
               case ResType.SUCCESS:

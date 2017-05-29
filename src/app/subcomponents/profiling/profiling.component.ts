@@ -5,6 +5,7 @@ import {PreferencesService} from "../../services/preferences.service";
 import {ChampionsContainer} from "../../models/dto/containers/champions-container";
 import {ItemsContainer} from "../../models/dto/containers/items-container";
 import {ProfileType} from "../../enums/profile-type";
+import {SummonerspellsContainer} from "../../models/dto/containers/summonerspells-container";
 
 @Component({
   selector: 'profiling',
@@ -15,6 +16,7 @@ export class ProfilingComponent implements OnInit {
 
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;
+  @Input() summonerspells: SummonerspellsContainer;
   private selected_summoner: Summoner = null;
   private profileTypeEnum = ProfileType;
   private selected_profile_type: ProfileType = null;

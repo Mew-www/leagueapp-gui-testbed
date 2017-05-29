@@ -1,0 +1,14 @@
+<div class="Participant">
+  <div class="Participant__champion-icon-container">
+    <img class="Participant__champion-icon" src="{{player.champion.images.square_url}}" />
+  </div>
+  <div class="Participant__summoner-spells">
+    <summoner-spell-icon [summoner_spell]="player.summonerspell_1"></summoner-spell-icon>
+    <summoner-spell-icon [summoner_spell]="player.summonerspell_2"></summoner-spell-icon>
+  </div>
+  <div class="Participant__description">
+    <span class="Participant__description-name">{{player.summoner_name}}</span>
+    <br/>
+    <span class="Participant__description-league">league tier todo promos12345</span>
+  </div>
+</div>

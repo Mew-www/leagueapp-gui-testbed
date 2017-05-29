@@ -2,6 +2,7 @@ import {GameType} from "../../enums/game-type";
 import {ChampionsContainer} from "./containers/champions-container";
 import {CurrentGameParticipant} from "./current-game-participant";
 import {BannedChampion} from "./banned-champion";
+import {SummonerspellsContainer} from "./containers/summonerspells-container";
 
 export class CurrentGame {
 
@@ -10,11 +11,11 @@ export class CurrentGame {
   public readonly game_start_time: Date;
   public readonly bans: Array<BannedChampion>;
   public readonly players: Array<CurrentGameParticipant>;
-  public readonly looked_up_summoner_id;
+  public readonly looked_up_summoner;
 
   // https://developer.riotgames.com/api-methods/#spectator-v3/GET_getCurrentGameInfoBySummoner
-  constructor(currentgame_json, looked_up_summoner_id,
-              champions: ChampionsContainer) {
+  constructor(currentgame_json, looked_up_summoner,
+              champions: ChampionsContainer, summonerspells: SummonerspellsContainer) {
 
     this.game_id = currentgame_json.gameId;
     this.game_type = (function (queue_id) {
@@ -32,9 +33,9 @@ export class CurrentGame {
       return new BannedChampion(b, champions);
     });
     this.players = currentgame_json.participants.map(p => {
-      return new CurrentGameParticipant(p, champions);
+      return new CurrentGameParticipant(p, champions, summonerspells);
     });
-    this.looked_up_summoner_id = looked_up_summoner_id;
+    this.looked_up_summoner = looked_up_summoner;
 
   }
 }

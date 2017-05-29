@@ -64,11 +64,11 @@ export class GameApiService {
       .share();
     return this._historic_game_requests[region][game_id];
   }
-  public getCurrentGame(region, summoner_id, champions): Observable<ApiResponse<CurrentGame, string, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_CURRENT_GAME_URI(region, summoner_id))
+  public getCurrentGame(summoner, champions, summonerspells): Observable<ApiResponse<CurrentGame, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_CURRENT_GAME_URI(summoner.region, summoner.id))
       .map(res => {
         let current_game_json = res.json();
-        return new ApiResponseSuccess(new CurrentGame(current_game_json, summoner_id, champions));
+        return new ApiResponseSuccess(new CurrentGame(current_game_json, summoner, champions, summonerspells));
       }).catch(error_res => {
         switch (error_res.status) {
 

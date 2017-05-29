@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {ApiResponse, ApiResponseError, ApiResponseSuccess} from "../helpers/api-response";
 import {ChampionsContainer} from "../models/dto/containers/champions-container";
 import {ItemsContainer} from "app/models/dto/containers/items-container";
+import {SummonerspellsContainer} from "../models/dto/containers/summonerspells-container";
 
 @Injectable()
 export class StaticApiService {
@@ -13,6 +14,8 @@ export class StaticApiService {
   private _champions_request: Observable<ApiResponse<ChampionsContainer, string, any>> = null;
   private _items: ItemsContainer = null;
   private _items_request: Observable<ApiResponse<ItemsContainer, String, any>> = null;
+  private _summonerspells: SummonerspellsContainer = null;
+  private _summonerspells_request: Observable<ApiResponse<SummonerspellsContainer, String, any>> = null;
 
   constructor(private http: Http) { }
 
@@ -30,6 +33,14 @@ export class StaticApiService {
     this._items = items;
     // ..and return
     return new ApiResponseSuccess(items);
+  }
+  private _cacheAndWrapSummonerspellsApiResponse(res: Response): ApiResponse<SummonerspellsContainer, string, any> {
+    let summonerspells_json = res.json();
+    let summonerspells = new SummonerspellsContainer(summonerspells_json);
+    // Cache
+    this._summonerspells = summonerspells;
+    // ..and return
+    return new ApiResponseSuccess(summonerspells);
   }
 
   public getChampions(): Observable<ApiResponse<ChampionsContainer, string, any>> {
@@ -64,6 +75,22 @@ export class StaticApiService {
       .share();
     return this._items_request;
   }
+  public getSummonerspells(): Observable<ApiResponse<SummonerspellsContainer, string, any>> {
+    // #1 retrieve data from cache
+    if (this._summonerspells) {
+      return Observable.of(new ApiResponseSuccess(this._summonerspells));
+    }
+    // #2 retrieve an ongoing request for data
+    if (this._summonerspells_request) {
+      return this._summonerspells_request;
+    }
+    // #3 create a request and return it
+    this._summonerspells_request = this.http.get(ApiRoutes.SUMMONERSPELL_LIST_URI)
+      .map(res => this._cacheAndWrapSummonerspellsApiResponse(res))
+      .catch(error => Observable.of(new ApiResponseError(`Error when requesting URI "${ApiRoutes.SUMMONERSPELL_LIST_URI}"`)))
+      .share();
+    return this._summonerspells_request;
+  }
   public reloadChampions() {
     this._champions = null;
     this._champions_request = this.http.get(ApiRoutes.CHAMPION_LIST_URI)
@@ -76,6 +103,12 @@ export class StaticApiService {
       .map(res => this._cacheAndWrapItemsApiResponse(res))
       .share();
   }
+  public reloadSummonerspellMap() {
+    this._summonerspells = null;
+    this._summonerspells_request = this.http.get(ApiRoutes.SUMMONERSPELL_LIST_URI)
+      .map(res => this._cacheAndWrapSummonerspellsApiResponse(res))
+      .share();
+  }
   public updateChampionDatabase(): Observable<boolean> {
     return this.http.get(ApiRoutes.CHAMPION_REFRESH_URI)
       .map(res => {
@@ -84,6 +117,12 @@ export class StaticApiService {
   }
   public updateItemDatabase(): Observable<boolean> {
     return this.http.get(ApiRoutes.ITEM_REFRESH_URI)
+      .map(res => {
+        return res.status == 200;
+      });
+  }
+  public updateSummonerspellDatabase(): Observable<boolean> {
+    return this.http.get(ApiRoutes.SUMMONERSPELL_REFRESH_URI)
       .map(res => {
         return res.status == 200;
       });
