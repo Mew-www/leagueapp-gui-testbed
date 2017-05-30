@@ -1,0 +1,71 @@
+.PlayedChampionsTable {
+
+  // (thead) > tr
+  &__heading {
+    display: table-row;
+    font-family: Roboto, 'sans-serif';
+    text-decoration: underline;
+  }
+  // th
+  &__heading-name {
+    display: table-cell;
+  }
+  // th
+  &__heading-lanes {
+    display: table-cell;
+  }
+  // th
+  &__heading-nr-of-games {
+    display: table-cell;
+    padding: 0 5px;
+  }
+
+  // (tbody) > tr
+  &__champion {
+    display: table-row;
+    &:nth-child(odd) {
+      background: rgba(168, 168, 168, 0.3)
+    }
+    &:nth-child(even) {
+      background: rgba(218, 218, 218, 0.3);
+    }
+    &--current-is-main {
+      background: rgba(173, 255, 0, 0.3) !important;
+    }
+    &--current-isnt-main {
+      background: rgba(255, 0, 0, 0.3) !important;
+    }
+  }
+  // td
+  &__champion-order {
+    display: table-cell;
+    padding: 0 5px;
+    font-family: Roboto, 'sans-serif';
+    .hilight {
+      font-weight: bold;
+    }
+  }
+  &__champion-name {
+    display: table-cell;
+    padding: 0 5px;
+    font-family: Roboto, 'sans-serif';
+  }
+  // td
+  &__champion-lanes {
+    display: table-cell;
+    padding: 0 5px;
+    font-size: 14px;
+    font-family: 'Roboto Condensed', 'sans-serif';
+  }
+  // td
+  &__champion-nr-of-games {
+    display: table-cell;
+    padding: 0 5px;
+    text-align: center;
+    font-family: Roboto, 'sans-serif';
+  }
+
+  // tbody > tr etc.
+  .filler-row { display: table-row; }
+  .filler-cell { display: table-cell; }
+}

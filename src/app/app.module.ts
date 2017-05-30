@@ -31,6 +31,7 @@ import {RatelimitedRequestsService} from "./services/ratelimited-requests.servic
 import { CurrentGameComponent } from './subcomponents/profiling/current-game/current-game.component';
 import { CurrentGameParticipantStatisticsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/current-game-participant-statistics.component';
 import { SummonerSpellIconComponent } from './genericcomponents/summoner-spell-icon/summoner-spell-icon.component';
+import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/participant-played-champions/participant-played-champions.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { SummonerSpellIconComponent } from './genericcomponents/summoner-spell-i
     SummonerGamehistoryComponent,
     CurrentGameComponent,
     CurrentGameParticipantStatisticsComponent,
-    SummonerSpellIconComponent
+    SummonerSpellIconComponent,
+    ParticipantPlayedChampionsComponent
   ],
   imports: [
     BrowserModule,

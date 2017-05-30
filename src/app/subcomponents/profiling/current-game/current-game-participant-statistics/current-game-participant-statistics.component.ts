@@ -31,9 +31,8 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
   private loading_gamehistory = false;
 
   private summoner: Summoner;
+  private gamehistory: Array<GameReference> = null;
   private preferred_lanes: Array<any> = null;
-  private most_played_champions: Array<any> = null;
-  private current_champion = null;
   private error_text_key = "";
   private error_details = "";
 
@@ -65,6 +64,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                 switch (gamehistory_api_res.type) {
                   case ResType.SUCCESS:
                     let gamehistory = gamehistory_api_res.data.map(record => new GameReference(record, this.champions));
+                    this.gamehistory = gamehistory;
                     this.preferred_lanes = gamehistory.reduce((seen_lanes, gameref: GameReference) => {
                       let seen_lane = seen_lanes.find(s => s.lane_name === gameref.in_select_lane);
                       if (!seen_lane) {
@@ -83,58 +83,6 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                         preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / gamehistory.length * 100);
                         return preferred_lane;
                       });
-                    let played_champions = gamehistory.reduce((seen_champions, gameref: GameReference) => {
-                      let seen_champion = seen_champions.find(s => s.champion.id === gameref.chosen_champion.id);
-                      let lane = gameref.in_select_lane;
-                      if (!seen_champion) {
-                        seen_champion = {
-                          champion: this.champions.getChampionById(gameref.chosen_champion.id),
-                          nr_of_games: 0,
-                          lanes: {}
-                        };
-                        seen_champions.push(seen_champion);
-                      }
-
-                      if (Object.keys(seen_champion.lanes).indexOf(lane) === -1) {
-                        seen_champion.lanes[lane] = 0;
-                      }
-                      seen_champion.nr_of_games++;
-                      seen_champion.lanes[lane]++;
-                      return seen_champions;
-                    }, []).sort((a, b) => b.nr_of_games - a.nr_of_games);
-                    this.most_played_champions = played_champions
-                      .slice(0, 5)
-                      .map(most_played_champion => {
-                        most_played_champion.lanes = Object.keys(most_played_champion.lanes).map(lane => {
-                          return {
-                            lane_name: lane,
-                            times_played_percent: Math.round(most_played_champion.lanes[lane] / most_played_champion.nr_of_games * 100)
-                          };
-                        }).sort((a,b) => b.times_played_percent - a.times_played_percent);
-                        return most_played_champion;
-                      });
-                    if (!this.most_played_champions.find(c => c.champion.id === this.player.champion.id)) {
-                      // Add it manually as separate
-                      let seen_current_champion = played_champions.find(c => c.champion.id === this.player.champion.id);
-                      if (seen_current_champion) {
-                        console.log(seen_current_champion);
-                        this.current_champion = seen_current_champion;
-                        this.current_champion.lanes = Object.keys(this.current_champion.lanes).map(lane => {
-                          return {
-                            lane_name: lane,
-                            times_played_percent: Math.round(this.current_champion.lanes[lane] / this.current_champion.nr_of_games * 100)
-                          };
-                        });
-                        this.current_champion['order'] = played_champions.map(c => c.champion.id).indexOf(this.player.champion.id)+1;
-                      } else {
-                        this.current_champion = {
-                          order: -1,
-                          champion: this.player.champion,
-                          nr_of_games: 0,
-                          lanes: []
-                        };
-                      }
-                    }
                     break;
 
                   case ResType.ERROR:
@@ -143,7 +91,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                     break;
 
                   case ResType.NOT_FOUND:
-                    this.most_played_champions = [];
+                    this.gamehistory = [];
                     break;
                 }
                 this.loading_gamehistory = false;

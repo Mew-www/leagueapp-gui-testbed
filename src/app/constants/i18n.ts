@@ -47,8 +47,9 @@ export class i18n {
       'current_game_not_found': "Current game not found. Player is not currently in game.",
       'preferred_lanes': "Queues for",
       'nr_of_games': "Games",
-      'lane_allocation': "Lane allocation",
-      'unlucky_firsttime': "Unlucky firsttime"
+      'unlucky_firsttime': "Unlucky firsttime",
+      'role_in_selection': "Role during selection",
+      'games': "games"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -97,7 +98,9 @@ export class i18n {
       'preferred_lanes': "Pelaamat lanet",
       'nr_of_games': "Pelattu",
       'lane_allocation': "Lane jakauma",
-      'unlucky_firsttime': "Harmillista"
+      'unlucky_firsttime': "Harmillista",
+      'role_in_selection': "Rooli selectionin aikana",
+      'games': "peli\u00e4"
     }
   }
 
