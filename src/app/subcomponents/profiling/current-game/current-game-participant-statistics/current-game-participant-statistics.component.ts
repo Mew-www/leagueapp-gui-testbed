@@ -10,6 +10,7 @@ import {GameType} from "../../../../enums/game-type";
 import {ChampionsContainer} from "../../../../models/dto/containers/champions-container";
 import {SummonerspellsContainer} from "../../../../models/dto/containers/summonerspells-container";
 import {TranslatorService} from "../../../../services/translator.service";
+import {Settings} from "../../../../constants/settings";
 
 @Component({
   selector: 'current-game-participant-statistics',
@@ -32,8 +33,15 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
   private summoner: Summoner;
   private preferred_lanes: Array<any> = null;
   private most_played_champions: Array<any> = null;
+  private current_champion = null;
   private error_text_key = "";
   private error_details = "";
+
+
+  private top_lane_queue_img_uri = Settings.STATIC_BASE_URI + "top_lane_queue.png";
+  private jungle_lane_queue_img_uri = Settings.STATIC_BASE_URI + "jungle_lane_queue.png";
+  private mid_lane_queue_img_uri = Settings.STATIC_BASE_URI + "mid_lane_queue.png";
+  private bottom_lane_queue_img_uri = Settings.STATIC_BASE_URI + "bottom_lane_queue.png";
 
   private gettext: Function;
 
@@ -75,7 +83,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                         preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / gamehistory.length * 100);
                         return preferred_lane;
                       });
-                    this.most_played_champions = gamehistory.reduce((seen_champions, gameref: GameReference) => {
+                    let played_champions = gamehistory.reduce((seen_champions, gameref: GameReference) => {
                       let seen_champion = seen_champions.find(s => s.champion.id === gameref.chosen_champion.id);
                       let lane = gameref.in_select_lane;
                       if (!seen_champion) {
@@ -86,14 +94,15 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                         };
                         seen_champions.push(seen_champion);
                       }
+
                       if (Object.keys(seen_champion.lanes).indexOf(lane) === -1) {
                         seen_champion.lanes[lane] = 0;
                       }
                       seen_champion.nr_of_games++;
                       seen_champion.lanes[lane]++;
                       return seen_champions;
-                    }, [])
-                      .sort((a, b) => b.nr_of_games - a.nr_of_games)
+                    }, []).sort((a, b) => b.nr_of_games - a.nr_of_games);
+                    this.most_played_champions = played_champions
                       .slice(0, 5)
                       .map(most_played_champion => {
                         most_played_champion.lanes = Object.keys(most_played_champion.lanes).map(lane => {
@@ -104,6 +113,28 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit {
                         }).sort((a,b) => b.times_played_percent - a.times_played_percent);
                         return most_played_champion;
                       });
+                    if (!this.most_played_champions.find(c => c.champion.id === this.player.champion.id)) {
+                      // Add it manually as separate
+                      let seen_current_champion = played_champions.find(c => c.champion.id === this.player.champion.id);
+                      if (seen_current_champion) {
+                        console.log(seen_current_champion);
+                        this.current_champion = seen_current_champion;
+                        this.current_champion.lanes = Object.keys(this.current_champion.lanes).map(lane => {
+                          return {
+                            lane_name: lane,
+                            times_played_percent: Math.round(this.current_champion.lanes[lane] / this.current_champion.nr_of_games * 100)
+                          };
+                        });
+                        this.current_champion['order'] = played_champions.map(c => c.champion.id).indexOf(this.player.champion.id)+1;
+                      } else {
+                        this.current_champion = {
+                          order: -1,
+                          champion: this.player.champion,
+                          nr_of_games: 0,
+                          lanes: []
+                        };
+                      }
+                    }
                     break;
 
                   case ResType.ERROR:
