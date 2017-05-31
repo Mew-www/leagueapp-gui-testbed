@@ -1,24 +1,37 @@
-<div *ngIf="current_game" class="CurrentGame">
+<div *ngIf="current_game && current_game.game_type !== GameType.UNKNOWN_UNDEFINED" class="CurrentGame">
+  <div *ngIf="current_game.game_type === GameType.SOLO_QUEUE">
+    <input type="checkbox" [(ngModel)]="show_also_secondary_queue_stats" [disabled]="!all_gamehistories_ready" />
+    Show also Flexqueue's stats?
+  </div>
+  <div *ngIf="current_game.game_type === GameType.FLEX_QUEUE">
+    <input type="checkbox" [(ngModel)]="show_also_secondary_queue_stats" [disabled]="!all_gamehistories_ready"/>
+    Show also Soloqueue's stats?
+  </div>
+  <div>
+    {{!all_gamehistories_ready ? "(Loading...)" : ""}}
+  </div>
+  <br/>
   <div class="CurrentGame__allies">
     <current-game-participant-statistics
-        *ngFor="let p of current_game.allies"
-        (moveup)="handleMoveupAlly(p)"
-        (movedown)="handleMovedownAlly(p)"
+        *ngFor="let p of current_game.allies; let i = index"
+        (signalGamehistoryLoading)="handleGamehistoryLoading(p.summoner_id)"
+        (signalGamehistoryLoaded)="handleGamehistoryLoaded(p.summoner_id)"
         [player]="p"
         [region]="current_game.looked_up_summoner.region"
-        [gametype]="current_game.game_type"
+        [queues_to_look_up]="show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE : current_game.game_type"
         [champions]="champions"
         [summonerspells]="summonerspells">
     </current-game-participant-statistics>
   </div>
   <div class="CurrentGame__enemies">
     <current-game-participant-statistics
-        *ngFor="let p of current_game.enemies"
-        (moveup)="handleMoveupEnemy(p)"
-        (movedown)="handleMovedownEnemy(p)"
+        *ngFor="let p of current_game.enemies; let i = index"
+        (signalGamehistoryLoading)="handleGamehistoryLoading(p.summoner_id)"
+        (signalGamehistoryLoaded)="handleGamehistoryLoaded(p.summoner_id)"
         [player]="p"
         [region]="current_game.looked_up_summoner.region"
         [gametype]="current_game.game_type"
+        [queues_to_look_up]="show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE : current_game.game_type"
         [champions]="champions"
         [summonerspells]="summonerspells">
     </current-game-participant-statistics>

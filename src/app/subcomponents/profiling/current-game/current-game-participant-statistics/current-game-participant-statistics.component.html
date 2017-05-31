@@ -1,11 +1,13 @@
-<div class="ParticipantControls">
-  <button (click)="moveup.emit()">&uarr;</button>
-  <br/>
-  <button (click)="movedown.emit()">&darr;</button>
-</div>
 <div class="Participant">
   <div class="Participant__description">
     <span class="Participant__description-name">{{player.summoner_name}}</span>
+    <span
+        *ngIf="gamehistory !== null"
+        class="Participant__description-games-total"
+    >({{gamehistory.length}} games total in {{
+      queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE ?
+        'solo & flex' : queues_to_look_up === GameType.SOLO_QUEUE ?
+          'soloqueue' : 'flexqueue'}})</span>
   </div>
   <div class="Participant__summary">
     <div class="Participant__lane-mains">
@@ -38,6 +40,3 @@
       [champions]="champions">
   </participant-played-champions>
 </div>
-<br/>
-<br/>
-<br/>

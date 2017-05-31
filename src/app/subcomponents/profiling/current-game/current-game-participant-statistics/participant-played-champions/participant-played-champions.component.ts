@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {GameReference} from "../../../../../models/dto/game-reference";
 import {ChampionsContainer} from "../../../../../models/dto/containers/champions-container";
 import {Champion} from "../../../../../models/dto/champion";
@@ -9,7 +9,7 @@ import {TranslatorService} from "../../../../../services/translator.service";
   templateUrl: './participant-played-champions.component.html',
   styleUrls: ['./participant-played-champions.component.scss']
 })
-export class ParticipantPlayedChampionsComponent implements OnInit {
+export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
 
   @Input() currently_played_champion: Champion;
   @Input() gamehistory: Array<GameReference>;
@@ -17,12 +17,24 @@ export class ParticipantPlayedChampionsComponent implements OnInit {
   private top_played_champions: Array<any> = null; // {champion, nr_of_games, lanes}
   private non_top_current_champion = null; // {order, champion, nr_of_games, lanes}
 
+  private minimized = true;
+
   private gettext: Function;
+
   constructor(private translator: TranslatorService) {
     this.gettext = this.translator.getTranslation;
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnChanges(changes) {
+    if (changes['gamehistory'].currentValue === changes['gamehistory'].previousValue) {
+      return;
+    }
+
+    this.top_played_champions = null;
+    this.non_top_current_champion = null;
+
     let played_champions = this.gamehistory.reduce((seen_champions, gameref: GameReference) => {
       let seen_champion = seen_champions.find(s => s.champion.id === gameref.chosen_champion.id);
       let lane = gameref.in_select_lane;

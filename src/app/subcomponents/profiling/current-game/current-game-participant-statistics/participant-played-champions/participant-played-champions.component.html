@@ -1,53 +1,64 @@
-<div *ngIf="top_played_champions" class="PlayedChampionsTable">
+<div class="PlayedChampions">
 
-  <!-- Heading -->
-  <div class="PlayedChampionsTable__heading">
-    <div class="PlayedChampionsTable__heading-order"></div>
-    <div class="PlayedChampionsTable__heading-name"></div>
-    <div class="PlayedChampionsTable__heading-lanes">{{gettext('role_in_selection')}}</div>
-    <div class="PlayedChampionsTable__heading-nr-of-games">{{gettext('nr_of_games')}}</div>
+  <div *ngIf="top_played_champions" class="PlayedChampions__table PlayedChampionsTable">
+    <!-- Heading -->
+    <div class="PlayedChampionsTable__heading" [style.display]="minimized?'none':''">
+      <div class="PlayedChampionsTable__heading-order"></div>
+      <div class="PlayedChampionsTable__heading-name"></div>
+      <div class="PlayedChampionsTable__heading-lanes">{{gettext('role_in_selection')}}</div>
+      <div class="PlayedChampionsTable__heading-nr-of-games">{{gettext('nr_of_games')}}</div>
+      <div class="PlayedChampionsTable__heading-controls"></div>
+    </div>
+
+    <!-- Most played (top 5) champions -->
+    <div *ngFor="let c of top_played_champions; let i = index"
+         class="PlayedChampionsTable__champion"
+         [class.PlayedChampionsTable__champion--current-is-main]="c.champion.id === currently_played_champion.id"
+         [style.display]="(minimized && c.champion.id !== currently_played_champion.id)?'none':''">
+      <div class="PlayedChampionsTable__champion-order">
+        #<span [class.hilight]="c.champion.id === currently_played_champion.id">{{i+1}}</span>
+      </div>
+      <div class="PlayedChampionsTable__champion-name">{{c.champion.name}}</div>
+      <div class="PlayedChampionsTable__champion-played-lanes">
+        (<span
+          *ngFor="let l of c.lanes; let i = index"
+          title="{{l.times_played + ' ' + gettext('games')}}">{{l.lane_name}}{{l.times_played_percent < 100 ? ' '+l.times_played_percent+'%' : ''}}{{i!==c.lanes.length-1 ? ', ' : ''}}</span>)
+      </div>
+      <div class="PlayedChampionsTable__champion-nr-of-games">{{c.nr_of_games}}</div>
+      <div class="PlayedChampionsTable__controls">
+      </div>
+    </div>
+
+    <!-- ... -->
+    <div *ngIf="non_top_current_champion && non_top_current_champion.order !== 6" class="filler-row" [style.display]="minimized?'none':''">
+      <div class="filler-cell"></div>
+      <div class="filler-cell"></div>
+      <div class="filler-cell">...</div>
+      <div class="filler-cell"></div>
+      <div class="filler-cell"></div>
+    </div>
+
+    <!-- Current champion (if out of top 5 played) -->
+    <div *ngIf="non_top_current_champion" class="PlayedChampionsTable__champion PlayedChampionsTable__champion--current-isnt-main">
+      <div class="PlayedChampionsTable__champion-order">
+        {{non_top_current_champion.order > -1 ? '#' : ''}}<span class="hilight">{{non_top_current_champion.order > -1 ? non_top_current_champion.order : ''}}</span>
+      </div>
+      <div class="PlayedChampionsTable__champion-name">{{non_top_current_champion.champion.name}}</div>
+      <div class="PlayedChampionsTable__champion-played-lanes">
+          <span *ngIf="non_top_current_champion.lanes.length > 0" >
+            (<span
+              *ngFor="let l of non_top_current_champion.lanes; let i = index"
+              title="{{l.times_played + ' ' + gettext('games')}}">{{l.lane_name}}{{l.times_played_percent < 100 ? ' '+l.times_played_percent+'%' : ''}}{{i!==non_top_current_champion.lanes.length-1 ? ', ' : ''}}</span>)
+          </span>
+        <span *ngIf="non_top_current_champion.lanes.length === 0">
+            {{gettext('unlucky_firsttime')}}
+          </span>
+      </div>
+      <div class="PlayedChampionsTable__champion-nr-of-games">{{non_top_current_champion.nr_of_games ? non_top_current_champion.nr_of_games : ''}}</div>
+      <div class="PlayedChampionsTable__controls">
+      </div>
+    </div>
   </div>
 
-  <!-- Most played (top 5) champions -->
-  <div *ngFor="let c of top_played_champions; let i = index"
-       class="PlayedChampionsTable__champion"
-       [class.PlayedChampionsTable__champion--current-is-main]="c.champion.id === currently_played_champion.id">
-    <div class="PlayedChampionsTable__champion-order">
-      #<span [class.hilight]="c.champion.id === currently_played_champion.id">{{i+1}}</span>
-    </div>
-    <div class="PlayedChampionsTable__champion-name">{{c.champion.name}}</div>
-    <div class="PlayedChampionsTable__champion-played-lanes">
-      (<span
-        *ngFor="let l of c.lanes; let i = index"
-        title="{{l.times_played + ' ' + gettext('games')}}">{{l.lane_name}}{{l.times_played_percent < 100 ? ' '+l.times_played_percent+'%' : ''}}{{i!==c.lanes.length-1 ? ', ' : ''}}</span>)
-    </div>
-    <div class="PlayedChampionsTable__champion-nr-of-games">{{c.nr_of_games}}</div>
-  </div>
-
-  <!-- ... -->
-  <div *ngIf="non_top_current_champion && non_top_current_champion.order !== 6" class="filler-row">
-    <div class="filler-cell"></div>
-    <div class="filler-cell"></div>
-    <div class="filler-cell">...</div>
-    <div class="filler-cell"></div>
-  </div>
-
-  <!-- Current champion (if out of top 5 played) -->
-  <div *ngIf="non_top_current_champion" class="PlayedChampionsTable__champion PlayedChampionsTable__champion--current-isnt-main">
-    <div class="PlayedChampionsTable__champion-order">
-      {{non_top_current_champion.order > -1 ? '#' : ''}}<span class="hilight">{{non_top_current_champion.order > -1 ? non_top_current_champion.order : ''}}</span>
-    </div>
-    <div class="PlayedChampionsTable__champion-name">{{non_top_current_champion.champion.name}}</div>
-    <div class="PlayedChampionsTable__champion-played-lanes">
-        <span *ngIf="non_top_current_champion.lanes.length > 0" >
-          (<span
-            *ngFor="let l of non_top_current_champion.lanes; let i = index"
-            title="{{l.times_played + ' ' + gettext('games')}}">{{l.lane_name}}{{l.times_played_percent < 100 ? ' '+l.times_played_percent+'%' : ''}}{{i!==non_top_current_champion.lanes.length-1 ? ', ' : ''}}</span>)
-        </span>
-      <span *ngIf="non_top_current_champion.lanes.length === 0">
-          {{gettext('unlucky_firsttime')}}
-        </span>
-    </div>
-    <div class="PlayedChampionsTable__champion-nr-of-games">{{non_top_current_champion.nr_of_games ? non_top_current_champion.nr_of_games : ''}}</div>
-  </div>
+  <button class="PlayedChampions__toggle-details-btn" (click)="minimized = !minimized">{{gettext(minimized ? 'show_more' : 'show_less')}}</button>
 </div>

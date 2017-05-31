@@ -1,31 +1,16 @@
 %clearfix { &:after { content: ' '; display: table; clear: both; } }
 
-:host {
-  @extend %clearfix;
-}
-
-.ParticipantControls {
-  float: left;
-  position: relative;
-  top: 24px;
-  button {
-    background: transparent;
-    border: none;
-    font-family: Roboto, 'sans-serif';
-    font-size: 22px;
-    transition: background 1s ease;
-    cursor: pointer;
-    &:hover {
-      background: #6cc5c5;
-    }
-  }
-}
-
 .Participant {
-  float: left;
   margin-bottom: 20px;
 
   &__description {
+  }
+  &__description-name {
+    font-family: "Roboto Mono", monospace;
+  }
+  &__description-games-total {
+    font-size: 18px;
+    font-family: 'Roboto Condensed', 'sans-serif';
   }
 
   &__summary {
@@ -70,8 +55,5 @@
     float: left;
     margin-top: 6px;
     margin-left: 1px;
-  }
-  &__description-name {
-    font-family: "Roboto Mono", monospace;
   }
 }

@@ -49,7 +49,9 @@ export class i18n {
       'nr_of_games': "Games",
       'unlucky_firsttime': "Unlucky firsttime",
       'role_in_selection': "Role during selection",
-      'games': "games"
+      'games': "games",
+      'show_more': "show more",
+      'show_less': "show less"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -100,7 +102,9 @@ export class i18n {
       'lane_allocation': "Lane jakauma",
       'unlucky_firsttime': "Harmillista",
       'role_in_selection': "Rooli selectionin aikana",
-      'games': "peli\u00e4"
+      'games': "peli\u00e4",
+      'show_more': "show more",
+      'show_less': "show less"
     }
   }
 

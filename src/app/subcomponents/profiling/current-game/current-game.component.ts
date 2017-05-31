@@ -7,6 +7,7 @@ import {RatelimitedRequestsService} from "../../../services/ratelimited-requests
 import {CurrentGame} from "../../../models/dto/current-game";
 import {ResType} from "../../../enums/api-response-type";
 import {SummonerspellsContainer} from "../../../models/dto/containers/summonerspells-container";
+import {GameType} from "../../../enums/game-type";
 
 @Component({
   selector: 'current-game',
@@ -18,10 +19,15 @@ export class CurrentGameComponent implements OnInit, OnChanges {
   @Input() champions: ChampionsContainer;
   @Input() summonerspells: SummonerspellsContainer;
   @Input() summoner: Summoner;
+
   private ongoing_request: Subscription = null;
   private loading = true;
 
   private current_game: CurrentGame = null;
+  private gamehistories_ready = {};
+  private all_gamehistories_ready = false; // Started by the initial load, enables "secondary queue stats"
+  private show_also_secondary_queue_stats = false;
+  private GameType = GameType;
   private current_game_error_text_key = "";
   private current_game_error_details = "";
 
@@ -29,56 +35,20 @@ export class CurrentGameComponent implements OnInit, OnChanges {
               private ratelimitedRequests: RatelimitedRequestsService) {
   }
 
-  handleMoveupAlly(p) {
-    let idx = 0;
-    this.current_game.allies.forEach((ally, i) => {
-      if (ally.summoner_id === p.summoner_id) {
-        idx = i;
-      }
-    });
-    if (idx === 0) {
-      return;
-    }
-    this.current_game.allies.splice((idx-1), 0, this.current_game.allies.splice(idx,1)[0]);
+  handleGamehistoryLoading(id) {
+    this.gamehistories_ready[id] = false;
+    this.all_gamehistories_ready = false;
   }
 
-  handleMovedownAlly(p) {
-    let idx = 4;
-    this.current_game.allies.forEach((ally, i) => {
-      if (ally.summoner_id === p.summoner_id) {
-        idx = i;
-      }
-    });
-    if (idx === 4) {
-      return;
+  handleGamehistoryLoaded(id) {
+    this.gamehistories_ready[id] = true;
+    if (Object.keys(this.gamehistories_ready).length === 10
+      && Object.keys(this.gamehistories_ready)
+        .map(id => this.gamehistories_ready[id])
+        .every(ready => ready === true))
+    {
+        this.all_gamehistories_ready = true;
     }
-    this.current_game.allies.splice((idx+1), 0, this.current_game.allies.splice(idx,1)[0]);
-  }
-
-  handleMoveupEnemy(p) {
-    let idx = 0;
-    this.current_game.enemies.forEach((enemy, i) => {
-      if (enemy.summoner_id === p.summoner_id) {
-        idx = i;
-      }
-    });
-    if (idx === 0) {
-      return;
-    }
-    this.current_game.enemies.splice((idx-1), 0, this.current_game.enemies.splice(idx,1)[0]);
-  }
-
-  handleMovedownEnemy(p) {
-    let idx = 4;
-    this.current_game.enemies.forEach((enemy, i) => {
-      if (enemy.summoner_id === p.summoner_id) {
-        idx = i;
-      }
-    });
-    if (idx === 4) {
-      return;
-    }
-    this.current_game.enemies.splice((idx+1), 0, this.current_game.enemies.splice(idx,1)[0]);
   }
 
   ngOnChanges(changes) {
