@@ -13,6 +13,7 @@ import {TranslatorService} from "../../../../services/translator.service";
 import {Settings} from "../../../../constants/settings";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
+import {Analytics} from "../../../../helpers/analytics";
 
 @Component({
   selector: 'current-game-participant-statistics',
@@ -40,7 +41,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   private _cached_gamehistories = {
     'soloqueue': null,
     'flexqueue': null,
-    'combined': null
+    'combined': null // Could be solo+flex but this keeps the option of adding more queue types (normal, 3v3, etc.)
   };
 
   private summoner: Summoner;
@@ -72,68 +73,17 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
       // If data is already cached, just return it
       if (this.queues_to_look_up === GameType.SOLO_QUEUE && this._cached_gamehistories.soloqueue !== null) {
         this.gamehistory = this._cached_gamehistories.soloqueue;
-        this.preferred_lanes = this.gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
-          if (!seen_lane) {
-            seen_lane = {
-              lane_name: gameref.presumed_lane,
-              nr_of_games: 0
-            };
-            seen_lanes.push(seen_lane);
-          }
-          seen_lane.nr_of_games++;
-          return seen_lanes;
-        }, [])
-          .sort((a,b) => b.nr_of_games - a.nr_of_games)
-          .slice(0,2)
-          .map(preferred_lane => {
-            preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / this.gamehistory.length * 100);
-            return preferred_lane;
-          });
+        this.preferred_lanes = Analytics.parsePreferredLanes(this.gamehistory);
         return;
       }
       if (this.queues_to_look_up === GameType.FLEX_QUEUE && this._cached_gamehistories.flexqueue !== null) {
         this.gamehistory = this._cached_gamehistories.flexqueue;
-        this.preferred_lanes = this.gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
-          if (!seen_lane) {
-            seen_lane = {
-              lane_name: gameref.presumed_lane,
-              nr_of_games: 0
-            };
-            seen_lanes.push(seen_lane);
-          }
-          seen_lane.nr_of_games++;
-          return seen_lanes;
-        }, [])
-          .sort((a,b) => b.nr_of_games - a.nr_of_games)
-          .slice(0,2)
-          .map(preferred_lane => {
-            preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / this.gamehistory.length * 100);
-            return preferred_lane;
-          });
+        this.preferred_lanes = Analytics.parsePreferredLanes(this.gamehistory);
         return;
       }
       if (this.queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE && this._cached_gamehistories.combined !== null) {
         this.gamehistory = this._cached_gamehistories.combined;
-        this.preferred_lanes = this.gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
-          if (!seen_lane) {
-            seen_lane = {
-              lane_name: gameref.presumed_lane,
-              nr_of_games: 0
-            };
-            seen_lanes.push(seen_lane);
-          }
-          seen_lane.nr_of_games++;
-          return seen_lanes;
-        }, [])
-          .sort((a,b) => b.nr_of_games - a.nr_of_games)
-          .slice(0,2)
-          .map(preferred_lane => {
-            preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / this.gamehistory.length * 100);
-            return preferred_lane;
-          });
+        this.preferred_lanes = Analytics.parsePreferredLanes(this.gamehistory);
         return;
       }
 
@@ -181,24 +131,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
                         break;
                     }
                     this.gamehistory = gamehistory;
-                    this.preferred_lanes = gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-                      let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
-                      if (!seen_lane) {
-                        seen_lane = {
-                          lane_name: gameref.presumed_lane,
-                          nr_of_games: 0
-                        };
-                        seen_lanes.push(seen_lane);
-                      }
-                      seen_lane.nr_of_games++;
-                      return seen_lanes;
-                    }, [])
-                      .sort((a,b) => b.nr_of_games - a.nr_of_games)
-                      .slice(0,2)
-                      .map(preferred_lane => {
-                        preferred_lane['percentage'] = Math.round(preferred_lane.nr_of_games / gamehistory.length * 100);
-                        return preferred_lane;
-                      });
+                    this.preferred_lanes = Analytics.parsePreferredLanes(gamehistory);
                     break;
 
                   case ResType.ERROR:
@@ -211,7 +144,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
                     break;
                 }
                 this.loading_gamehistory = false;
-                // Signal loaded all the gamehistory
+                // Signal loaded all the gamehistory for this player
                 this.signalGamehistoryLoaded.emit();
               });
             break;
