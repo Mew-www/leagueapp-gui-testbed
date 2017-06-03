@@ -45,13 +45,13 @@ export class i18n {
       'filtered_away': "filtered away",
       'filters_available': "Filters available",
       'current_game_not_found': "Current game not found. Player is not currently in game.",
-      'preferred_lanes': "Queues for",
+      'preferred_lanes': "Prefers",
       'nr_of_games': "Games",
       'unlucky_firsttime': "Unlucky firsttime",
-      'role_in_selection': "Role during selection",
       'games': "games",
-      'show_more': "show more",
-      'show_less': "show less"
+      'show_more': "Show more",
+      'show_less': "Show less",
+      'most_played_champions': "Most played champions"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -101,10 +101,10 @@ export class i18n {
       'nr_of_games': "Pelattu",
       'lane_allocation': "Lane jakauma",
       'unlucky_firsttime': "Harmillista",
-      'role_in_selection': "Rooli selectionin aikana",
       'games': "peli\u00e4",
-      'show_more': "show more",
-      'show_less': "show less"
+      'show_more': "N\u00e4yt\u00e4 lis\u00e4\u00e4",
+      'show_less': "N\u00e4yt\u00e4 v\u00e4hemm\u00e4n",
+      'most_played_champions': "Eniten pelatut"
     }
   }
 

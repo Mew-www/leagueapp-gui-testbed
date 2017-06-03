@@ -1,11 +1,12 @@
 <div class="PlayedChampions">
 
+  <p class="PlayedChampions__title">{{gettext('most_played_champions')}}</p>
   <div *ngIf="top_played_champions" class="PlayedChampions__table PlayedChampionsTable">
     <!-- Heading -->
     <div class="PlayedChampionsTable__heading" [style.display]="minimized?'none':''">
       <div class="PlayedChampionsTable__heading-order"></div>
       <div class="PlayedChampionsTable__heading-name"></div>
-      <div class="PlayedChampionsTable__heading-lanes">{{gettext('role_in_selection')}}</div>
+      <div class="PlayedChampionsTable__heading-lanes"></div>
       <div class="PlayedChampionsTable__heading-nr-of-games">{{gettext('nr_of_games')}}</div>
       <div class="PlayedChampionsTable__heading-controls"></div>
     </div>
@@ -58,7 +59,5 @@
       <div class="PlayedChampionsTable__controls">
       </div>
     </div>
-  </div>
-
-  <button class="PlayedChampions__toggle-details-btn" (click)="minimized = !minimized">{{gettext(minimized ? 'show_more' : 'show_less')}}</button>
+  </div><button class="PlayedChampions__toggle-details-btn" (click)="minimized = !minimized">{{gettext(minimized ? 'show_more' : 'show_less')}}</button>
 </div>

@@ -21,6 +21,7 @@ import {Observable} from "rxjs/Observable";
 })
 export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChanges {
 
+  @Input() match_id;
   @Input() player: CurrentGameParticipant;
   @Input() region;
   @Input() gametype: GameType;
@@ -72,10 +73,10 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
       if (this.queues_to_look_up === GameType.SOLO_QUEUE && this._cached_gamehistories.soloqueue !== null) {
         this.gamehistory = this._cached_gamehistories.soloqueue;
         this.preferred_lanes = this.gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.in_select_lane);
+          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
           if (!seen_lane) {
             seen_lane = {
-              lane_name: gameref.in_select_lane,
+              lane_name: gameref.presumed_lane,
               nr_of_games: 0
             };
             seen_lanes.push(seen_lane);
@@ -94,10 +95,10 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
       if (this.queues_to_look_up === GameType.FLEX_QUEUE && this._cached_gamehistories.flexqueue !== null) {
         this.gamehistory = this._cached_gamehistories.flexqueue;
         this.preferred_lanes = this.gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.in_select_lane);
+          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
           if (!seen_lane) {
             seen_lane = {
-              lane_name: gameref.in_select_lane,
+              lane_name: gameref.presumed_lane,
               nr_of_games: 0
             };
             seen_lanes.push(seen_lane);
@@ -116,10 +117,10 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
       if (this.queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE && this._cached_gamehistories.combined !== null) {
         this.gamehistory = this._cached_gamehistories.combined;
         this.preferred_lanes = this.gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.in_select_lane);
+          let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
           if (!seen_lane) {
             seen_lane = {
-              lane_name: gameref.in_select_lane,
+              lane_name: gameref.presumed_lane,
               nr_of_games: 0
             };
             seen_lanes.push(seen_lane);
@@ -150,7 +151,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
       // If first run, else don't re-create
       if (this.observable_playerdata_request === null) {
         this.observable_playerdata_request = this.ratelimitedRequests.buffer(() => {
-          return this.player_api.getSummonerByName(this.region, this.player.summoner_name)
+          return this.player_api.getSummonerByNameSpectatorcached(this.region, this.player.summoner_name, this.match_id)
         });
       }
 
@@ -162,7 +163,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
             this.loading_player_data = false;
             this.loading_gamehistory = true;
             this.ongoing_gamehistory_request = this.ratelimitedRequests.buffer(() => {
-              return this.player_api.getListOfRankedGamesJson(this.region, this.summoner.account_id, this.queues_to_look_up);
+              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, this.queues_to_look_up, this.match_id);
             })
               .subscribe(gamehistory_api_res => {
                 switch (gamehistory_api_res.type) {
@@ -181,10 +182,10 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
                     }
                     this.gamehistory = gamehistory;
                     this.preferred_lanes = gamehistory.reduce((seen_lanes, gameref: GameReference) => {
-                      let seen_lane = seen_lanes.find(s => s.lane_name === gameref.in_select_lane);
+                      let seen_lane = seen_lanes.find(s => s.lane_name === gameref.presumed_lane);
                       if (!seen_lane) {
                         seen_lane = {
-                          lane_name: gameref.in_select_lane,
+                          lane_name: gameref.presumed_lane,
                           nr_of_games: 0
                         };
                         seen_lanes.push(seen_lane);

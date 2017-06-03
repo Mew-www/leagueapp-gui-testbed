@@ -1,21 +1,26 @@
 <div class="Participant">
   <div class="Participant__description">
-    <span class="Participant__description-name">{{player.summoner_name}}</span>
+    <span class="Participant__description-name">
+      <a href="https://{{region}}.op.gg/summoner/userName={{player.summoner_name}}" target="_blank">{{player.summoner_name}}</a>
+    </span>
     <span
-        *ngIf="gamehistory !== null"
+        *ngIf="!loading_gamehistory && gamehistory"
         class="Participant__description-games-total"
-    >({{gamehistory.length}} games total in {{
-      queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE ?
-        'solo & flex' : queues_to_look_up === GameType.SOLO_QUEUE ?
-          'soloqueue' : 'flexqueue'}})</span>
+    >
+      ({{gamehistory.length}} games {{queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE ?
+                                    'Solo+Flex' : queues_to_look_up === GameType.SOLO_QUEUE ?
+                                        'Solo' : 'Flex'}}queue)
+    </span>
   </div>
   <div class="Participant__summary">
     <div class="Participant__lane-mains">
       <span *ngIf="loading_player_data">Loading player's account data ...</span>
-      <span *ngIf="loading_gamehistory">Loading player's game history ...</span>
-      <span *ngIf="preferred_lanes">
-        <span>{{gettext('preferred_lanes')}}:</span>
-        <br/>
+      <span *ngIf="!gamehistory && loading_gamehistory">Loading game history ...</span>
+      <span *ngIf="gamehistory && loading_gamehistory">Loading additional queue's game history ...</span>
+      <span *ngIf="!loading_gamehistory && preferred_lanes" class="Participant__lane-mains-content">
+        <span class="Participant__lane-mains-content-title">
+          {{gettext('preferred_lanes')}}
+        </span>
         <span *ngFor="let l of preferred_lanes; let i = index" class="Participant__lane-main">
           <img *ngIf="l.lane_name === 'TOP'" src="{{top_lane_queue_img_uri}}" title="{{l.lane_name}}" />
           <img *ngIf="l.lane_name === 'JUNGLE'" src="{{jungle_lane_queue_img_uri}}" title="{{l.lane_name}}" />
@@ -34,7 +39,7 @@
     </div>
   </div>
   <participant-played-champions
-      *ngIf="gamehistory !== null"
+      *ngIf="!loading_gamehistory && gamehistory !== null"
       [currently_played_champion]="player.champion"
       [gamehistory]="gamehistory"
       [champions]="champions">

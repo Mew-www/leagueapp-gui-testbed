@@ -2,14 +2,55 @@
   display: table;
   margin: 0 auto;
 
-  &__allies {
-    display: inline-block;
-    padding-right: 5px;
-    margin-right: 5px;
-    border-right: 1px solid #333;
+  &__control {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    background: lightgrey;
+    display: table;
+    border-radius: 5px;
+    border: 1px outset lightgrey;
+    padding: 2px;
+    padding-right: 50px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+
+    &--disabled {
+      background: #f2f2f2;
+      color: #a5a5a5;
+    }
+
+    &--enabled {
+      &:active {
+        // Pseudo-button
+        border: 1px solid #b9b9b9; // Flat border
+        position: relative; // Re-position one lower due to border fall
+        top: 1px;
+        padding-bottom: 1px; // Take one from bottom due to re-position
+        margin-bottom: 1px; // Keep the entire size same in contrast to other elements despite reduced padding
+      }
+    }
   }
 
-  &__enemies {
-    display: inline-block;
+  &__laners-container {
+    display: block;
+    margin-bottom: 5px;
   }
+
+  &__laner {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid grey;
+    width: 30em;
+    &--ally {
+      background: #b7f1f1;
+    }
+    &--enemy {
+      background: #f1cba3;
+    }
+  }
+
 }

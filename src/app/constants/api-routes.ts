@@ -16,6 +16,12 @@ export class ApiRoutes {
       + "?region=" + region
       + "&name=" + name;
   };
+  public static PLAYER_BASIC_DATA_BY_NAME_SPECTATORCACHED_URI = (region, name, in_match_id) => {
+    return Settings.API_BASE_URI + "player/basic_data_by_name"
+      + "?region=" + region
+      + "&name=" + name
+      + "&inmatch=" + in_match_id;
+  };
   public static PLAYER_BASIC_DATA_BY_ACCOUNTID_URI = (region, account_id) => {
     return Settings.API_BASE_URI + "player/basic_data_by_id"
       + "?region=" + region
@@ -52,6 +58,30 @@ export class ApiRoutes {
         return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
           + "&account_id=" + account_id;
+    }
+  };
+  public static PLAYER_RANKED_GAME_HISTORY_SPECTATORCACHED_URI = (game_type: GameType, region, account_id, in_match_id) => {
+    switch (game_type) {
+      case GameType.FLEX_QUEUE:
+        return Settings.API_BASE_URI + "player/history/flex/preview"
+          + "?region=" + region
+          + "&account_id=" + account_id
+          + "&inmatch=" + in_match_id;
+      case GameType.SOLO_QUEUE:
+        return Settings.API_BASE_URI + "player/history/solo/preview"
+          + "?region=" + region
+          + "&account_id=" + account_id
+          + "&inmatch=" + in_match_id;
+      case GameType.SOLO_AND_FLEXQUEUE:
+        return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
+          + "?region=" + region
+          + "&account_id=" + account_id
+          + "&inmatch=" + in_match_id;
+      default:
+        return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
+          + "?region=" + region
+          + "&account_id=" + account_id
+          + "&inmatch=" + in_match_id;
     }
   };
 

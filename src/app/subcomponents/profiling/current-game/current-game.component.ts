@@ -77,12 +77,6 @@ export class CurrentGameComponent implements OnInit, OnChanges {
                   } else if (p2.summonerspell_1.name === "Teleport" || p2.summonerspell_2.name === "Teleport") {
                     return 1;
                   }
-                  // Jungle
-                  if (p1.summonerspell_1.name === "Smite" || p1.summonerspell_2.name === "Smite") {
-                    return -1;
-                  } else if (p2.summonerspell_1.name === "Smite" || p2.summonerspell_2.name === "Smite") {
-                    return 1;
-                  }
                   // Mid
                   if (p1.summonerspell_1.name === "Ghost" || p1.summonerspell_2.name === "Ghost"
                     || p1.summonerspell_1.name === "Cleanse" || p1.summonerspell_2.name === "Cleanse"
@@ -93,6 +87,12 @@ export class CurrentGameComponent implements OnInit, OnChanges {
                     || p2.summonerspell_1.name === "Cleanse" || p2.summonerspell_2.name === "Cleanse"
                     || p2.summonerspell_1.name === "Barrier" || p2.summonerspell_2.name === "Barrier"
                     || p2.summonerspell_1.name === "Ignite" || p2.summonerspell_2.name === "Ignite") {
+                    return 1;
+                  }
+                  // Jungle
+                  if (p1.summonerspell_1.name === "Smite" || p1.summonerspell_2.name === "Smite") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Smite" || p2.summonerspell_2.name === "Smite") {
                     return 1;
                   }
                   // ADC
@@ -116,22 +116,22 @@ export class CurrentGameComponent implements OnInit, OnChanges {
                   } else if (p2.summonerspell_1.name === "Teleport" || p2.summonerspell_2.name === "Teleport") {
                     return 1;
                   }
-                  // Jungle
-                  if (p1.summonerspell_1.name === "Smite" || p1.summonerspell_2.name === "Smite") {
-                    return -1;
-                  } else if (p2.summonerspell_1.name === "Smite" || p2.summonerspell_2.name === "Smite") {
-                    return 1;
-                  }
                   // Mid
-                  if (p1.summonerspell_1.name === "Sprint" || p1.summonerspell_2.name === "Sprint"
+                  if (p1.summonerspell_1.name === "Ghost" || p1.summonerspell_2.name === "Ghost"
                     || p1.summonerspell_1.name === "Cleanse" || p1.summonerspell_2.name === "Cleanse"
                     || p1.summonerspell_1.name === "Barrier" || p1.summonerspell_2.name === "Barrier"
                     || p1.summonerspell_1.name === "Ignite" || p1.summonerspell_2.name === "Ignite") {
                     return -1;
-                  } else if (p2.summonerspell_1.name === "Sprint" || p2.summonerspell_2.name === "Sprint"
+                  } else if (p2.summonerspell_1.name === "Ghost" || p2.summonerspell_2.name === "Ghost"
                     || p2.summonerspell_1.name === "Cleanse" || p2.summonerspell_2.name === "Cleanse"
                     || p2.summonerspell_1.name === "Barrier" || p2.summonerspell_2.name === "Barrier"
                     || p2.summonerspell_1.name === "Ignite" || p2.summonerspell_2.name === "Ignite") {
+                    return 1;
+                  }
+                  // Jungle
+                  if (p1.summonerspell_1.name === "Smite" || p1.summonerspell_2.name === "Smite") {
+                    return -1;
+                  } else if (p2.summonerspell_1.name === "Smite" || p2.summonerspell_2.name === "Smite") {
                     return 1;
                   }
                   // ADC

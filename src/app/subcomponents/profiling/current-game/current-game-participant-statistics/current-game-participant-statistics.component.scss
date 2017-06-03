@@ -4,6 +4,7 @@
   margin-bottom: 20px;
 
   &__description {
+    margin-bottom: 2px;
   }
   &__description-name {
     font-family: "Roboto Mono", monospace;
@@ -24,8 +25,14 @@
     margin-left: 32px;
     font-family: Roboto, 'sans-serif';
   }
-  &__lane-mains-title {
-
+  // Inline text (spans) and icons
+  &__lane-mains-content {
+    position: relative;
+    top: 1em;
+  }
+  &__lane-mains-content-title {
+    position: relative;
+    top: -0.5em;
   }
   &__lane-main{
     text-transform: lowercase;
