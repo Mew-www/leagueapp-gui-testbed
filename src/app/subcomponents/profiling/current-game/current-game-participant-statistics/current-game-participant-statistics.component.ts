@@ -26,10 +26,13 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   @Input() player: CurrentGameParticipant;
   @Input() region;
   @Input() gametype: GameType;
-  @Input() queues_to_look_up: GameType = null;
+  @Input() show_also_secondary_queue_stats: boolean = false;
+
+  // Metadata
   @Input() champions: ChampionsContainer;
   @Input() summonerspells: SummonerspellsContainer;
 
+  // Signaling parent component this player's gamehistory is loading/loaded
   @Output() signalGamehistoryLoading = new EventEmitter();
   @Output() signalGamehistoryLoaded = new EventEmitter();
 
@@ -68,20 +71,20 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   ngOnInit() { }
 
   ngOnChanges(changes) {
-    if (changes['queues_to_look_up'].currentValue !== changes['queues_to_look_up'].previousValue) {
+    if (changes['show_also_secondary_queue_stats'].currentValue !== changes['show_also_secondary_queue_stats'].previousValue) {
 
       // If data is already cached, just return it
-      if (this.queues_to_look_up === GameType.SOLO_QUEUE && this._cached_gamehistories.soloqueue !== null) {
+      if (this.gametype === GameType.SOLO_QUEUE && this.show_also_secondary_queue_stats === false && this._cached_gamehistories.soloqueue !== null) {
         this.gamehistory = this._cached_gamehistories.soloqueue;
         this.preferred_lanes = Analytics.parsePreferredLanes(this.gamehistory);
         return;
       }
-      if (this.queues_to_look_up === GameType.FLEX_QUEUE && this._cached_gamehistories.flexqueue !== null) {
+      if (this.gametype === GameType.FLEX_QUEUE && this.show_also_secondary_queue_stats === false && this._cached_gamehistories.flexqueue !== null) {
         this.gamehistory = this._cached_gamehistories.flexqueue;
         this.preferred_lanes = Analytics.parsePreferredLanes(this.gamehistory);
         return;
       }
-      if (this.queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE && this._cached_gamehistories.combined !== null) {
+      if (this.show_also_secondary_queue_stats === true && this._cached_gamehistories.combined !== null) {
         this.gamehistory = this._cached_gamehistories.combined;
         this.preferred_lanes = Analytics.parsePreferredLanes(this.gamehistory);
         return;
@@ -112,23 +115,25 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
             this.summoner = summ_api_res.data;
             this.loading_player_data = false;
             this.loading_gamehistory = true;
+            let queues_to_look_up = this.show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE : this.gametype;
             this.ongoing_gamehistory_request = this.ratelimitedRequests.buffer(() => {
-              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, this.queues_to_look_up, this.match_id);
+              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, queues_to_look_up, this.match_id);
             })
               .subscribe(gamehistory_api_res => {
                 switch (gamehistory_api_res.type) {
                   case ResType.SUCCESS:
                     let gamehistory = gamehistory_api_res.data.map(record => new GameReference(record, this.champions));
-                    switch (this.queues_to_look_up) {
-                      case GameType.SOLO_QUEUE:
-                        this._cached_gamehistories.soloqueue = gamehistory;
-                        break;
-                      case GameType.FLEX_QUEUE:
-                        this._cached_gamehistories.flexqueue = gamehistory;
-                        break;
-                      case GameType.SOLO_AND_FLEXQUEUE:
-                        this._cached_gamehistories.combined = gamehistory;
-                        break;
+                    if (this.show_also_secondary_queue_stats) {
+                      this._cached_gamehistories.combined = gamehistory;
+                    } else {
+                      switch (this.gametype) {
+                        case GameType.SOLO_QUEUE:
+                          this._cached_gamehistories.soloqueue = gamehistory;
+                          break;
+                        case GameType.FLEX_QUEUE:
+                          this._cached_gamehistories.flexqueue = gamehistory;
+                          break;
+                      }
                     }
                     this.gamehistory = gamehistory;
                     this.preferred_lanes = Analytics.parsePreferredLanes(gamehistory);

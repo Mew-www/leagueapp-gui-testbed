@@ -7,8 +7,8 @@
         *ngIf="!loading_gamehistory && gamehistory"
         class="Participant__description-games-total"
     >
-      ({{gamehistory.length}} games {{queues_to_look_up === GameType.SOLO_AND_FLEXQUEUE ?
-                                    'Solo+Flex' : queues_to_look_up === GameType.SOLO_QUEUE ?
+      ({{gamehistory.length}} games {{show_also_secondary_queue_stats === true ?
+                                    'Solo+Flex' : gametype === GameType.SOLO_QUEUE ?
                                         'Solo' : 'Flex'}}queue)
     </span>
   </div>
@@ -42,6 +42,8 @@
       *ngIf="!loading_gamehistory && gamehistory !== null"
       [currently_played_champion]="player.champion"
       [gamehistory]="gamehistory"
+      [gametype]="gametype"
+      [show_also_secondary_queue_stats]="show_also_secondary_queue_stats"
       [champions]="champions">
   </participant-played-champions>
 </div>

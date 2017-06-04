@@ -28,7 +28,8 @@
         [player]="current_game.allies[i]"
         [match_id]="current_game.game_id"
         [region]="current_game.looked_up_summoner.region"
-        [queues_to_look_up]="show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE : current_game.game_type"
+        [gametype]="current_game.game_type"
+        [show_also_secondary_queue_stats]="show_also_secondary_queue_stats"
         [champions]="champions"
         [summonerspells]="summonerspells">
     </current-game-participant-statistics>
@@ -39,7 +40,8 @@
         [player]="current_game.enemies[i]"
         [match_id]="current_game.game_id"
         [region]="current_game.looked_up_summoner.region"
-        [queues_to_look_up]="show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE : current_game.game_type"
+        [gametype]="current_game.game_type"
+        [show_also_secondary_queue_stats]="show_also_secondary_queue_stats"
         [champions]="champions"
         [summonerspells]="summonerspells">
     </current-game-participant-statistics>
