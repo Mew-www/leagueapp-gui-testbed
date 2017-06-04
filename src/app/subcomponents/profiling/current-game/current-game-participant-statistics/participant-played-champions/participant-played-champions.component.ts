@@ -52,20 +52,28 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
     this.top_played_champions_altqueue = null;
     this.non_top_current_champion_altqueue = null;
 
+
+    let altqueue_type = this.gametype === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE : GameType.SOLO_QUEUE;
+
+    let played_champions_mainqueue = Analytics.parsePlayedChampions(this.gamehistory.filter(gameref => gameref.game_type === this.gametype), this.champions)
+      .sort((a, b) => b.nr_of_games - a.nr_of_games);
+
+    let played_champions_altqueue = Analytics.parsePlayedChampions(this.gamehistory.filter(gameref => gameref.game_type === altqueue_type), this.champions)
+      .sort((a, b) => b.nr_of_games - a.nr_of_games);
+
     // Populate top-played-champions
-    this.top_played_champions = Analytics.parsePlayedChampions(this.gamehistory.filter(gameref => gameref.game_type === this.gametype), this.champions)
-      .sort((a, b) => b.nr_of_games - a.nr_of_games)
+    this.top_played_champions = played_champions_mainqueue
       .slice(0, 5)
       .map(most_played_champion => Analytics.addPlayedChampionLanesCalculations(most_played_champion));
 
     // Populate possible non-top current-champion
     if (!this.top_played_champions.find(c => c.champion.id === this.currently_played_champion.id)) {
       // If current champion isn't in top played, add it manually as separate
-      let seen_current_champion = this.top_played_champions.find(c => c.champion.id === this.currently_played_champion.id);
+      let seen_current_champion = played_champions_mainqueue.find(c => c.champion.id === this.currently_played_champion.id);
       if (seen_current_champion) {
         this.non_top_current_champion = seen_current_champion;
         this.non_top_current_champion = Analytics.addPlayedChampionLanesCalculations(this.non_top_current_champion);
-        this.non_top_current_champion['order'] = this.top_played_champions.map(c => c.champion.id).indexOf(this.currently_played_champion.id)+1;
+        this.non_top_current_champion['order'] = played_champions_mainqueue.map(c => c.champion.id).indexOf(this.currently_played_champion.id)+1;
       } else {
         this.non_top_current_champion = {
           order: -1,
@@ -76,23 +84,20 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
       }
     }
 
-    let altqueue_type = this.gametype === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE : GameType.SOLO_QUEUE;
-
     // Populate optional altqueue top-played-champions
     if (this.gamehistory.filter(gameref => gameref.game_type === altqueue_type).length > 0) {
-      this.top_played_champions_altqueue = Analytics.parsePlayedChampions(this.gamehistory.filter(gameref => gameref.game_type === altqueue_type), this.champions)
-        .sort((a, b) => b.nr_of_games - a.nr_of_games)
+      this.top_played_champions_altqueue = played_champions_altqueue
         .slice(0, 5)
         .map(most_played_champion => Analytics.addPlayedChampionLanesCalculations(most_played_champion));
 
       // Populate optional possible altqueue non-top current-champion
       if (!this.top_played_champions_altqueue.find(c => c.champion.id === this.currently_played_champion.id)) {
         // If current champion isn't in top played, add it manually as separate
-        let seen_current_champion = this.top_played_champions_altqueue.find(c => c.champion.id === this.currently_played_champion.id);
+        let seen_current_champion = played_champions_altqueue.find(c => c.champion.id === this.currently_played_champion.id);
         if (seen_current_champion) {
           this.non_top_current_champion_altqueue = seen_current_champion;
           this.non_top_current_champion_altqueue = Analytics.addPlayedChampionLanesCalculations(this.non_top_current_champion_altqueue);
-          this.non_top_current_champion_altqueue['order'] = this.top_played_champions_altqueue.map(c => c.champion.id).indexOf(this.currently_played_champion.id)+1;
+          this.non_top_current_champion_altqueue['order'] = played_champions_altqueue.map(c => c.champion.id).indexOf(this.currently_played_champion.id)+1;
         } else {
           this.non_top_current_champion_altqueue = null;
         }
