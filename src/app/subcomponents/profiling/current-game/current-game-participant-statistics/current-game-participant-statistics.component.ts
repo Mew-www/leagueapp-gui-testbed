@@ -50,22 +50,81 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   private summoner: Summoner;
   private gamehistory: Array<GameReference> = null;
   private preferred_lanes: Array<any> = null;
+  private played_champion_details = null; // {champion_name, most_recent_time, oldest_time, gamereferences}
   private error_text_key = "";
   private error_details = "";
+
+  private gettext: Function;
+  private GameType = GameType;
 
   private top_lane_queue_img_uri = Settings.STATIC_BASE_URI + "top_lane_queue.png";
   private jungle_lane_queue_img_uri = Settings.STATIC_BASE_URI + "jungle_lane_queue.png";
   private mid_lane_queue_img_uri = Settings.STATIC_BASE_URI + "mid_lane_queue.png";
   private bottom_lane_queue_img_uri = Settings.STATIC_BASE_URI + "bottom_lane_queue.png";
 
-  private gettext: Function;
-  private GameType = GameType;
-
   constructor(private player_api: PlayerApiService,
               private game_api: GameApiService,
               private ratelimitedRequests: RatelimitedRequestsService,
               private translator: TranslatorService) {
     this.gettext = this.translator.getTranslation;
+  }
+
+  private getTimeAgoAsString(date: Date) {
+    if (date === null) {
+      return this.gettext('never');
+    }
+
+    let time_difference_ms = new Date().getTime() - date.getTime(); // now - then
+    let local_yesterday_begin = ((new Date()).getHours() + 24) * 1000 * 60 * 60; // (Hours today + 24 hours) earlier
+
+    if (time_difference_ms < 1000*60*60*24) {
+      // Less-than-day ago
+      let full_hours_ago = Math.floor(time_difference_ms / (1000*60*60));
+      if (full_hours_ago == 0) {
+        // Count minutes instead
+        let full_minutes_ago = Math.floor(time_difference_ms / (1000*60));
+        if (full_minutes_ago == 0) {
+          return `${this.gettext("just_now")}`;
+        }
+        if (full_minutes_ago == 1) {
+          return `1 ${this.gettext("minute_ago")}`;
+        }
+        // Else
+        return `${full_minutes_ago} ${this.gettext("n_minutes_ago")}`;
+      }
+      if (full_hours_ago == 1) {
+        return `1  ${this.gettext("hour_ago")}`;
+      }
+      // Else
+      return `${full_hours_ago} ${this.gettext("n_hours_ago")}`;
+
+    } else if (time_difference_ms < local_yesterday_begin) {
+      // Since (local-/browsertime) "yesterday" began
+      return this.gettext("yesterday");
+
+    } else {
+      // DD. MM. YYYY
+      return ("0"+date.getDate()).slice(-2) + '.' + ("0"+(date.getMonth()+1)).slice(-2) + '.' + date.getFullYear();
+    }
+  }
+
+  private togglePlayedChampionDetails(played_champion) {
+    // Clear if previous
+    this.played_champion_details = null;
+
+    let gamereferences = played_champion.gamereferences
+      .sort((a: GameReference, b: GameReference) => {
+        return b.game_start_time.getTime() - a.game_start_time.getTime(); // Starting from now to oldest one
+      });
+
+    if (gamereferences.length > 0) {
+      this.played_champion_details = {
+        champion_name: gamereferences[0].chosen_champion.name,
+        most_recent_time: gamereferences[0].game_start_time,
+        oldest_time:      gamereferences[gamereferences.length-1].game_start_time,
+        gamereferences:   gamereferences
+      };
+    }
   }
 
   ngOnInit() { }

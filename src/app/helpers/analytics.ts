@@ -37,7 +37,8 @@ export class Analytics {
         seen_champion = {
           champion: champions.getChampionById(gameref.chosen_champion.id),
           nr_of_games: 0,
-          lanes: {}
+          lanes: {},
+          gamereferences: []
         };
         seen_champions.push(seen_champion);
       }
@@ -45,10 +46,22 @@ export class Analytics {
       if (Object.keys(seen_champion.lanes).indexOf(lane) === -1) {
         seen_champion.lanes[lane] = 0;
       }
+      seen_champion.gamereferences.push(gameref);
       seen_champion.nr_of_games++;
       seen_champion.lanes[lane]++;
       return seen_champions;
-    }, []);
+    }, [])
+      .map(played_champion => {
+        if (played_champion.gamereferences.length > 0) {
+          played_champion['last_time_played'] = played_champion.gamereferences
+            .sort((a: GameReference, b: GameReference) => {
+            return b.game_start_time.getTime() - a.game_start_time.getTime(); // Starting from now to oldest one
+          })[0].game_start_time;
+        } else {
+          played_champion['last_time_played'] = null;
+        }
+        return played_champion;
+      });
   }
 
   // Lane must be either 1st, or have > 15 games, or be > 0.5 ratio to 1st most-played lane

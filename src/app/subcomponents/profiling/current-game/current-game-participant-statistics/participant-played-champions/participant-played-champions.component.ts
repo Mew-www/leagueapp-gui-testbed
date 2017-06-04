@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {GameReference} from "../../../../../models/dto/game-reference";
 import {ChampionsContainer} from "../../../../../models/dto/containers/champions-container";
 import {Champion} from "../../../../../models/dto/champion";
@@ -21,6 +21,8 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
   // Metadata
   @Input() champions: ChampionsContainer;
 
+  @Output() toggledPlayedChampionDetails = new EventEmitter();
+
   private top_played_champions: Array<any> = null; // {order, champion, nr_of_games, lanes}
   private non_top_current_champion = null; // {order, champion, nr_of_games, lanes}
   private top_played_champions_altqueue: Array<any> = null;
@@ -38,6 +40,45 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
     return this.gametype === GameType.SOLO_QUEUE ? "Flex" : "Solo";
   }
 
+  private getTimeAgoAsString(date: Date) {
+    if (!date) {
+      return this.gettext('never');
+    }
+
+    let time_difference_ms = new Date().getTime() - date.getTime(); // now - then
+    let local_yesterday_begin = ((new Date()).getHours() + 24) * 1000 * 60 * 60; // (Hours today + 24 hours) earlier
+
+    if (time_difference_ms < 1000*60*60*24) {
+      // Less-than-day ago
+      let full_hours_ago = Math.floor(time_difference_ms / (1000*60*60));
+      if (full_hours_ago == 0) {
+        // Count minutes instead
+        let full_minutes_ago = Math.floor(time_difference_ms / (1000*60));
+        if (full_minutes_ago == 0) {
+          return `${this.gettext("just_now")}`;
+        }
+        if (full_minutes_ago == 1) {
+          return `1 ${this.gettext("minute_ago")}`;
+        }
+        // Else
+        return `${full_minutes_ago} ${this.gettext("n_minutes_ago")}`;
+      }
+      if (full_hours_ago == 1) {
+        return `1  ${this.gettext("hour_ago")}`;
+      }
+      // Else
+      return `${full_hours_ago} ${this.gettext("n_hours_ago")}`;
+
+    } else if (time_difference_ms < local_yesterday_begin) {
+      // Since (local-/browsertime) "yesterday" began
+      return this.gettext("yesterday");
+
+    } else {
+      // DD. MM. YYYY
+      return ("0"+date.getDate()).slice(-2) + '.' + ("0"+(date.getMonth()+1)).slice(-2) + '.' + date.getFullYear();
+    }
+  }
+
   ngOnInit() {}
 
   ngOnChanges(changes) {
@@ -51,7 +92,6 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
     // Optional
     this.top_played_champions_altqueue = null;
     this.non_top_current_champion_altqueue = null;
-
 
     let altqueue_type = this.gametype === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE : GameType.SOLO_QUEUE;
 

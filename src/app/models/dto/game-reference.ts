@@ -10,7 +10,6 @@ export class GameReference {
   public readonly chosen_champion: Champion;
   public readonly game_type: GameType;
   public readonly presumed_lane;
-
   public game_details: GameRecordPersonalised = null;
 
   // https://developer.riotgames.com/api-methods/#match-v3/GET_getMatchlist

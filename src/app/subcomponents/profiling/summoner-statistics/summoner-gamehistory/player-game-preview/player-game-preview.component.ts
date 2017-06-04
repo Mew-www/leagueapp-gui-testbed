@@ -66,7 +66,7 @@ export class PlayerGamePreviewComponent implements OnInit {
   }
 
   private getTimeAgoAsString(date: Date) {
-    let time_difference_ms = (new Date()).getTime() - date.getTime(); // braces are just to clarify
+    let time_difference_ms = new Date().getTime() - date.getTime(); // now - then
     let local_yesterday_begin = ((new Date()).getHours() + 24) * 1000 * 60 * 60; // (Hours today + 24 hours) earlier
 
     if (time_difference_ms < 1000*60*60*24) {

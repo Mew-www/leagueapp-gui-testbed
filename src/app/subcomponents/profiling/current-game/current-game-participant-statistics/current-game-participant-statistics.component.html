@@ -44,6 +44,12 @@
       [gamehistory]="gamehistory"
       [gametype]="gametype"
       [show_also_secondary_queue_stats]="show_also_secondary_queue_stats"
-      [champions]="champions">
+      [champions]="champions"
+      (toggledPlayedChampionDetails)="togglePlayedChampionDetails($event)">
   </participant-played-champions>
+  <div *ngIf="played_champion_details">
+    Details for {{played_champion_details.champion_name}}
+    <br/>
+    Dates from {{getTimeAgoAsString(played_champion_details.most_recent_time)}} to {{getTimeAgoAsString(played_champion_details.oldest_time)}}
+  </div>
 </div>

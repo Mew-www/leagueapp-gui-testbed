@@ -51,7 +51,10 @@ export class i18n {
       'games': "games",
       'show_more': "Show more",
       'show_less': "Show less",
-      'most_played_champions': "Most played champions"
+      'most_played_champions': "Most played champions",
+      'load_details': "Load details",
+      'last_time_played': "Last played",
+      'never': "Never"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -104,7 +107,10 @@ export class i18n {
       'games': "peli\u00e4",
       'show_more': "N\u00e4yt\u00e4 lis\u00e4\u00e4",
       'show_less': "N\u00e4yt\u00e4 v\u00e4hemm\u00e4n",
-      'most_played_champions': "Eniten pelatut"
+      'most_played_champions': "Eniten pelatut",
+      'load_details': "Lataa yksityiskohdat",
+      'last_time_played': "Viimeksi pelattu",
+      'never': "Ei ikin\u00e4"
     }
   }
 

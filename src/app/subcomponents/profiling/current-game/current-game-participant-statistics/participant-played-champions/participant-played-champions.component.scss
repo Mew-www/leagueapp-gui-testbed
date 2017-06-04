@@ -39,6 +39,11 @@
     display: table-cell;
     padding: 0 5px;
   }
+  // th
+  &__heading-last-time {
+    display: table-cell;
+    padding: 0 5px;
+  }
   //th
   &__heading-controls {
     display: table-cell;
@@ -89,6 +94,13 @@
     padding: 0 5px;
     text-align: center;
     font-family: Roboto, 'sans-serif';
+  }
+  // td
+  &__champion-last-time {
+    display: table-cell;
+    padding: 0 5px;
+    text-align: center;
+    font-family: 'Roboto Condensed', 'sans-serif';
   }
   //td
   &__controls {
