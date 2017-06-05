@@ -174,7 +174,7 @@ export class PlayerApiService {
       });
   }
   public getMasteryPointCountsJson(region, summoner_id): Observable<ApiResponse<Object, string, Number>> {
-    return this.http.get(ApiRoutes.PLAYER_MASTERIES_URI(region, summoner_id))
+    return this.http.get(ApiRoutes.PLAYER_CHAMPIONMASTERIES_URI(region, summoner_id))
       .map(res => {
         let masteries_json = res.json();
         return new ApiResponseSuccess(masteries_json);

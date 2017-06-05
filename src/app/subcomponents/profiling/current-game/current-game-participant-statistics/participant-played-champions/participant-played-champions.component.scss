@@ -6,14 +6,20 @@
     font-family: Arial, sans-serif;
   }
   &__table {
-    display: inline;
+    display: table;
+    border: 2px groove white;
+    border-radius: 4px;
+    margin-top: 1px;
   }
-  &__toggle-details-btn {
-    vertical-align: top;
-    margin-left: 4px;
-    border: 1px solid black;
-    padding-bottom: 1px;
-    font-family: Arial, serif;
+  &__toggle-details-btn {color: #fff;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: grey;
+    padding: 1px 4px;
+    border: none;
+    position: relative;
+    top: -1px;
+    cursor: pointer;
   }
 }
 

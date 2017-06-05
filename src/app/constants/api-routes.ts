@@ -28,7 +28,7 @@ export class ApiRoutes {
       + "&account_id=" + account_id;
   };
 
-  public static PLAYER_MASTERIES_URI = (region, summoner_id) => {
+  public static PLAYER_CHAMPIONMASTERIES_URI = (region, summoner_id) => {
     return Settings.API_BASE_URI + "player/championmasteries"
       + "?region=" + region
       + "&summoner_id=" + summoner_id;
@@ -85,8 +85,14 @@ export class ApiRoutes {
     }
   };
 
-  public static GAME_DETAILS = (region, game_id) => {
+  public static GAME_DETAILS_URI = (region, game_id) => {
     return Settings.API_BASE_URI + "match/details"
+      + "?region=" + region
+      + "&match_id=" + game_id;
+  };
+
+  public static GAME_TIMELINE_URI = (region, game_id) => {
+    return Settings.API_BASE_URI + "match/timeline"
       + "?region=" + region
       + "&match_id=" + game_id;
   };

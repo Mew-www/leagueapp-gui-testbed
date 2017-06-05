@@ -1,6 +1,9 @@
 <div class="PlayedChampions">
 
-  <p class="PlayedChampions__title">{{gettext('most_played_champions')}}</p>
+  <p class="PlayedChampions__title">
+    {{gettext('most_played_champions')}}
+    <button class="PlayedChampions__toggle-details-btn" (click)="minimized = !minimized">{{gettext(minimized ? 'show_more' : 'show_less')}}</button>
+  </p>
   <div *ngIf="top_played_champions" class="PlayedChampions__table PlayedChampionsTable">
     <!-- Heading -->
     <div class="PlayedChampionsTable__heading" [style.display]="minimized?'none':''">
@@ -29,7 +32,7 @@
       <div class="PlayedChampionsTable__champion-nr-of-games">{{c.nr_of_games}}</div>
       <div class="PlayedChampionsTable__champion-last-time" [style.display]="minimized?'none':''">{{getTimeAgoAsString(c.last_time_played)}}</div>
       <div class="PlayedChampionsTable__controls">
-        <button (click)="toggledPlayedChampionDetails.emit(c)">{{gettext('load_details')}}</button>
+        <button (click)="toggledPlayedChampionDetails.emit(c)">{{gettext('details')}}</button>
       </div>
     </div>
 
@@ -63,7 +66,7 @@
       <div class="PlayedChampionsTable__champion-nr-of-games">{{non_top_current_champion.nr_of_games ? non_top_current_champion.nr_of_games : ''}}</div>
       <div class="PlayedChampionsTable__champion-last-time" [style.display]="minimized?'none':''">{{getTimeAgoAsString(non_top_current_champion.last_time_played)}}</div>
       <div class="PlayedChampionsTable__controls">
-        <button (click)="toggledPlayedChampionDetails.emit(non_top_current_champion)">{{gettext('load_details')}}</button>
+        <button (click)="toggledPlayedChampionDetails.emit(non_top_current_champion)">{{gettext('details')}}</button>
       </div>
     </div>
 
@@ -96,7 +99,7 @@
       <div class="PlayedChampionsTable__champion-nr-of-games">{{c.nr_of_games}}</div>
       <div class="PlayedChampionsTable__champion-last-time" [style.display]="minimized?'none':''">{{getTimeAgoAsString(c.last_time_played)}}</div>
       <div class="PlayedChampionsTable__controls">
-        <button (click)="toggledPlayedChampionDetails.emit(c)">{{gettext('load_details')}}</button>
+        <button (click)="toggledPlayedChampionDetails.emit(c)">{{gettext('details')}}</button>
       </div>
     </div>
 
@@ -127,9 +130,8 @@
       <div class="PlayedChampionsTable__champion-nr-of-games">{{non_top_current_champion_altqueue.nr_of_games ? non_top_current_champion_altqueue.nr_of_games : ''}}</div>
       <div class="PlayedChampionsTable__champion-last-time" [style.display]="minimized?'none':''">{{getTimeAgoAsString(non_top_current_champion_altqueue.last_time_played)}}</div>
       <div class="PlayedChampionsTable__controls">
-        <button (click)="toggledPlayedChampionDetails.emit(non_top_current_champion_altqueue)">{{gettext('load_details')}}</button>
+        <button (click)="toggledPlayedChampionDetails.emit(non_top_current_champion_altqueue)">{{gettext('details')}}</button>
       </div>
     </div>
   </div>
-  <button class="PlayedChampions__toggle-details-btn" (click)="minimized = !minimized">{{gettext(minimized ? 'show_more' : 'show_less')}}</button>
 </div>

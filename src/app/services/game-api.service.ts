@@ -58,7 +58,7 @@ export class GameApiService {
     if (!(region in this._historic_game_requests)) {
       this._historic_game_requests[region] = {};
     }
-    this._historic_game_requests[region][game_id] = this.http.get(ApiRoutes.GAME_DETAILS(region, game_id))
+    this._historic_game_requests[region][game_id] = this.http.get(ApiRoutes.GAME_DETAILS_URI(region, game_id))
       .map(res => this._cacheAndWrapGamedetailApiResponse(res, region, game_id))
       .catch(error_res => this._wrapGamedetailApiError(error_res))
       .share();
