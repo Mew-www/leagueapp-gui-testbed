@@ -14,6 +14,8 @@ import {Settings} from "../../../../constants/settings";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {Analytics} from "../../../../helpers/analytics";
+import {ItemsContainer} from "../../../../models/dto/containers/items-container";
+import {PlayedChampionDetails} from "../../../../models/played-champion-details";
 
 @Component({
   selector: 'current-game-participant-statistics',
@@ -30,6 +32,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
 
   // Metadata
   @Input() champions: ChampionsContainer;
+  @Input() items: ItemsContainer;
   @Input() summonerspells: SummonerspellsContainer;
 
   // Signaling parent component this player's gamehistory is loading/loaded
@@ -50,7 +53,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   private summoner: Summoner;
   private gamehistory: Array<GameReference> = null;
   private preferred_lanes: Array<any> = null;
-  private played_champion_details = null; // {champion_name, most_recent_time, oldest_time, gamereferences}
+  private played_champion_details: PlayedChampionDetails = null;
   private error_text_key = "";
   private error_details = "";
 
@@ -109,22 +112,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   }
 
   private togglePlayedChampionDetails(played_champion) {
-    // Clear if previous
-    this.played_champion_details = null;
-
-    let gamereferences = played_champion.gamereferences
-      .sort((a: GameReference, b: GameReference) => {
-        return b.game_start_time.getTime() - a.game_start_time.getTime(); // Starting from now to oldest one
-      });
-
-    if (gamereferences.length > 0) {
-      this.played_champion_details = {
-        champion_name: gamereferences[0].chosen_champion.name,
-        most_recent_time: gamereferences[0].game_start_time,
-        oldest_time:      gamereferences[gamereferences.length-1].game_start_time,
-        gamereferences:   gamereferences
-      };
-    }
+    this.played_champion_details = new PlayedChampionDetails(played_champion.champion, played_champion.gamereferences);
   }
 
   ngOnInit() { }

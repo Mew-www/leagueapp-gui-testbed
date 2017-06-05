@@ -11,6 +11,7 @@ import {GameReference} from "../../../models/dto/game-reference";
 import {ChampionsContainer} from "app/models/dto/containers/champions-container";
 import {ItemsContainer} from "../../../models/dto/containers/items-container";
 import {RatelimitedRequestsService} from "../../../services/ratelimited-requests.service";
+import {SummonerspellsContainer} from "../../../models/dto/containers/summonerspells-container";
 
 @Component({
   selector: 'summoner-statistics',
@@ -22,6 +23,7 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
   @Input() summoner: Summoner;
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;
+  @Input() summonerspells: SummonerspellsContainer;
   private ongoing_request: Subscription = null;
   private loading = true;
 

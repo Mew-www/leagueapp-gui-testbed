@@ -47,9 +47,13 @@
       [champions]="champions"
       (toggledPlayedChampionDetails)="togglePlayedChampionDetails($event)">
   </participant-played-champions>
-  <div *ngIf="played_champion_details">
-    Details for {{played_champion_details.champion_name}}
-    <br/>
-    Dates from {{getTimeAgoAsString(played_champion_details.most_recent_time)}} to {{getTimeAgoAsString(played_champion_details.oldest_time)}}
-  </div>
+  <played-champion-details
+      *ngIf="played_champion_details"
+      [region]="region"
+      [played_champion_details]="played_champion_details"
+      [summoner]="summoner"
+      [champions]="champions"
+      [items]="items"
+      [summonerspells]="summonerspells">
+  </played-champion-details>
 </div>

@@ -8,6 +8,7 @@ import {CurrentGame} from "../../../models/dto/current-game";
 import {ResType} from "../../../enums/api-response-type";
 import {SummonerspellsContainer} from "../../../models/dto/containers/summonerspells-container";
 import {GameType} from "../../../enums/game-type";
+import {ItemsContainer} from "../../../models/dto/containers/items-container";
 
 @Component({
   selector: 'current-game',
@@ -17,6 +18,7 @@ import {GameType} from "../../../enums/game-type";
 export class CurrentGameComponent implements OnInit, OnChanges {
 
   @Input() champions: ChampionsContainer;
+  @Input() items: ItemsContainer;
   @Input() summonerspells: SummonerspellsContainer;
   @Input() summoner: Summoner;
 

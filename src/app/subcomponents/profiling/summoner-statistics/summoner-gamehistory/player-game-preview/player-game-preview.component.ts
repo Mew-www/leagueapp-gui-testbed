@@ -10,6 +10,7 @@ import {GameRecord} from "../../../../../models/dto/game-record";
 import {ChampionsContainer} from "../../../../../models/dto/containers/champions-container";
 import {ItemsContainer} from "../../../../../models/dto/containers/items-container";
 import {RatelimitedRequestsService} from "../../../../../services/ratelimited-requests.service";
+import {SummonerspellsContainer} from "../../../../../models/dto/containers/summonerspells-container";
 
 @Component({
   selector: 'player-game-preview',
@@ -23,6 +24,7 @@ export class PlayerGamePreviewComponent implements OnInit {
   @Input() summoner: Summoner;
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;
+  @Input() summonerspells: SummonerspellsContainer;
   private details_toggled = false;
   private ongoing_request: Subscription = null;
   private load_error = "";
@@ -53,7 +55,8 @@ export class PlayerGamePreviewComponent implements OnInit {
               (<GameRecord> api_res.data).raw_origin,
               this.summoner,
               this.champions,
-              this.items
+              this.items,
+              this.summonerspells
             );
             break;
 
@@ -112,7 +115,8 @@ export class PlayerGamePreviewComponent implements OnInit {
                 (<GameRecord> api_res.data).raw_origin,
                 this.summoner,
                 this.champions,
-                this.items
+                this.items,
+                this.summonerspells
               );
               break;
 

@@ -1,0 +1,12 @@
+<div>
+  Details for {{played_champion_details.champion.name}}
+  <br/>
+  Dates from {{getTimeAgoAsString(played_champion_details.most_recent_time_played)}} to {{getTimeAgoAsString(played_champion_details.oldest_time_played)}}
+  <br/>
+  <button (click)="loadRecordsThenTimelines(played_champion_details.gamereferences.slice(0,2))" [disabled]="ongoing_request">
+    load first two timelines
+  </button>
+  <pre *ngFor="let t of getTimelines()">
+    {{t | json}}
+  </pre>
+</div>

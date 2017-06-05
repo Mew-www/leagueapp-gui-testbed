@@ -5,6 +5,7 @@ import {ItemsContainer} from "../../../../models/dto/containers/items-container"
 import {GameReference} from "../../../../models/dto/game-reference";
 import {GameType} from "../../../../enums/game-type";
 import {TranslatorService} from "../../../../services/translator.service";
+import {SummonerspellsContainer} from "../../../../models/dto/containers/summonerspells-container";
 
 @Component({
   selector: 'summoner-gamehistory',
@@ -17,6 +18,7 @@ export class SummonerGamehistoryComponent implements OnInit {
   @Input() gamehistory: Array<GameReference>;
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;
+  @Input() summonerspells: SummonerspellsContainer;
 
   private available_queue_filters = [
     {'val': GameType.SOLO_QUEUE, 'text_key': "solo_queue"},

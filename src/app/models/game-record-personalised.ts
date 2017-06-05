@@ -3,17 +3,21 @@ import {Summoner} from "./dto/summoner";
 import {Season} from "../enums/rito/season";
 import {ChampionsContainer} from "./dto/containers/champions-container";
 import {ItemsContainer} from "./dto/containers/items-container";
+import {SummonerspellsContainer} from "./dto/containers/summonerspells-container";
+import {GameTimeline} from "./dto/game-timeline";
 
 export class GameRecordPersonalised extends GameRecord {
 
+  public readonly game_id: Number;
   public readonly match_start_time: Date;
   public readonly match_duration_seconds: Number;
   public readonly league_version: string;
   public readonly league_season: Season;
   public readonly teams;
+  public timeline: GameTimeline = null;
 
   constructor(game_json, looked_up_summoner: Summoner,
-              champions: ChampionsContainer, items: ItemsContainer) {
+              champions: ChampionsContainer, items: ItemsContainer, summonerspells: SummonerspellsContainer) {
 
     super(game_json);
 
@@ -63,8 +67,8 @@ export class GameRecordPersonalised extends GameRecord {
               is_the_target: player_map[p.participantId].id === looked_up_summoner.id,
               border: p.highestAchievedSeasonTier,
               champion: champions.getChampionById(p.championId),
-              summoner_spell1: p.spell1Id, // TODO SummSpell class
-              summoner_spell2: p.spell2Id,
+              summoner_spell1: summonerspells.getSummonerspellById(p.spell1Id),
+              summoner_spell2: summonerspells.getSummonerspellById(p.spell2Id),
               masterypage: p.masteries, // TODO MasteryPage class
               runepage: p.runes, // TODO RunePage class
               stats: {
@@ -158,6 +162,7 @@ export class GameRecordPersonalised extends GameRecord {
     }, {});
     let ally_team_id = game_json.participants.filter(p => p.participantId === self_participant_id)[0].teamId;
 
+    this.game_id = game_json.gameId;
     this.match_start_time = new Date(game_json.gameCreation);
     this.match_duration_seconds = game_json.gameDuration;
     this.league_version = game_json.gameVersion.split('.').slice(0,2).join('.');

@@ -11,7 +11,7 @@ export class SummonerspellsContainer {
     });
   }
 
-  public getSummonerspellById(id) {
+  public getSummonerspellById(id): SummonerSpell {
     if (id in this._summonerspells_by_id) {
       return this._summonerspells_by_id[id];
     }

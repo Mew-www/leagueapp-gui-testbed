@@ -2,6 +2,7 @@ import {Champion} from "./champion";
 import {GameType} from "../../enums/game-type";
 import {GameRecordPersonalised} from "../game-record-personalised";
 import {ChampionsContainer} from "./containers/champions-container";
+import {GameTimelinePersonalised} from "../game-timeline-personalised";
 
 export class GameReference {
 
@@ -11,6 +12,7 @@ export class GameReference {
   public readonly game_type: GameType;
   public readonly presumed_lane;
   public game_details: GameRecordPersonalised = null;
+  public game_timeline: GameTimelinePersonalised = null;
 
   // https://developer.riotgames.com/api-methods/#match-v3/GET_getMatchlist
   constructor(altered_game_ref_json, champions: ChampionsContainer) {

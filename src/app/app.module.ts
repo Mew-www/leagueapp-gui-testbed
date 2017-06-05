@@ -32,6 +32,7 @@ import { CurrentGameComponent } from './subcomponents/profiling/current-game/cur
 import { CurrentGameParticipantStatisticsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/current-game-participant-statistics.component';
 import { SummonerSpellIconComponent } from './genericcomponents/summoner-spell-icon/summoner-spell-icon.component';
 import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/participant-played-champions/participant-played-champions.component';
+import { PlayedChampionDetailsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/played-champion-details.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/c
     CurrentGameComponent,
     CurrentGameParticipantStatisticsComponent,
     SummonerSpellIconComponent,
-    ParticipantPlayedChampionsComponent
+    ParticipantPlayedChampionsComponent,
+    PlayedChampionDetailsComponent
   ],
   imports: [
     BrowserModule,
