@@ -106,7 +106,7 @@ export class SummonerGamehistoryComponent implements OnInit {
       }, [])
         .sort((a, b) => b.nr_of_games - a.nr_of_games);
     };
-    this.autoload_these_games = this.gamehistory.slice(0,90).map(g => g.game_id);
+    //this.autoload_these_games = this.gamehistory.slice(0,90).map(g => g.game_id);
   }
 
 }
