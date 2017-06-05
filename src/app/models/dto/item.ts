@@ -9,6 +9,7 @@ export class Item {
   public readonly stats;
   public readonly images: ItemImages;
   public readonly from;
+  public readonly into;
   public readonly gold;
 
   // https://developer.riotgames.com/api-methods/#static-data-v3/GET_getItemList
@@ -20,6 +21,7 @@ export class Item {
     this.stats       = item_json['stats'];
     this.images      = new ItemImages(item_json['ddragon_key']);
     this.from        = item_json.hasOwnProperty('from') ? item_json['from'] : [];
+    this.into        = item_json.hasOwnProperty('into') ? item_json['into'] : [];
     this.gold        = {
       base: item_json['gold']['base'],
       total: item_json['gold']['total'],

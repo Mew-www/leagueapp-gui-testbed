@@ -3,6 +3,13 @@ import {ChampionsContainer} from "../models/dto/containers/champions-container";
 
 export class Analytics {
 
+  /*
+    Game History (Array<GameReference>) analytics
+     - parsePreferredLanes(gamehistory) -> 2 most found lanes
+     - parsePlayedChampions(gamehistory, champions_metadata) -> gamehistory+stats, per champion played
+     - addPlayedChampionLanesCalculations(played_champion) -> calculate on which lanes was a champion played
+   */
+
   private static relevant_nr_of_games = 15;
   private static filter_lane_stat_tolerance = 0.5; // Split >66% <33%; 2 to 1+; E.g. yes 5 to 3, but not 5 to 2
 
@@ -92,5 +99,11 @@ export class Analytics {
       .filter(lane => lane.times_played_percent !== 0);
     return most_played_champion;
   }
+
+  /*
+    Items (Array<GameTimeline>) analytics
+   */
+
+
 
 }
