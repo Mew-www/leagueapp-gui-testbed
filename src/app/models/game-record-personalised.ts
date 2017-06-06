@@ -82,13 +82,13 @@ export class GameRecordPersonalised extends GameRecord {
                 },
                 gold_spent: pstats.goldSpent,
                 final_items: [
-                  items.getItemById(pstats.item0),
-                  items.getItemById(pstats.item1),
-                  items.getItemById(pstats.item2),
-                  items.getItemById(pstats.item3),
-                  items.getItemById(pstats.item4),
-                  items.getItemById(pstats.item5),
-                  items.getItemById(pstats.item6)
+                  pstats.item0 ? items.getItemById(pstats.item0) : null,
+                  pstats.item1 ? items.getItemById(pstats.item1) : null,
+                  pstats.item2 ? items.getItemById(pstats.item2) : null,
+                  pstats.item3 ? items.getItemById(pstats.item3) : null,
+                  pstats.item4 ? items.getItemById(pstats.item4) : null,
+                  pstats.item5 ? items.getItemById(pstats.item5) : null,
+                  pstats.item6 ? items.getItemById(pstats.item6) : null
                 ],
                 kda: {
                   kills: pstats.kills,

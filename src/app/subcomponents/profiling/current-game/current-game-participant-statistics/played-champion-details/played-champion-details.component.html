@@ -7,6 +7,7 @@
     load first two timelines
   </button>
   <pre *ngFor="let t of getTimelines()">
-    {{t | json}}
+    {{t.allies | json}}
+    {{t.enemies | json}}
   </pre>
 </div>
