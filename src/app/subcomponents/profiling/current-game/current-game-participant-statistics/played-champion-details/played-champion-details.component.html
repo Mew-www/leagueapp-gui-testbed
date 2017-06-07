@@ -24,7 +24,7 @@
   </label>
   <br/>
   <!-- Executing downloads -->
-  <button (click)="loadRecordsThenTimelines()" [disabled]="ongoing_request">
+  <button (click)="loadRecordsThenTimelines()" [disabled]="ongoing_request && !ongoing_request.closed">
     {{gettext('load')}} ({{getSelectedGames().length}} {{gettext('games')}})
   </button>
   <div *ngIf="loaded_items_habit">

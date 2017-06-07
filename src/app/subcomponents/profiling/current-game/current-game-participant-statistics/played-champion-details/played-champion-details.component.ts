@@ -123,7 +123,7 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
   private loadRecordsThenTimelines() {
     let gamereferences = this.getSelectedGames();
 
-    if (this.ongoing_request) {
+    if (this.ongoing_request && !this.ongoing_request.closed) {
       return;
     }
 
@@ -212,7 +212,6 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
                   }),
                   []
                 );
-                this.ongoing_request = null;
               }
             });
         }
@@ -226,10 +225,9 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
     // If target played-champion-details changes, reset any ongoing_request, and reset loaded records and timelines
     if (changes['played_champion_details'].currentValue !== changes['played_champion_details'].previousValue)
     {
-      if (this.ongoing_request) {
+      if (this.ongoing_request && !this.ongoing_request.closed) {
         this.ongoing_request.unsubscribe();
       }
-      this.ongoing_request = null;
       this.loaded_records = [];
       this.loaded_items_habit = null;
     }
