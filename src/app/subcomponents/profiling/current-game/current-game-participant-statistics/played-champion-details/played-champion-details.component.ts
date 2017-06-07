@@ -155,6 +155,10 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
       }
     }
 
+    // Reset to their initial state
+    this.loaded_records = [];
+    this.loaded_items_habit = null;
+
     this.ongoing_request = Observable.forkJoin(
       gamereferences.map(gameref => {
         return this.ratelimitedRequests.buffer(() => {

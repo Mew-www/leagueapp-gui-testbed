@@ -146,7 +146,6 @@ export class Analytics {
     }
 
     // Leave only most recent trinket in starting items (in case user bought-sold-bought-sold-bought-sold multiple...)
-    console.log(starting_items);
     let starting_trinket_ids = starting_items.map(item => item.id).filter(item => item.id === 3340 || item.id === 3341);
     starting_trinket_ids.forEach((trinket_id, i) => {
       let index = starting_items.map(item => item.id).indexOf(trinket_id);
