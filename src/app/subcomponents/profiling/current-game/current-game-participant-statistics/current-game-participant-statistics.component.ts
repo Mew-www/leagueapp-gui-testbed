@@ -112,7 +112,12 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   }
 
   private togglePlayedChampionDetails(played_champion) {
-    this.played_champion_details = new PlayedChampionDetails(played_champion.champion, played_champion.gamereferences);
+    // If already open -> toggle per champion
+    if (this.played_champion_details && this.played_champion_details.champion.id === played_champion.champion.id) {
+      this.played_champion_details = null;
+    } else {
+      this.played_champion_details = new PlayedChampionDetails(played_champion.champion, played_champion.gamereferences);
+    }
   }
 
   ngOnInit() { }
