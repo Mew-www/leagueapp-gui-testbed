@@ -64,7 +64,8 @@ export class i18n {
       'are_you_damn_sure_about_this': "Are you SURE you wanna load THIS many games? It'll take a while.",
       'over_300_seriously': "This will make over 600 requests to rito. Over six-hundred. SURE about this? It'll take like... a big while. (Several minutes.) Sure?",
       'starting_items_in_past': "Starting items in past",
-      'finished_items_in_past': "Finished items in past"
+      'finished_items_in_past': "Finished items in past",
+      'in_a_game': "game",
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -130,7 +131,8 @@ export class i18n {
       'are_you_damn_sure_about_this': "Oletko IHAN varma ett\u00e4 tahdot ladata NIIN monta pelihistoriaa? Latauksessa kest\u00e4\u00e4 jonkin aikaa.",
       'over_300_seriously': "Yli 600 latausta (2 per peli) ritolta. Yli kuusi-sataa. VARMA t\u00e4st\u00e4? Tulee kest\u00e4m\u00e4\u00e4n... kauan. (Useita minuutteja.) Varma?",
       'starting_items_in_past': "Starting items menneiss\u00e4",
-      'finished_items_in_past': "Finished items menneiss\u00e4"
+      'finished_items_in_past': "Finished items menneiss\u00e4",
+      'in_a_game': "peliss\u00e4",
     }
   }
 
