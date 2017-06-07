@@ -66,7 +66,10 @@
       <div class="PlayedChampionsTable__champion-nr-of-games">{{non_top_current_champion.nr_of_games ? non_top_current_champion.nr_of_games : ''}}</div>
       <div class="PlayedChampionsTable__champion-last-time" [style.display]="minimized?'none':''">{{getTimeAgoAsString(non_top_current_champion.last_time_played)}}</div>
       <div class="PlayedChampionsTable__controls">
-        <button (click)="toggledPlayedChampionDetails.emit(non_top_current_champion)">{{gettext('details')}}</button>
+        <button *ngIf="non_top_current_champion.gamereferences.length > 0"
+                (click)="toggledPlayedChampionDetails.emit(non_top_current_champion)">
+          {{gettext('details')}}
+        </button>
       </div>
     </div>
 

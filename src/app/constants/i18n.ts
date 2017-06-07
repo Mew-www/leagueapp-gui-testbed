@@ -54,7 +54,17 @@ export class i18n {
       'most_played_champions': "Most played champions",
       'details': "Details",
       'last_time_played': "Last played",
-      'never': "Never"
+      'never': "Never",
+      'total': "total",
+      'until_date': "until date",
+      'until_nr_of_games': "until number of previous games",
+      'until_all': "All previous games",
+      'load': "Load",
+      'are_you_sure_this_gonna_take_a_while': "Are you sure you wanna load this many games?",
+      'are_you_damn_sure_about_this': "Are you SURE you wanna load THIS many games? It'll take a while.",
+      'over_300_seriously': "This will make over 600 requests to rito. Over six-hundred. SURE about this? It'll take like... a big while. (Several minutes.) Sure?",
+      'starting_items_in_past': "Starting items in past",
+      'finished_items_in_past': "Finished items in past"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -110,7 +120,17 @@ export class i18n {
       'most_played_champions': "Eniten pelatut",
       'details': "Yksityiskohdat",
       'last_time_played': "Viimeksi pelattu",
-      'never': "Ei ikin\u00e4"
+      'never': "Ei ikin\u00e4",
+      'total': "kaiken kaikkiaan",
+      'until_date': "p\u00e4iv\u00e4m\u00e4\u00e4r\u00e4\u00e4n",
+      'until_nr_of_games': "edelt\u00e4vi\u00e4 pelej\u00e4",
+      'until_all': "Kaikki edelt\u00e4v\u00e4t pelit",
+      'load': "Lataa",
+      'are_you_sure_this_gonna_take_a_while': "Tahdotko varmasti ladata niin monta pelihistoriaa?",
+      'are_you_damn_sure_about_this': "Oletko IHAN varma ett\u00e4 tahdot ladata NIIN monta pelihistoriaa? Latauksessa kest\u00e4\u00e4 jonkin aikaa.",
+      'over_300_seriously': "Yli 600 latausta (2 per peli) ritolta. Yli kuusi-sataa. VARMA t\u00e4st\u00e4? Tulee kest\u00e4m\u00e4\u00e4n... kauan. (Useita minuutteja.) Varma?",
+      'starting_items_in_past': "Starting items menneiss\u00e4",
+      'finished_items_in_past': "Finished items menneiss\u00e4"
     }
   }
 

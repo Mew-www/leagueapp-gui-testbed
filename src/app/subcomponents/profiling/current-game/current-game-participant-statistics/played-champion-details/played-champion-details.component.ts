@@ -15,6 +15,7 @@ import {ItemsContainer} from "../../../../../models/dto/containers/items-contain
 import {SummonerspellsContainer} from "../../../../../models/dto/containers/summonerspells-container";
 import {Summoner} from "../../../../../models/dto/summoner";
 import {GameTimeline} from "../../../../../models/dto/game-timeline";
+import {Analytics} from "../../../../../helpers/analytics";
 
 @Component({
   selector: 'played-champion-details',
@@ -32,9 +33,14 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
   @Input() items: ItemsContainer;
   @Input() summonerspells: SummonerspellsContainer;
 
+  public filtertype = 'all';
+  private filter_datestring = '';
+  private filter_nr_of_games = 0;
+
   private ongoing_request: Subscription = null;
 
   private loaded_records: Array<GameRecordPersonalised> = [];
+  private loaded_items_habit = null;
 
   private gettext: Function;
 
@@ -42,10 +48,6 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
               private ratelimitedRequests: RatelimitedRequestsService,
               private translatorService: TranslatorService) {
     this.gettext = this.translatorService.getTranslation;
-  }
-
-  private getTimelines() {
-    return this.loaded_records.map(r => r.timeline).filter(t => t !== null);
   }
 
   private getTimeAgoAsString(date: Date) {
@@ -87,9 +89,70 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
     }
   }
 
-  private loadRecordsThenTimelines(gamereferences: Array<GameReference>) {
+  private getSelectedGames() {
+    let all_gamereferences = this.played_champion_details.gamereferences;
+    switch (this.filtertype) {
+      case 'all':
+        return all_gamereferences;
+
+      case 'datestring':
+        if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(this.filter_datestring)) {
+          return [];
+        }
+        let date_parts = this.filter_datestring.split("/");
+        let date_upto = new Date();
+        date_upto.setFullYear(Number(date_parts[2]), Number(date_parts[1])-1, Number(date_parts[0]));
+        date_upto.setHours(0, 0, 1);
+        if (date_upto < this.played_champion_details.oldest_time_played) {
+          date_upto = this.played_champion_details.oldest_time_played;
+        }
+        return all_gamereferences.filter(gameref => gameref.game_start_time >= date_upto);
+
+      case 'nr_of_games':
+        return all_gamereferences.slice(0, this.filter_nr_of_games);
+
+      default:
+        throw Error('Missing/invalid filter type currently active');
+    }
+  }
+
+  private reverseSortItemsByPercentage(a,b) {
+    return b.percentage - a.percentage;
+  }
+
+  private loadRecordsThenTimelines() {
+    let gamereferences = this.getSelectedGames();
+
     if (this.ongoing_request) {
       return;
+    }
+
+    if (gamereferences.length === 0) {
+      return;
+    }
+
+    // 60+ requests
+    if (gamereferences.length > 30 && gamereferences.length <= 100) {
+      let sure = window.confirm(this.gettext('are_you_sure_this_gonna_take_a_while'));
+      if (!sure) {
+        return;
+      }
+    }
+
+    // 200+ requests
+    if (gamereferences.length > 100 && gamereferences.length <= 300) {
+      let sure = window.confirm(this.gettext('are_you_damn_sure_about_this'));
+      if (!sure) {
+        return;
+      }
+    }
+
+    // 600+ requests
+    if (gamereferences.length > 300) {
+      let sure = window.confirm(this.gettext('over_300_seriously'));
+      if (!sure) {
+        return;
+      }
     }
 
     this.ongoing_request = Observable.forkJoin(
@@ -139,6 +202,13 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
                     this.items
                   );
                 }
+                this.loaded_items_habit = Analytics.parseStartingAndFinishedItemsHabit(
+                  this.loaded_records.map(game_record => {
+                    return (<GameTimelinePersonalised>game_record.timeline).allies.find(ally => ally.player.is_the_target).item_events;
+                  }),
+                  []
+                );
+                this.ongoing_request = null;
               }
             });
         }
@@ -157,6 +227,7 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
       }
       this.ongoing_request = null;
       this.loaded_records = [];
+      this.loaded_items_habit = null;
     }
   }
 }

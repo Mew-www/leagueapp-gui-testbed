@@ -1,5 +1,6 @@
 import {GameReference} from "../models/dto/game-reference";
 import {ChampionsContainer} from "../models/dto/containers/champions-container";
+import {start} from "repl";
 
 export class Analytics {
 
@@ -101,9 +102,134 @@ export class Analytics {
   }
 
   /*
-    Items (Array<GameTimeline>) analytics
+    Items (Array<GameTimelinePersonalised>) analytics
    */
 
+  public static parseStartingAndFinishedItems(item_events, other_meaningful_item_ids) {
+    // Other meaningful items to rush for, such as Sightstone, Jungle item upgrade, t1 boots
+    function isFinishedItem(item) {
+      return item.into.length === 0 || other_meaningful_item_ids.indexOf(item) !== -1;
+    }
+    function isConsumable(item) {
+      return item.id === 2003 // Health potion
+          || item.id === 2010 // Health potion (upgraded to Biscuit)
+          /* Consider Corrupting Potion as finished item with active (as it has re-uses after back) */
+          || item.id === 2055 // Control ward
+          || item.id === 2011 // Elixir Of Skill (Ancient Coin quest)
+          || item.id === 3513 // Eye of the Herald (trinket dropped by Rift Herald)
+          || item.id === 3340 // Warding Totem
+          || item.id === 3341 // Sweeping Lens Trinket
+          || item.id === 3364 // Oracle Alteration
+          || item.id === 3363 // Farsight Alteration
+          || item.id === 2140 // Elixir of Wrath
+          || item.id === 2139 // Elixir of Sorcery
+          || item.id === 2138 // Elixir of Iron
+          ;
+    }
+    let starting_items = [];
+    let finished_items = [];
 
+    // Parse starting items
+    for (let i=0, total_cost = 0; i<item_events.length; i++) {
+      let item = item_events[i].item;
+      let cost = item.gold.total;
+      if (item.gold.base !== cost) {
+        let existing_preitems = item.from.filter(preq => starting_items.find(existing => existing.id === preq.id));
+        cost = cost - existing_preitems.reduce((accum, existing) => accum+existing.gold.total, 0);
+      }
+      if (total_cost+cost > 500) {
+        break; // done here
+      }
+      // else
+      starting_items.push(item);
+      total_cost += cost;
+    }
+
+    // Leave only most recent trinket in starting items (in case user bought-sold-bought-sold-bought-sold multiple...)
+    console.log(starting_items);
+    let starting_trinket_ids = starting_items.map(item => item.id).filter(item => item.id === 3340 || item.id === 3341);
+    starting_trinket_ids.forEach((trinket_id, i) => {
+      let index = starting_items.map(item => item.id).indexOf(trinket_id);
+      if (i != starting_trinket_ids.length-1) {
+        starting_items.splice(index, 1);
+      }
+    });
+
+    // Remove starting items from remaining
+    item_events.splice(0, starting_items.length);
+
+    // Parse finished items
+    item_events.sort((a,b) => a.ms_passed - b.ms_passed)
+      .forEach(item_event => {
+        if (isFinishedItem(item_event.item) && !isConsumable(item_event.item)) {
+          finished_items.push(item_event.item);
+        }
+      });
+    return {
+      starting: starting_items,
+      finished: finished_items
+    };
+  }
+
+  public static parseStartingAndFinishedItemsHabit(item_events_arrays, other_meaningful_item_ids) {
+    // [[first_items{item, times_seen}], [second_items{..}], etc.]
+    let starting_items_habit = [];
+    let finished_items_habit = [];
+    item_events_arrays.forEach(item_events => {
+      let parsed_items = this.parseStartingAndFinishedItems(item_events, other_meaningful_item_ids);
+
+      // Calculate finished items' occurrence count
+      parsed_items['finished'].forEach((finished_item, i) => {
+        if (finished_items_habit.length < i+1) {
+          finished_items_habit.push([]);
+        }
+        let seen_record = finished_items_habit[i].find(record => record.item.id === finished_item.id);
+        if (!seen_record) {
+          seen_record = {
+            item: finished_item,
+            count: 0
+          };
+          finished_items_habit[i].push(seen_record);
+        }
+        seen_record.count++;
+      });
+
+      // Calculate starting items' occurrence count
+      let seen_record = starting_items_habit.find(record => JSON.stringify(record.items.map(i => i.id).sort()) === JSON.stringify(parsed_items['starting'].map(i => i.id).sort()));
+      if (!seen_record) {
+        seen_record = {
+          items: parsed_items['starting'],
+          count: 0
+        };
+        starting_items_habit.push(seen_record);
+      }
+      seen_record.count++;
+    });
+
+    // Add occurrence %
+    finished_items_habit.forEach(nth_finished_items => {
+      let total_nth_count = nth_finished_items.reduce((total, record) => {
+        total = total + record.count;
+        return total;
+      }, 0);
+      nth_finished_items.map(nth_finished_item => {
+        nth_finished_item['percentage'] = Math.round(nth_finished_item.count / total_nth_count * 100);
+        return nth_finished_item;
+      });
+    });
+    let total_starting_count = starting_items_habit.reduce((total, record) => {
+      total = total + record.count;
+      return total;
+    }, 0);
+    starting_items_habit.map(starting_items => {
+      starting_items['percentage'] = Math.round(starting_items.count / total_starting_count * 100);
+      return starting_items;
+    });
+
+    return {
+      starting: starting_items_habit,
+      finished: finished_items_habit
+    };
+  }
 
 }

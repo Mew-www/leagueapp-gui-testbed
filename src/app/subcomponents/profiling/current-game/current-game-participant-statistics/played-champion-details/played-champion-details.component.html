@@ -1,13 +1,54 @@
-<div>
-  Details for {{played_champion_details.champion.name}}
+<div class="Details">
+  <p class="Details__header">
+    Details for {{played_champion_details.champion.name}}
+    <span class="Details__header-dates">
+      ({{getTimeAgoAsString(played_champion_details.most_recent_time_played)}} - {{getTimeAgoAsString(played_champion_details.oldest_time_played)}})
+    </span>
+  </p>
+  <!-- Filters -->
+  <label>
+    <input type="radio" name="date-type-to" (change)="filtertype = 'datestring'"/>
+    {{gettext('until_date')}}
+  </label>
+  <input type="text" [(ngModel)]="filter_datestring" placeholder="DD/MM/YYYY" />
   <br/>
-  Dates from {{getTimeAgoAsString(played_champion_details.most_recent_time_played)}} to {{getTimeAgoAsString(played_champion_details.oldest_time_played)}}
+  <label>
+    <input type="radio" name="date-type-to" (change)="filtertype = 'nr_of_games'"/>
+    {{gettext('until_nr_of_games')}}
+  </label>
+  <input class="Details__filter-number-input" type="number" [(ngModel)]="filter_nr_of_games"/>
   <br/>
-  <button (click)="loadRecordsThenTimelines(played_champion_details.gamereferences.slice(0,2))" [disabled]="ongoing_request">
-    load first two timelines
+  <label>
+    <input type="radio" name="date-type-to" checked="checked" (change)="filtertype = 'all'"/>
+    {{gettext('until_all')}} ({{played_champion_details.gamereferences.length}} {{gettext('games')}} {{gettext('total')}})
+  </label>
+  <br/>
+  <!-- Executing downloads -->
+  <button (click)="loadRecordsThenTimelines()" [disabled]="ongoing_request">
+    {{gettext('load')}} ({{getSelectedGames().length}} {{gettext('games')}})
   </button>
-  <pre *ngFor="let t of getTimelines()">
-    {{t.allies | json}}
-    {{t.enemies | json}}
-  </pre>
+  <div *ngIf="loaded_items_habit">
+    {{gettext('starting_items_in_past')}} {{loaded_records.length}} {{gettext('games')}}
+    <div *ngFor="let starting_items of loaded_items_habit.starting.sort(reverseSortItemsByPercentage)">
+      {{starting_items.percentage}}%
+      <span *ngFor="let item of starting_items.items; let i=index">
+        <img src="{{item.images.square_url}}" title="{{item.name + '&#013;&#010;&#013;&#010;' + item.description+''}}" />
+        {{i !== starting_items.items.length-1 ? '+' : ''}}
+      </span>
+    </div>
+  </div>
+  <hr/>
+  <div *ngIf="loaded_items_habit">
+    {{gettext('finished_items_in_past')}} {{loaded_records.length}} {{gettext('games')}}
+    <div *ngFor="let finished_nth_items of loaded_items_habit.finished; let i=index">
+      <div>
+        {{i+1===1?'1st':(i+1===2?'2nd':(i+1)+'th')}} item
+        <span *ngFor="let nth_item of finished_nth_items.sort(reverseSortItemsByPercentage); let k=index">
+          {{nth_item.percentage}}%
+          <img src="{{nth_item.item.images.square_url}}" title="{{nth_item.item.name + '&#013;&#010;&#013;&#010;' + nth_item.item.description+''}}" />
+          {{k !== finished_nth_items.length-1 ? ', ' : ''}}
+        </span>
+      </div>
+    </div>
+  </div>
 </div>

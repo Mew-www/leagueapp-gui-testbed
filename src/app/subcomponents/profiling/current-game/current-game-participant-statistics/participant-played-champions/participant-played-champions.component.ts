@@ -119,7 +119,8 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
           order: -1,
           champion: this.currently_played_champion,
           nr_of_games: 0,
-          lanes: []
+          lanes: [],
+          gamereferences: []
         };
       }
     }

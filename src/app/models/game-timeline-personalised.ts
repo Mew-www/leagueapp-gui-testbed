@@ -5,8 +5,8 @@ import {Item} from "./dto/item";
 
 export class GameTimelinePersonalised extends GameTimeline {
 
-  private readonly allies;
-  private readonly enemies;
+  public readonly allies;
+  public readonly enemies;
 
   constructor(timeline_json, players_by_participant_id_by_teams, items: ItemsContainer) {
 
