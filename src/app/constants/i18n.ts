@@ -66,6 +66,7 @@ export class i18n {
       'starting_items_in_past': "Starting items in past",
       'finished_items_in_past': "Finished items in past",
       'in_a_game': "game",
+      'dev_env': "Playground"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -133,6 +134,7 @@ export class i18n {
       'starting_items_in_past': "Starting items menneiss\u00e4",
       'finished_items_in_past': "Finished items menneiss\u00e4",
       'in_a_game': "peliss\u00e4",
+      'dev_env': "Playground"
     }
   }
 

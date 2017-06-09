@@ -1,0 +1,39 @@
+<div *ngIf="start_summoner_name">
+  Started parsing from {{start_summoner_name}}
+  (followed players: <span *ngFor="let p of parsed_names">{{p}}, </span>)
+</div>
+<div *ngIf="number_of_games">
+  {{number_of_games}} games to load
+</div>
+<div>
+  {{days_to_past}} days to past
+</div>
+<div>
+  {{parsed_players.length}} parsed players:
+  <br/>
+  <span *ngFor="let id of parsed_players">{{id}}, </span>
+</div>
+<div class="KnownPlayersContainer">
+  {{known_players.length}} known players:
+  <br/>
+  <span *ngFor="let id of known_players">{{id}}, </span>
+</div>
+<div>
+  {{seen_games.length}} games
+</div>
+<div>
+  {{seen_timelines.length}} timelines
+</div>
+<div class="FailedRequestsContainer">
+  Failed requests:
+  <pre>{{failed_requests | json}}</pre>
+</div>
+
+<button (click)="promptNewSummonerThenLoadEUW()">Start!</button>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>

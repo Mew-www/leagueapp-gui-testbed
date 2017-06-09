@@ -97,6 +97,7 @@ export class ApiRoutes {
       + "&match_id=" + game_id;
   };
 
+  /* Images */
   public static PROFILE_ICON_URI = (icon_id) => {
     return Settings.API_BASE_URI + "static/assets/profile_icons/"+icon_id+".png";
   };
@@ -118,4 +119,10 @@ export class ApiRoutes {
     }
     return Settings.API_BASE_URI + "static/assets/summonerspell_icons/"+summonerspell_ddragon_name+".png";
   };
+
+  /* Explorer (dev) API */
+  public static EXPLORER_SEEN_PEOPLE = Settings.API_BASE_URI + "explorer/seen_people";
+  public static EXPLORER_SEEN_MATCHES =  Settings.API_BASE_URI + "explorer/seen_matches";
+  public static EXPLORER_SEEN_TIMELINES =  Settings.API_BASE_URI + "explorer/seen_timelines";
+  public static EXPLORER_FAILED_REQUESTS =  Settings.API_BASE_URI + "explorer/failed_requests";
 }

@@ -33,6 +33,8 @@ import { CurrentGameParticipantStatisticsComponent } from './subcomponents/profi
 import { SummonerSpellIconComponent } from './genericcomponents/summoner-spell-icon/summoner-spell-icon.component';
 import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/participant-played-champions/participant-played-champions.component';
 import { PlayedChampionDetailsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/played-champion-details.component';
+import { ExplorerComponent } from './subcomponents/profiling/explorer/explorer.component';
+import {ExplorerApiService} from "./services/explorer-api.service";
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { PlayedChampionDetailsComponent } from './subcomponents/profiling/curren
     CurrentGameParticipantStatisticsComponent,
     SummonerSpellIconComponent,
     ParticipantPlayedChampionsComponent,
-    PlayedChampionDetailsComponent
+    PlayedChampionDetailsComponent,
+    ExplorerComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ import { PlayedChampionDetailsComponent } from './subcomponents/profiling/curren
   providers: [
     PreferencesService, TranslatorService,
     StaticApiService, PlayerApiService, GameApiService,
-    RatelimitedRequestsService
+    RatelimitedRequestsService,
+    ExplorerApiService
   ],
   bootstrap: [AppComponent]
 })
