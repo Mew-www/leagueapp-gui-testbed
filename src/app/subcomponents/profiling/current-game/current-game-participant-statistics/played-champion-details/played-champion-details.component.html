@@ -32,6 +32,16 @@
       {{gettext('failed_try_again')}} ({{getSelectedGames().length}} {{gettext('games')}})
     </span>
   </button>
+  <div *ngIf="loaded_items_habit" class="Details__view-range-filter">
+    {{gettext('filter_loaded_games')}}
+    <br/>
+    <label>
+      1
+      <input #viewRange type="range" step="1" value="{{initial_loaded_records_length}}" min="1" max="{{initial_loaded_records_length}}" (change)="changeViewRange(viewRange.value)" />
+      {{initial_loaded_records_length}}
+    </label>
+    <p class="Details__view-range-filter-value">{{viewRange.value < initial_loaded_records_length ? viewRange.value : initial_loaded_records_length}}</p>
+  </div>
 
   <div *ngIf="loaded_items_habit">
     <hr/>

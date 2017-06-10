@@ -69,7 +69,8 @@ export class i18n {
       'dev_env': "Playground",
       'likely_to_build_mostly': "Likely (>50%) to build",
       'percent_to_build_nth': "Has built item in past games as Nth",
-      'failed_try_again': "Failed - Try again"
+      'failed_try_again': "Failed - Try again",
+      'filter_loaded_games': "Filter loaded games"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -140,7 +141,8 @@ export class i18n {
       'dev_env': "Playground",
       'likely_to_build_mostly': "Todenn\u00e4k\u00f6isesti (>50%) ostaa",
       'percent_to_build_nth': "On ostanut itemin menneiss\u00e4 peleiss\u00e4 N'ten\u00e4",
-      'failed_try_again': "Jotain meni vikaan - yrit\u00e4 uudelleen"
+      'failed_try_again': "Jotain meni vikaan - yrit\u00e4 uudelleen",
+      'filter_loaded_games': "Suodata ladattuja pelej\u00e4"
     }
   }
 

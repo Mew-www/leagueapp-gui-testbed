@@ -40,7 +40,10 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
   private ongoing_request: Subscription = null;
 
   private loaded_records: Array<GameRecordPersonalised> = [];
+  private initial_loaded_records_length = null;
   private loaded_items_habit = null;
+
+  private limiter_timeout_id = null;
 
   private gettext: Function;
 
@@ -48,6 +51,16 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
               private ratelimitedRequests: RatelimitedRequestsService,
               private translatorService: TranslatorService) {
     this.gettext = this.translatorService.getTranslation;
+  }
+
+  private changeViewRange(nr_of_games_limit) {
+    if (this.limiter_timeout_id) {
+      window.clearTimeout(this.limiter_timeout_id);
+    }
+    this.limiter_timeout_id = window.setTimeout(
+      () => {this.loadRecordsThenTimelines(nr_of_games_limit);},
+      500
+    );
   }
 
   private getTimeAgoAsString(date: Date) {
@@ -124,8 +137,12 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
     return b.percentage - a.percentage;
   }
 
-  private loadRecordsThenTimelines() {
+  private loadRecordsThenTimelines(opt_nr_of_games_limit?) {
     let gamereferences = this.getSelectedGames();
+
+    if (opt_nr_of_games_limit) {
+      gamereferences = gamereferences.slice(0, opt_nr_of_games_limit);
+    }
 
     if (this.ongoing_request && !this.ongoing_request.closed) {
       return;
@@ -135,27 +152,29 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
       return;
     }
 
-    // 60+ requests
-    if (gamereferences.length > 30 && gamereferences.length <= 100) {
-      let sure = window.confirm(this.gettext('are_you_sure_this_gonna_take_a_while'));
-      if (!sure) {
-        return;
+    if (!opt_nr_of_games_limit) {
+      // 60+ requests
+      if (gamereferences.length > 30 && gamereferences.length <= 100) {
+        let sure = window.confirm(this.gettext('are_you_sure_this_gonna_take_a_while'));
+        if (!sure) {
+          return;
+        }
       }
-    }
 
-    // 200+ requests
-    if (gamereferences.length > 100 && gamereferences.length <= 300) {
-      let sure = window.confirm(this.gettext('are_you_damn_sure_about_this'));
-      if (!sure) {
-        return;
+      // 200+ requests
+      if (gamereferences.length > 100 && gamereferences.length <= 300) {
+        let sure = window.confirm(this.gettext('are_you_damn_sure_about_this'));
+        if (!sure) {
+          return;
+        }
       }
-    }
 
-    // 600+ requests
-    if (gamereferences.length > 300) {
-      let sure = window.confirm(this.gettext('over_300_seriously'));
-      if (!sure) {
-        return;
+      // 600+ requests
+      if (gamereferences.length > 300) {
+        let sure = window.confirm(this.gettext('over_300_seriously'));
+        if (!sure) {
+          return;
+        }
       }
     }
 
@@ -216,6 +235,9 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
                   }),
                   []
                 );
+                if (!opt_nr_of_games_limit) {
+                  this.initial_loaded_records_length = this.loaded_records.length;
+                }
               }
             });
         }
