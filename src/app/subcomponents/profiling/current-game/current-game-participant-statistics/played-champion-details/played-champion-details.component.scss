@@ -46,7 +46,6 @@
       padding: 0;
       margin: 0;
       font-family: Roboto, 'sans-serif';
-      text-decoration: underline;
     }
     &-row {
       display: table-row;
@@ -73,7 +72,6 @@
     padding: 0;
     margin: 0;
     font-family: Roboto, 'sans-serif';
-    text-decoration: underline;
   }
   &__items-first-six {
     @extend %clearfix;
@@ -84,6 +82,9 @@
     padding: 4px;
     border: 2px groove grey;
     text-align: right;
+  }
+  &__item-post-six {
+    display: inline-block;
   }
   &__item-header {
     padding: 0;

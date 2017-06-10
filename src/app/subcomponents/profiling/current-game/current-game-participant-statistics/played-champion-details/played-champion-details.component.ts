@@ -33,7 +33,7 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
   @Input() items: ItemsContainer;
   @Input() summonerspells: SummonerspellsContainer;
 
-  public filtertype = 'all';
+  public filtertype = 'month_ago';
   private filter_datestring = '';
   private filter_nr_of_games = 0;
 
@@ -92,8 +92,8 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
   private getSelectedGames() {
     let all_gamereferences = this.played_champion_details.gamereferences;
     switch (this.filtertype) {
-      case 'all':
-        return all_gamereferences;
+      case 'month_ago':
+        return all_gamereferences.filter(this.monthAgoFilter);
 
       case 'datestring':
         if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(this.filter_datestring)) {
@@ -114,6 +114,10 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
       default:
         throw Error('Missing/invalid filter type currently active');
     }
+  }
+
+  private monthAgoFilter(gameref: GameReference) {
+    return gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*31);
   }
 
   private reverseSortItemsByPercentage(a,b) {

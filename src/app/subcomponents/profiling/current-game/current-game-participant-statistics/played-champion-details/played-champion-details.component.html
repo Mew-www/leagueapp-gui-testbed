@@ -13,15 +13,15 @@
   <input type="text" [(ngModel)]="filter_datestring" placeholder="DD/MM/YYYY" />
   <br/>
   <label>
+    <input type="radio" name="date-type-to" checked="checked" (change)="filtertype = 'month_ago'"/>
+    {{gettext('until_month_ago')}} ({{played_champion_details.gamereferences.filter(monthAgoFilter).length}} {{gettext('games')}})
+  </label>
+  <br/>
+  <label>
     <input type="radio" name="date-type-to" (change)="filtertype = 'nr_of_games'"/>
     {{gettext('until_nr_of_games')}}
   </label>
   <input class="Details__filter-number-input" type="number" [(ngModel)]="filter_nr_of_games"/>
-  <br/>
-  <label>
-    <input type="radio" name="date-type-to" checked="checked" (change)="filtertype = 'all'"/>
-    {{gettext('until_all')}} ({{played_champion_details.gamereferences.length}} {{gettext('games')}} {{gettext('total')}})
-  </label>
   <br/>
   <!-- Executing downloads -->
   <button (click)="loadRecordsThenTimelines()" [disabled]="ongoing_request && !ongoing_request.closed">
@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-    <div *ngFor="let finished_nth_items of loaded_items_habit.finished.slice(6); let i=index">
+    <div *ngFor="let finished_nth_items of loaded_items_habit.finished.slice(6); let i=index" class="Details__item-post-six">
       <p class="Details__item-header">{{i+7===1?'1st':(i+7===2?'2nd':(i+7===3?'3rd':(i+7)+'th'))}} item</p>
       <!-- Remaining (7th+) items (if any) next to each other (spans) -->
       <span *ngFor="let nth_item of finished_nth_items.sort(reverseSortItemsByPercentage); let k=index">

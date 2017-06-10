@@ -36,12 +36,12 @@
   }
 
   &__laners-container {
-    display: block;
+    display: table;
     margin-bottom: 5px;
   }
 
   &__laner {
-    display: inline-block;
+    display: table-cell;
     padding: 5px;
     border: 1px solid grey;
     width: 34em;
