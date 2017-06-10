@@ -1,6 +1,5 @@
 import {GameReference} from "../models/dto/game-reference";
 import {ChampionsContainer} from "../models/dto/containers/champions-container";
-import {start} from "repl";
 
 export class Analytics {
 
@@ -225,9 +224,52 @@ export class Analytics {
       return starting_items;
     });
 
+    let most_present_items = finished_items_habit.reduce((all_items, nth_finished_items) => {
+      all_items = all_items.concat(nth_finished_items.map(record => record.item));
+      return all_items;
+    },[])
+      .filter((v, i, s) => {
+        // Filter away non-unique items (duplicates and so)
+        let items_as_ids = s.map(item => item.id);
+        return items_as_ids.indexOf(v.id) === i;
+      })
+      .map(this_item => {
+        let earliest_finish = 0;
+        for (let i=0; i<finished_items_habit.length; i++) {
+          if (finished_items_habit[i].find(record => record.item.id === this_item.id)) {
+            earliest_finish = i;
+            break;
+          }
+        }
+        let latest_finish = 0;
+        for (let i=0; i<finished_items_habit.length; i++) {
+          if (finished_items_habit[i].find(record => record.item.id === this_item.id)) {
+            latest_finish = i;
+          }
+        }
+        let games_with_possible_finish = item_events_arrays
+          .map(item_events => this.parseStartingAndFinishedItems(item_events, other_meaningful_item_ids)['finished'])
+          .filter(game_finished_items => game_finished_items.length >= earliest_finish)
+          .map(game_finished_items => game_finished_items.slice(0,6));
+        let present_percentage = Math.round(games_with_possible_finish.filter(game_finished_items => {
+          return game_finished_items.find(finished_item => finished_item.id === this_item.id);
+        }).length / games_with_possible_finish.length * 100);
+        return {
+          item: this_item,
+          percentage: present_percentage,
+          earliest_finish: earliest_finish,
+          latest_finish: latest_finish
+        };
+      })
+      .filter(record => record.percentage > 50)
+      .sort((a,b) => b.percentage - a.percentage)
+      .slice(0,6)
+      .sort((a,b) => a.earliest_finish - b.earliest_finish);
+
     return {
       starting: starting_items_habit,
-      finished: finished_items_habit
+      finished: finished_items_habit,
+      mostly: most_present_items
     };
   }
 
