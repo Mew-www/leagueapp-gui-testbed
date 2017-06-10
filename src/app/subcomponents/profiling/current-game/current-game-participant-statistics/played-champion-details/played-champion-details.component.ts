@@ -234,6 +234,7 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
       }
       this.loaded_records = [];
       this.loaded_items_habit = null;
+      this.ongoing_request = null;
     }
   }
 }
