@@ -37,6 +37,11 @@
   &__lane-main{
     text-transform: lowercase;
   }
+  &__lane-main-percentages-bar {
+    position: relative;
+    display: inline-block;
+    background: #60aa60;
+  }
   &__lane-main-percentages {
     font-family: 'Roboto', 'sans-serif';
     font-size: 14px;

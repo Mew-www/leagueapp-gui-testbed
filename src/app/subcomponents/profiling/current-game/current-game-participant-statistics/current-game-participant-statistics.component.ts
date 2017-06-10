@@ -59,6 +59,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
 
   private gettext: Function;
   private GameType = GameType;
+  private Math = Math;
 
   private top_lane_queue_img_uri = Settings.STATIC_BASE_URI + "top_lane_queue.png";
   private jungle_lane_queue_img_uri = Settings.STATIC_BASE_URI + "jungle_lane_queue.png";
