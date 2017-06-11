@@ -55,7 +55,7 @@
           /><span
             class="Participant__lane-main-percentages-bar"
             [class.Participant__lane-main-percentages-bar--high]="l.percentage > 50"
-            [class.Participant__lane-main-percentages-bar--medium]="l.percentage > 25"
+            [class.Participant__lane-main-percentages-bar--medium]="l.percentage <= 50 && l.percentage > 25"
             [class.Participant__lane-main-percentages-bar--low]="l.percentage <= 25"
             [style.height.px]="Math.round(27*l.percentage/100)"
             [style.top.px]="(-11)+(27-Math.round(27*l.percentage/100))"
