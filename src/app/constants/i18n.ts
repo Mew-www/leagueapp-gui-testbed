@@ -71,7 +71,8 @@ export class i18n {
       'percent_to_build_nth': "Has built item in past games as Nth",
       'failed_try_again': "Failed - Try again",
       'filter_loaded_games': "Filter loaded games",
-      'none': "None"
+      'none': "None",
+      'unlucky_autofill': "Unlucky autofill?"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -144,7 +145,8 @@ export class i18n {
       'percent_to_build_nth': "On ostanut itemin menneiss\u00e4 peleiss\u00e4 N'ten\u00e4",
       'failed_try_again': "Jotain meni vikaan - yrit\u00e4 uudelleen",
       'filter_loaded_games': "Suodata ladattuja pelej\u00e4",
-      'none': "Ei ole"
+      'none': "Ei ole",
+      'unlucky_autofill': "Unlucky autofill?"
     }
   }
 

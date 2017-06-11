@@ -24,7 +24,7 @@ import {PlayedChampionDetails} from "../../../../models/played-champion-details"
 })
 export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChanges {
 
-  @Input() match_id;
+  @Input() spectatorcache_id;
   @Input() player: CurrentGameParticipant;
   @Input() region;
   @Input() gametype: GameType;
@@ -52,6 +52,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
 
   private summoner: Summoner;
   private gamehistory: Array<GameReference> = null;
+  private current_lane = null;
   private preferred_lanes: Array<any> = null;
   private played_champion_details: PlayedChampionDetails = null;
   private error_text_key = "";
@@ -71,6 +72,23 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
               private ratelimitedRequests: RatelimitedRequestsService,
               private translator: TranslatorService) {
     this.gettext = this.translator.getTranslation;
+  }
+
+  private mapToLaneName(lane) {
+    return lane.lane_name;
+  }
+
+  private handleCurrentLaneChanged(lane_name) {
+    console.log(lane_name);
+    if (!lane_name) {
+      return;
+    }
+
+    if (lane_name === "BOTTOM1" || lane_name === "BOTTOM2") {
+      this.current_lane = "BOTTOM";
+    } else {
+      this.current_lane = lane_name;
+    }
   }
 
   private getTimeAgoAsString(date: Date) {
@@ -124,7 +142,8 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   ngOnInit() { }
 
   ngOnChanges(changes) {
-    if (changes['show_also_secondary_queue_stats'].currentValue !== changes['show_also_secondary_queue_stats'].previousValue) {
+    if (changes.hasOwnProperty('show_also_secondary_queue_stats') &&
+        changes['show_also_secondary_queue_stats'].currentValue !== changes['show_also_secondary_queue_stats'].previousValue) {
 
       // If data is already cached, just return it
       if (this.gametype === GameType.SOLO_QUEUE && this.show_also_secondary_queue_stats === false && this._cached_gamehistories.soloqueue !== null) {
@@ -157,7 +176,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
       // If first run, else don't re-create
       if (this.observable_playerdata_request === null) {
         this.observable_playerdata_request = this.ratelimitedRequests.buffer(() => {
-          return this.player_api.getSummonerByNameSpectatorcached(this.region, this.player.summoner_name, this.match_id)
+          return this.player_api.getSummonerByNameSpectatorcached(this.region, this.player.summoner_name, this.spectatorcache_id)
         });
       }
 
@@ -170,7 +189,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
             this.loading_gamehistory = true;
             let queues_to_look_up = this.show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE : this.gametype;
             this.ongoing_gamehistory_request = this.ratelimitedRequests.buffer(() => {
-              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, queues_to_look_up, this.match_id);
+              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, queues_to_look_up, this.spectatorcache_id);
             })
               .subscribe(gamehistory_api_res => {
                 switch (gamehistory_api_res.type) {

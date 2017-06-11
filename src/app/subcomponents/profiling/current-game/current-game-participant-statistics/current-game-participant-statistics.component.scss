@@ -1,5 +1,9 @@
 %clearfix { &:after { content: ' '; display: table; clear: both; } }
 
+$lane-main-green: #60aa60;
+$lane-main-yellow: #ffb40d;
+$lane-main-red: #b13535;
+
 .Participant {
   margin-bottom: 5px;
 
@@ -36,17 +40,55 @@
   }
   &__lane-main{
     text-transform: lowercase;
+
+    &--current-high {
+      border-bottom: 2px solid $lane-main-green;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-green, 0.7),
+              0 2px 0 0 rgba($lane-main-green, 0.4);
+    }
+
+    &--current-medium {
+      border-bottom: 2px solid $lane-main-yellow;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-yellow, 0.7),
+              0 2px 0 0 rgba($lane-main-yellow, 0.4);
+    }
+
+    &--current-low {
+      border-bottom: 2px solid $lane-main-red;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-red, 0.7),
+              0 2px 0 0 rgba($lane-main-red, 0.4);
+    }
   }
   &__lane-main-percentages-bar {
     position: relative;
     display: inline-block;
-    background: #60aa60;
+    &--high {
+      background: $lane-main-green;
+    }
+    &--medium {
+      background: $lane-main-yellow;
+    }
+    &--low {
+      background: $lane-main-red;
+    }
   }
   &__lane-main-percentages {
     font-family: 'Roboto', 'sans-serif';
     font-size: 14px;
     position: relative;
     top: -16px;
+  }
+  &__lane-main-autofill-infotext {
+    position: relative;
+    top: -6px;
+    left: 10px;
+    font-family: Roboto, 'sans-serif';
+    font-size: 20px;
+    color: $lane-main-red;
+    box-shadow: 0px 0 2px 1px $lane-main-red;
   }
 
   /* 1/3 */

@@ -82,7 +82,8 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes) {
-    if (changes['gamehistory'].currentValue === changes['gamehistory'].previousValue) {
+    if (changes.hasOwnProperty('gamehistory') &&
+        changes['gamehistory'].currentValue === changes['gamehistory'].previousValue) {
       return;
     }
 

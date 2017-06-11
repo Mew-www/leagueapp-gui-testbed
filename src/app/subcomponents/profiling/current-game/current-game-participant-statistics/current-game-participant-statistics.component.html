@@ -11,6 +11,14 @@
                                     'Solo+Flex' : gametype === GameType.SOLO_QUEUE ?
                                         'Solo' : 'Flex'}}queue)
     </span>
+    <select (change)="handleCurrentLaneChanged($event.target.value)">
+      <option value="" selected="selected" disabled="disabled">Lane?</option>
+      <option value="TOP">Top</option>
+      <option value="JUNGLE">Jungle</option>
+      <option value="MID">Mid</option>
+      <option value="BOTTOM1">ADC (Bottom)</option>
+      <option value="BOTTOM2">Support (Bottom)</option>
+    </select>
   </div>
   <div class="Participant__summary">
     <div class="Participant__lane-mains">
@@ -21,7 +29,13 @@
         <span class="Participant__lane-mains-content-title">
           {{gettext('preferred_lanes')}}
         </span>
-        <span *ngFor="let l of preferred_lanes; let i = index" class="Participant__lane-main">
+        <span
+            *ngFor="let l of preferred_lanes; let i = index"
+            class="Participant__lane-main"
+            [class.Participant__lane-main--current-high]="l.lane_name === current_lane && l.percentage > 50"
+            [class.Participant__lane-main--current-medium]="l.lane_name === current_lane && l.percentage <= 50 && l.percentage > 25"
+            [class.Participant__lane-main--current-low]="l.lane_name === current_lane && l.percentage <= 25"
+        >
           <img
             *ngIf="l.lane_name === 'TOP'"
             src="{{top_lane_queue_img_uri}}"
@@ -40,11 +54,19 @@
             title="{{l.lane_name}}"
           /><span
             class="Participant__lane-main-percentages-bar"
+            [class.Participant__lane-main-percentages-bar--high]="l.percentage > 50"
+            [class.Participant__lane-main-percentages-bar--medium]="l.percentage > 25"
+            [class.Participant__lane-main-percentages-bar--low]="l.percentage <= 25"
             [style.height.px]="Math.round(27*l.percentage/100)"
             [style.top.px]="(-11)+(27-Math.round(27*l.percentage/100))"
-            [style.background-color]="l.percentage > 50 ? '#60aa60' : l.percentage > 25 ? '#ffb40d' : '#b13535'"
           >&nbsp;&nbsp;</span>
           <span class="Participant__lane-main-percentages">({{l.percentage}}%)</span>
+        </span>
+        <span
+            *ngIf="current_lane && preferred_lanes.map(mapToLaneName).indexOf(current_lane) === -1"
+            class="Participant__lane-main-autofill-infotext"
+        >
+          {{gettext('unlucky_autofill')}}
         </span>
       </span>
     </div>
