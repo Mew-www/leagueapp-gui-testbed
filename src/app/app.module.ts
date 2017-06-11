@@ -35,6 +35,8 @@ import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/c
 import { PlayedChampionDetailsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/played-champion-details.component';
 import { ExplorerComponent } from './subcomponents/profiling/explorer/explorer.component';
 import {ExplorerApiService} from "./services/explorer-api.service";
+import { StartingItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/starting-items-history/starting-items-history.component';
+import { FinishedItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/finished-items-history/finished-items-history.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import {ExplorerApiService} from "./services/explorer-api.service";
     SummonerSpellIconComponent,
     ParticipantPlayedChampionsComponent,
     PlayedChampionDetailsComponent,
-    ExplorerComponent
+    ExplorerComponent,
+    StartingItemsHistoryComponent,
+    FinishedItemsHistoryComponent
   ],
   imports: [
     BrowserModule,

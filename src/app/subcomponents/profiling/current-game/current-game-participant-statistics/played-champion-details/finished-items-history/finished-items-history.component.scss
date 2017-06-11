@@ -1,0 +1,121 @@
+%clearfix {
+  &:after {
+    display: table;
+    content: ' ';
+    clear: both;
+  }
+}
+
+.Title {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.SecondaryTitle {
+  padding: 0;
+  margin: 0;
+  font-family: Roboto, 'sans-serif';
+}
+
+.ToggleButton {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: grey;
+  padding: 1px 4px;
+  border: none;
+  position: relative;
+  top: -1px;
+  cursor: pointer;
+}
+
+.InfoText {
+  padding: 15px;
+  margin: 0;
+  text-align: center;
+  background: white;
+}
+
+.MostlyFinishedItemsTable {
+  display: table;
+  margin-bottom: 8px;
+
+  &__caption {
+    display: table-caption;
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, 'sans-serif';
+  }
+  &__row {
+    display: table-row;
+  }
+  &__td {
+    display: table-cell;
+    padding: 2px;
+    padding-top: 7px;
+    text-align: center;
+    border: 2px ridge black;
+  }
+}
+.MostlyFinishedItem {
+
+  &__percentage {
+    font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -7px;
+  }
+  &__icon {
+    width: 30px;
+    height: 30px;
+    cursor: help;
+  }
+  &__order {
+    font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -7px;
+  }
+}
+
+
+.FinishedItemsFirstSix {
+  @extend %clearfix;
+
+  &__nth-items {
+    display: table;
+    float: left;
+    padding: 4px;
+    border: 2px groove grey;
+    text-align: right;
+  }
+  &__nth-title {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+}
+.FinishedItemsAfterSix {
+
+  &__nth-items {
+    display: inline-block;
+  }
+  &__nth-title {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+}
+.NthFinishedItem {
+
+  &__percentage {
+    font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -7px;
+  }
+  &__icon {
+    width: 30px;
+    height: 30px;
+    cursor: help;
+  }
+}

@@ -1,0 +1,46 @@
+<p class="Title">
+  {{gettext('starting_items_in_past')}} {{total_number_of_games}} {{gettext('games')}}
+  <button
+      *ngIf="starting_items_habit.length > 1"
+      class="ToggleButton"
+      (click)="minimized = !minimized || scrollToBottom(lastContainer)"
+  >
+    {{gettext(minimized ? 'show_more' : 'show_less')}}
+  </button>
+</p>
+
+<!-- Most often occurring starting items -->
+<div *ngIf="starting_items_habit.length > 0" class="StartingItemsSet">
+  <span class="StartingItemsSet__percentage">
+    {{starting_items_habit.sort(reverseSortByPercentage)[0].percentage === 100 ? starting_items_habit.sort(reverseSortByPercentage)[0].percentage :
+        starting_items_habit.sort(reverseSortByPercentage)[0].percentage >= 10 ? '&nbsp;'+starting_items_habit.sort(reverseSortByPercentage)[0].percentage :
+            '&nbsp;&nbsp;'+starting_items_habit.sort(reverseSortByPercentage)[0].percentage}}%
+  </span>
+  <span *ngFor="let item of starting_items_habit.sort(reverseSortByPercentage)[0].items.sort(sortById); let i=index" class="StartingItem">
+    <img
+        class="StartingItem__icon"
+        src="{{item.images.square_url}}"
+        title="{{item.name + '&#013;&#010;&#013;&#010;' + item.description+''}}"
+    />
+    {{i !== starting_items_habit.sort(reverseSortByPercentage)[0].items.length-1 ? '+' : ''}}
+  </span>
+</div>
+
+<div #lastContainer [hidden]="minimized">
+  <!-- Less used/occurring starting items -->
+  <div *ngFor="let starting_items_set of starting_items_habit.sort(reverseSortByPercentage).slice(1).sort(sortById)" class="StartingItemsSet">
+    <span class="StartingItemsSet__percentage">
+      {{starting_items_set.percentage === 100 ? starting_items_set.percentage :
+          starting_items_set.percentage >= 10 ? '&nbsp;'+starting_items_set.percentage :
+              '&nbsp;&nbsp;'+starting_items_set.percentage}}%
+    </span>
+    <span *ngFor="let item of starting_items_set.items; let i=index" class="StartingItem">
+    <img
+        class="StartingItem__icon"
+        src="{{item.images.square_url}}"
+        title="{{item.name + '&#013;&#010;&#013;&#010;' + item.description+''}}"
+    />
+    {{i !== starting_items_set.items.length-1 ? '+' : ''}}
+  </span>
+  </div>
+</div>

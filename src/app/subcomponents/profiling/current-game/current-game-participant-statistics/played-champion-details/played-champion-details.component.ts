@@ -133,10 +133,6 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
     return gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*31);
   }
 
-  private reverseSortItemsByPercentage(a,b) {
-    return b.percentage - a.percentage;
-  }
-
   private loadRecordsThenTimelines(opt_nr_of_games_limit?) {
     let gamereferences = this.getSelectedGames();
 
