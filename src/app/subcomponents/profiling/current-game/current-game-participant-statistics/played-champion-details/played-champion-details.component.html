@@ -57,4 +57,9 @@
         [nth_finished_items]="loaded_items_habit.finished">
     </finished-items-history>
   </div>
+
+  <div *ngIf="loaded_win_statistics" class="Details__sub-container">
+    <winrate-graph>
+    </winrate-graph>
+  </div>
 </div>

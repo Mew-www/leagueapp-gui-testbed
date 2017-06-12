@@ -79,7 +79,6 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
   }
 
   private handleCurrentLaneChanged(lane_name) {
-    console.log(lane_name);
     if (!lane_name) {
       return;
     }
