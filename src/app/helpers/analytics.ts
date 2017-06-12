@@ -1,5 +1,6 @@
 import {GameReference} from "../models/dto/game-reference";
 import {ChampionsContainer} from "../models/dto/containers/champions-container";
+import {GameRecordPersonalised} from "../models/game-record-personalised";
 
 export class Analytics {
 
@@ -98,6 +99,24 @@ export class Analytics {
       })
       .filter(lane => lane.times_played_percent !== 0);
     return most_played_champion;
+  }
+
+  // Returns player's winrate by each day (in {D-M-YYYY: {wins: N, losses: M}, ...} -format)
+  public static parseWinrateByDate(game_records) {
+    let winrate_by_day = {};
+    game_records.forEach((record: GameRecordPersonalised) => {
+      let date = new Date(record.match_start_time);
+      let date_string = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`;
+      if (!winrate_by_day.hasOwnProperty(date_string)) {
+        winrate_by_day[date_string] = { wins: 0, losses: 0 };
+      }
+      if (record.teams.ally.stats.isWinningTeam) {
+        winrate_by_day[date_string].wins++;
+      } else {
+        winrate_by_day[date_string].losses++;
+      }
+    });
+    return winrate_by_day;
   }
 
   /*

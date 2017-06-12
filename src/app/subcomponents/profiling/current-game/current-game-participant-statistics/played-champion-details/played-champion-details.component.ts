@@ -179,6 +179,8 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
     // Reset to their initial state
     this.loaded_records = [];
     this.loaded_items_habit = null;
+    this.loaded_win_statistics = null;
+    this.loaded_kda_statistics = null;
 
     this.ongoing_request = Observable.forkJoin(
       gamereferences.map(gameref => {
@@ -233,7 +235,7 @@ export class PlayedChampionDetailsComponent implements OnInit, OnChanges {
                   }),
                   []
                 );
-                this.loaded_win_statistics = [];
+                this.loaded_win_statistics = Analytics.parseWinrateByDate(this.loaded_records);
                 this.loaded_kda_statistics = [];
                 if (!opt_nr_of_games_limit) {
                   this.initial_loaded_records_length = this.loaded_records.length;

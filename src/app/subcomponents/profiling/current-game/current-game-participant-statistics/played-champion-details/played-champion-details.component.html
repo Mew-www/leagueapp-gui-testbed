@@ -59,7 +59,8 @@
   </div>
 
   <div *ngIf="loaded_win_statistics" class="Details__sub-container">
-    <winrate-graph>
+    <winrate-graph
+        [stats_by_date]="loaded_win_statistics">
     </winrate-graph>
   </div>
 </div>
