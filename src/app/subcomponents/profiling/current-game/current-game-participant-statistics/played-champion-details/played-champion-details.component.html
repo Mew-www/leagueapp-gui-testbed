@@ -43,6 +43,13 @@
     <p class="Details__view-range-filter-value">{{viewRange.value < initial_loaded_records_length ? viewRange.value : initial_loaded_records_length}}</p>
   </div>
 
+  <div *ngIf="loaded_firstblood_records" class="Details__sub-container">
+    <firstblood-history
+        [total_number_of_games]="loaded_records.length"
+        [firstblood_records]="loaded_firstblood_records">
+    </firstblood-history>
+  </div>
+
   <div *ngIf="loaded_items_habit" class="Details__sub-container">
     <starting-items-history
         [total_number_of_games]="loaded_records.length"

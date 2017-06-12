@@ -38,6 +38,7 @@ import {ExplorerApiService} from "./services/explorer-api.service";
 import { StartingItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/starting-items-history/starting-items-history.component';
 import { FinishedItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/finished-items-history/finished-items-history.component';
 import { WinrateGraphComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/winrate-graph/winrate-graph.component';
+import { FirstbloodHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/firstblood-history/firstblood-history.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { WinrateGraphComponent } from './subcomponents/profiling/current-game/cu
     ExplorerComponent,
     StartingItemsHistoryComponent,
     FinishedItemsHistoryComponent,
-    WinrateGraphComponent
+    WinrateGraphComponent,
+    FirstbloodHistoryComponent
   ],
   imports: [
     BrowserModule,

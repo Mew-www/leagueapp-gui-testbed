@@ -1,6 +1,8 @@
 import {GameReference} from "../models/dto/game-reference";
 import {ChampionsContainer} from "../models/dto/containers/champions-container";
 import {GameRecordPersonalised} from "../models/game-record-personalised";
+import {GameTimelinePersonalised} from "../models/game-timeline-personalised";
+import {TimelineEventType} from "../enums/timeline-event-type";
 
 export class Analytics {
 
@@ -117,6 +119,54 @@ export class Analytics {
       }
     });
     return winrate_by_day;
+  }
+
+  // Returns player's firstbloods vs. number of games
+  public static parseFirstbloodRate(game_records) {
+    let firstbloods = {
+      'inflicted_on': [],
+      'assisted_on': [],
+      'gave_to': []
+    };
+    game_records.forEach((record: GameRecordPersonalised) => {
+      let player = record.teams.ally.players.find(p => p.is_the_target);
+
+      if (player.stats.objectives.gotFirstBlood) {
+        let player_kill_event = (<GameTimelinePersonalised>record.timeline).allies.find(p => p.player.is_the_target)
+          .player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
+        firstbloods.inflicted_on.push({
+          other_player: player_kill_event.other_player,
+          position: player_kill_event.position,
+          assisting_players: player_kill_event.assisting_players,
+          self: player
+        });
+
+      } else if (player.stats.objectives.gotFirstBloodAssist) {
+        let scoring_player_record = (<GameTimelinePersonalised>record.timeline).allies.find(p => p.player.stats.objectives.gotFirstBlood);
+        let scoring_player = scoring_player_record.player;
+        let player_kill_event = scoring_player_record.player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
+        firstbloods.assisted_on.push({
+          other_player: player_kill_event.other_player,
+          position: player_kill_event.position,
+          scoring_player: scoring_player,
+          additional_assisting_players: player_kill_event.assisting_players.filter(p => p.player.summoner_id !== player.summoner_id),
+          self: player
+        });
+      } else if (record.teams.enemy.stats.gotFirstBlood) {
+        let other_player_record = (<GameTimelinePersonalised>record.timeline).enemies.find(p => p.player.stats.objectives.gotFirstBlood);
+        let other_player = other_player_record.player;
+        let player_kill_event = other_player_record.player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
+        if (player_kill_event.other_player.summoner_id === player.summoner_id) {
+          firstbloods.gave_to.push({
+            other_player: other_player,
+            position: player_kill_event.position,
+            assisting_players: player_kill_event.assisting_players,
+            self: player
+          });
+        }
+      }
+    });
+    return firstbloods;
   }
 
   /*

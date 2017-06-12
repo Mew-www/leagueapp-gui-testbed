@@ -28,13 +28,19 @@ export class GameTimelinePersonalised extends GameTimeline {
     this.allies = allies.map(player => {
       return {
         player: player,
-        item_events: [] // {type: TimelineEventType, item: Item, ms_passed: number}
+        // {type: TimelineEventType (BUY/SELL/DESTROY), item: Item, ms_passed: number}
+        item_events: [],
+        // {type: TimelineEventType (KILL/DEATH), other_player: Champion, assisting_players: [Champion, ...], position: {x: number, y: number}, ms_passed: number}
+        player_kill_events: []
       };
     });
     this.enemies = enemies.map(player => {
       return {
         player: player,
-        item_events: [] // {type: TimelineEventType, item: Item, ms_passed: number}
+        // {type: TimelineEventType (BUY/SELL/DESTROY), item: Item, ms_passed: number}
+        item_events: [],
+        // {type: TimelineEventType (KILL/DEATH), other_player: Champion, assisting_players: [Champion, ...], position: {x: number, y: number}, ms_passed: number}
+        player_kill_events: []
       };
     });
     // We need this only for duration of parsing... after that participant IDs may be gone with the wind
@@ -64,6 +70,27 @@ export class GameTimelinePersonalised extends GameTimeline {
       }
 
       switch (event.type) {
+        case 'CHAMPION_KILL':
+          // Record as KILL (if not tower -> participant 0)
+          if (event.killerId.toString() !== "0") {
+            team_irrespective_player_lookup[event.killerId.toString()].player_kill_events.push({
+              type: TimelineEventType.CHAMPION_KILL,
+              other_player: team_irrespective_player_lookup[event.victimId.toString()].player,
+              assisting_players: event.assistingParticipantIds.map(id => team_irrespective_player_lookup[id].player),
+              position: event.position,
+              ms_passed: event.timestamp
+            });
+          }
+          // Record as DEATH
+          team_irrespective_player_lookup[event.victimId.toString()].player_kill_events.push({
+            type: TimelineEventType.CHAMPION_DEATH,
+            other_player: event.killerId.toString() !== "0" ? team_irrespective_player_lookup[event.killerId.toString()].player : null,
+            assisting_players: event.assistingParticipantIds.map(id => team_irrespective_player_lookup[id].player),
+            position: event.position,
+            ms_passed: event.timestamp
+          });
+          break;
+
         case 'ITEM_PURCHASED':
           team_irrespective_player_lookup[event.participantId.toString()].item_events.push({
             type: TimelineEventType.ITEM_PURCHASED,

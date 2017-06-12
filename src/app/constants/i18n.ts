@@ -72,7 +72,12 @@ export class i18n {
       'failed_try_again': "Failed - Try again",
       'filter_loaded_games': "Filter loaded games",
       'none': "None",
-      'unlucky_autofill': "Unlucky autofill?"
+      'unlucky_autofill': "Unlucky autofill?",
+      'in_games': "games",
+      'firstbloods_in_past': "Firstbloods in past",
+      'inflicted_on': "Inflicted on",
+      'assisted_on': "Assisted on",
+      'gave_to': "Gave to"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -146,7 +151,12 @@ export class i18n {
       'failed_try_again': "Jotain meni vikaan - yrit\u00e4 uudelleen",
       'filter_loaded_games': "Suodata ladattuja pelej\u00e4",
       'none': "Ei ole",
-      'unlucky_autofill': "Unlucky autofill?"
+      'unlucky_autofill': "Unlucky autofill?",
+      'in_games': "peliss\u00e4",
+      'firstbloods_in_past': "Firstbloodit menneiss\u00e4",
+      'inflicted_on': "Aiheutettu",
+      'assisted_on': "Avustettu",
+      'gave_to': "Annettu"
     }
   }
 

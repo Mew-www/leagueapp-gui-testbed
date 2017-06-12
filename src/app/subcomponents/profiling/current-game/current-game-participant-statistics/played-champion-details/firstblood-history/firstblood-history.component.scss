@@ -1,0 +1,118 @@
+.Title {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.ToggleButton {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: grey;
+  padding: 1px 4px;
+  border: none;
+  position: relative;
+  top: -1px;
+  cursor: pointer;
+}
+
+.InflictedFirstbloods {
+  &__title {
+    font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -9px;
+    padding-left: 4px;
+    padding-right: 2px;
+  }
+}
+
+.AssistedFirstbloods {
+  &__title {
+    font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -9px;
+    padding-left: 4px;
+    padding-right: 2px;
+  }
+}
+
+.GivenFirstbloods {
+  &__title {
+    font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -9px;
+    padding-left: 4px;
+    padding-right: 2px;
+  }
+}
+
+.Firstblood {
+  display: inline-block;
+  margin-right: 4px;
+
+  &--assisted-good {
+    border-top: 1px solid #614f80;
+    border-left: 1px solid #614f80;
+    border-right: 1px solid #614f80;
+    padding-top: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-bottom-left-radius: 25%;
+    border-bottom-right-radius: 25%;
+  }
+
+  &--assisted-bad {
+    border-top: 1px solid #870100;
+    border-left: 1px solid #870100;
+    border-right: 1px solid #870100;
+    padding-top: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-bottom-left-radius: 25%;
+    border-bottom-right-radius: 25%;
+  }
+
+  &__champion-icon {
+    height: 30px;
+    width: 30px;
+  }
+  &__summonerspell-icons-container {
+    display: inline-block;
+  }
+  &__summonerspell-icon {
+    display: block;
+    height: 13px;
+    width: 13px;
+    border: 1px groove #d4ab66;
+  }
+
+
+  &__assisting-champion-icon {
+    height: 20px;
+    width: 20px;
+  }
+  &__assisting-summonerspell-icons-container {
+    display: inline-block;
+  }
+  &__assisting-summonerspell-icon {
+    display: block;
+    height: 8px;
+    width: 8px;
+    border: 1px groove #d4ab66;
+  }
+}
+
+.FirstbloodSummariesTable {
+  display: table;
+  &__row {
+    display: table-row;
+  }
+  &__td {
+    display: table-cell;
+    &:first-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+  }
+}
