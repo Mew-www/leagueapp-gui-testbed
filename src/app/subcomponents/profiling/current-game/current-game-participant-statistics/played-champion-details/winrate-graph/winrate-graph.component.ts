@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import * as moment from 'moment';
 import Chart from 'chart.js';
 
@@ -9,6 +9,7 @@ import Chart from 'chart.js';
 })
 export class WinrateGraphComponent implements OnInit, OnChanges {
 
+  @ViewChild('winrate_chart_canvas') winrate_chart_canvas: ElementRef;
   @Input() stats_by_date = null;
   private initialized = false;
 
@@ -176,7 +177,7 @@ export class WinrateGraphComponent implements OnInit, OnChanges {
       }
     };
 
-    let ctx = (<HTMLCanvasElement>document.getElementById("canvas")).getContext("2d");
+    let ctx = (<HTMLCanvasElement>this.winrate_chart_canvas.nativeElement).getContext("2d");
     let winrate_chart = new Chart(ctx, config);
 
     if (!this.initialized) {
