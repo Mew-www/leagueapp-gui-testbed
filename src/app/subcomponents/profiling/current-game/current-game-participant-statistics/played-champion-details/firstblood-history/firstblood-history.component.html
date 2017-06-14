@@ -25,6 +25,9 @@
           {{getTimeAgoAsString(record.on_date_time)}}
         </div>
         <div>
+          <span class="Firstblood__level">
+            Lv. {{record.other_player.level_at_the_time}}
+          </span>
           <img
               class="Firstblood__champion-icon"
               src="{{record.other_player.champion.images.square_url}}"
@@ -45,6 +48,9 @@
           />
           <span *ngIf="record.assisting_players.length > 0"> &larr; </span>
           <span *ngFor="let assisting of record.assisting_players">
+            <span class="Firstblood__assisting-level">
+              Lv. {{assisting.level_at_the_time}}
+            </span>
             <img
                 class="Firstblood__assisting-champion-icon"
                 src="{{assisting.champion.images.square_url}}"
@@ -73,11 +79,14 @@
       </span>
     </div>
     <div class="FirstbloodSummariesTable__td">
-      <div *ngFor="let record of firstblood_records.assisted_on.sort(sortByDate)" class="Firstblood Firstblood--good" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+      <div *ngFor="let record of firstblood_records.assisted_on.sort(sortByDate)" class="Firstblood Firstblood--good" [class.Firstblood--assisted]="record.additional_assisting_players.length > 0">
         <div class="Firstblood__irl-date-time">
           {{getTimeAgoAsString(record.on_date_time)}}
         </div>
         <div>
+          <span class="Firstblood__level">
+            Lv. {{record.other_player.level_at_the_time}}
+          </span>
           <img
               class="Firstblood__champion-icon"
               src="{{record.other_player.champion.images.square_url}}"
@@ -97,6 +106,9 @@
               src="{{item.images.square_url}}"
           />
           <span> &larr; </span>
+          <span class="Firstblood__level">
+            Lv. {{record.scoring_player.level_at_the_time}}
+          </span>
           <img
               class="Firstblood__champion-icon"
               src="{{record.scoring_player.champion.images.square_url}}"
@@ -109,8 +121,11 @@
               class="Firstblood__item-icon"
               src="{{item.images.square_url}}"
           />
-          <span *ngIf="record.assisting_players.length > 0"> + </span>
-          <span *ngFor="let assisting of record.assisting_players">
+          <span *ngIf="record.additional_assisting_players.length > 0"> + </span>
+          <span *ngFor="let assisting of record.additional_assisting_players">
+            <span class="Firstblood__assisting-level">
+              Lv. {{assisting.level_at_the_time}}
+            </span>
             <img
                 class="Firstblood__assisting-champion-icon"
                 src="{{assisting.champion.images.square_url}}"
@@ -144,6 +159,9 @@
           {{getTimeAgoAsString(record.on_date_time)}}
         </div>
         <div>
+          <span class="Firstblood__level">
+            Lv. {{record.other_player.level_at_the_time}}
+          </span>
           <img
               class="Firstblood__champion-icon"
               *ngIf="record.other_player"
@@ -165,6 +183,9 @@
           />
           <span *ngIf="record.assisting_players.length > 0"> + </span>
           <span *ngFor="let assisting of record.assisting_players">
+            <span class="Firstblood__assisting-level">
+              Lv. {{assisting.level_at_the_time}}
+            </span>
             <img
                 class="Firstblood__assisting-champion-icon"
                 src="{{assisting.champion.images.square_url}}"

@@ -124,7 +124,7 @@ export class Analytics {
   // Returns player's firstbloods vs. number of games
   public static parseFirstbloodRate(game_records) {
 
-    function mapItemsToPlayer(teams_timelines, until_ms) {
+    function mapItemsAndSkillsToPlayer(teams_timelines, until_ms) {
       return function(p) {
         let player_timeline = teams_timelines.find(a_player => a_player.player.summoner.id === p.summoner.id);
         p['items_at_the_time'] = player_timeline.item_events.filter(item_event => item_event.ms_passed < until_ms)
@@ -138,6 +138,15 @@ export class Analytics {
             }
             return accum_items;
           }, []);
+        p['skills_at_the_time'] = player_timeline.skill_up_events.filter(skill_up_event => skill_up_event.ms_passed < until_ms)
+          .reduce((accum_skills, skill_up_event) => {
+            let key_index = skill_up_event.skill_slot - 1; // 0 <=> Q, 1 <=> W, 2 <=> E, 3 <=> R
+            accum_skills[key_index]++;
+            return accum_skills;
+          }, [0,0,0,0]);
+        console.log(player_timeline.skill_up_events);
+        console.log(p['skills_at_the_time']);
+        p['level_at_the_time'] = p['skills_at_the_time'].reduce((acc, skill_lvl) => {return acc + skill_lvl;}, 0);
         return p;
       }
     }
@@ -155,47 +164,50 @@ export class Analytics {
       if (player.stats.objectives.gotFirstBlood) {
         let player_kill_event = ally_timelines.find(p => p.player.summoner.id === player.summoner.id).player_kill_events
           .find(e => e.type == TimelineEventType.CHAMPION_KILL);
-        let mapItemsToAllyPlayerFn = mapItemsToPlayer(ally_timelines, player_kill_event.ms_passed);
-        let mapItemsToEnemyPlayerFn = mapItemsToPlayer(enemy_timelines, player_kill_event.ms_passed);
+        let mapItemsAndSkillsToAllyPlayerFn = mapItemsAndSkillsToPlayer(ally_timelines, player_kill_event.ms_passed);
+        let mapItemsAndSkillsToEnemyPlayerFn = mapItemsAndSkillsToPlayer(enemy_timelines, player_kill_event.ms_passed);
         firstbloods.inflicted_on.push({
-          other_player: mapItemsToEnemyPlayerFn(player_kill_event.other_player),
+          other_player: mapItemsAndSkillsToEnemyPlayerFn(player_kill_event.other_player),
           position: player_kill_event.position,
           assisting_players: player_kill_event.assisting_players
-            .map(mapItemsToAllyPlayerFn),
-          self: mapItemsToAllyPlayerFn(player),
+            .map(mapItemsAndSkillsToAllyPlayerFn),
+          self: mapItemsAndSkillsToAllyPlayerFn(player),
           at_game_time: player_kill_event.ms_passed,
           on_date_time: record.match_start_time
         });
 
-      } else if (player.stats.objectives.gotFirstBloodAssist) {
+      } else if (record.teams.ally.stats.gotFirstBlood) {
         let scoring_player_record = (<GameTimelinePersonalised>record.timeline).allies.find(p => p.player.stats.objectives.gotFirstBlood);
         let scoring_player = scoring_player_record.player;
         let player_kill_event = scoring_player_record.player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
-        let mapItemsToAllyPlayerFn = mapItemsToPlayer(ally_timelines, player_kill_event.ms_passed);
-        let mapItemsToEnemyPlayerFn = mapItemsToPlayer(enemy_timelines, player_kill_event.ms_passed);
-        firstbloods.assisted_on.push({
-          other_player: mapItemsToEnemyPlayerFn(player_kill_event.other_player),
-          position: player_kill_event.position,
-          scoring_player: scoring_player,
-          additional_assisting_players: player_kill_event.assisting_players
-            .filter(p => p.player.summoner.id !== player.summoner.id)
-            .map(mapItemsToAllyPlayerFn),
-          self: mapItemsToAllyPlayerFn(player),
-          at_game_time: player_kill_event.ms_passed,
-          on_date_time: record.match_start_time
-        });
+        // An ally got it but did this player assist? Dev note, the stats.firstBloodAssist -flag from RIOT API is broken, always returns false
+        if (player_kill_event.assisting_players.find(p => p.summoner.id === player.summoner.id)) {
+          let mapItemsAndSkillsToAllyPlayerFn = mapItemsAndSkillsToPlayer(ally_timelines, player_kill_event.ms_passed);
+          let mapItemsAndSkillsToEnemyPlayerFn = mapItemsAndSkillsToPlayer(enemy_timelines, player_kill_event.ms_passed);
+          firstbloods.assisted_on.push({
+            other_player: mapItemsAndSkillsToEnemyPlayerFn(player_kill_event.other_player),
+            position: player_kill_event.position,
+            scoring_player: mapItemsAndSkillsToAllyPlayerFn(scoring_player),
+            additional_assisting_players: player_kill_event.assisting_players
+              .filter(p => p.summoner.id !== player.summoner.id)
+              .map(mapItemsAndSkillsToAllyPlayerFn),
+            self: mapItemsAndSkillsToAllyPlayerFn(player),
+            at_game_time: player_kill_event.ms_passed,
+            on_date_time: record.match_start_time
+          });
+        }
       } else if (record.teams.enemy.stats.gotFirstBlood) {
         let other_player_record = (<GameTimelinePersonalised>record.timeline).enemies.find(p => p.player.stats.objectives.gotFirstBlood);
         let other_player = other_player_record.player;
         let player_kill_event = other_player_record.player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
-        let mapItemsToAllyPlayerFn = mapItemsToPlayer(ally_timelines, player_kill_event.ms_passed);
-        let mapItemsToEnemyPlayerFn = mapItemsToPlayer(enemy_timelines, player_kill_event.ms_passed);
+        let mapItemsAndSkillsToAllyPlayerFn = mapItemsAndSkillsToPlayer(ally_timelines, player_kill_event.ms_passed);
+        let mapItemsAndSkillsToEnemyPlayerFn = mapItemsAndSkillsToPlayer(enemy_timelines, player_kill_event.ms_passed);
         if (player_kill_event.other_player.summoner.id === player.summoner.id) {
           firstbloods.gave_to.push({
-            other_player: mapItemsToEnemyPlayerFn(other_player),
+            other_player: mapItemsAndSkillsToEnemyPlayerFn(other_player),
             position: player_kill_event.position,
-            assisting_players: player_kill_event.assisting_players.map(mapItemsToEnemyPlayerFn),
-            self: mapItemsToAllyPlayerFn(player),
+            assisting_players: player_kill_event.assisting_players.map(mapItemsAndSkillsToEnemyPlayerFn),
+            self: mapItemsAndSkillsToAllyPlayerFn(player),
             at_game_time: player_kill_event.ms_passed,
             on_date_time: record.match_start_time
           });

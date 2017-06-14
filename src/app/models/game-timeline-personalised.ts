@@ -31,7 +31,9 @@ export class GameTimelinePersonalised extends GameTimeline {
         // {type: TimelineEventType (BUY/SELL/DESTROY), item: Item, ms_passed: number}
         item_events: [],
         // {type: TimelineEventType (KILL/DEATH), other_player: Champion, assisting_players: [Champion, ...], position: {x: number, y: number}, ms_passed: number}
-        player_kill_events: []
+        player_kill_events: [],
+        // {type: TimelineEventType (SKILL_LEVEL_UP), skill_slot: number, ms_passed: number}
+        skill_up_events: []
       };
     });
     this.enemies = enemies.map(player => {
@@ -40,7 +42,9 @@ export class GameTimelinePersonalised extends GameTimeline {
         // {type: TimelineEventType (BUY/SELL/DESTROY), item: Item, ms_passed: number}
         item_events: [],
         // {type: TimelineEventType (KILL/DEATH), other_player: Champion, assisting_players: [Champion, ...], position: {x: number, y: number}, ms_passed: number}
-        player_kill_events: []
+        player_kill_events: [],
+        // {type: TimelineEventType (SKILL_LEVEL_UP), skill_slot: number, ms_passed: number}
+        skill_up_events: []
       };
     });
     // We need this only for duration of parsing... after that participant IDs may be gone with the wind
@@ -70,6 +74,14 @@ export class GameTimelinePersonalised extends GameTimeline {
       }
 
       switch (event.type) {
+        case 'SKILL_LEVEL_UP':
+          team_irrespective_player_lookup[event.participantId.toString()].skill_up_events.push({
+            type: TimelineEventType.SKILL_LEVEL_UP,
+            skill_slot: event.skillSlot,
+            ms_passed: event.timestamp
+          });
+          break;
+
         case 'CHAMPION_KILL':
           // Record as KILL (if not tower -> participant 0)
           if (event.killerId.toString() !== "0") {
