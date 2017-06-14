@@ -21,7 +21,7 @@
   &__title {
     font-family: 'Roboto Condensed', 'sans-serif';
     position: relative;
-    top: -9px;
+    top: -17px;
     padding-left: 4px;
     padding-right: 2px;
   }
@@ -31,7 +31,7 @@
   &__title {
     font-family: 'Roboto Condensed', 'sans-serif';
     position: relative;
-    top: -9px;
+    top: -17px;
     padding-left: 4px;
     padding-right: 2px;
   }
@@ -41,7 +41,7 @@
   &__title {
     font-family: 'Roboto Condensed', 'sans-serif';
     position: relative;
-    top: -9px;
+    top: -17px;
     padding-left: 4px;
     padding-right: 2px;
   }
@@ -50,25 +50,32 @@
 .Firstblood {
   display: inline-block;
   margin-right: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
 
-  &--assisted-good {
+  &--good {
     border-top: 1px solid #614f80;
     border-left: 1px solid #614f80;
     border-right: 1px solid #614f80;
     padding-top: 2px;
     padding-left: 2px;
     padding-right: 2px;
-    border-bottom-left-radius: 25%;
-    border-bottom-right-radius: 25%;
+    margin-bottom: 4px;
+    background-color: rgba(97, 79, 128, 0.1);
   }
 
-  &--assisted-bad {
+  &--bad {
     border-top: 1px solid #870100;
     border-left: 1px solid #870100;
     border-right: 1px solid #870100;
     padding-top: 2px;
     padding-left: 2px;
     padding-right: 2px;
+    margin-bottom: 4px;
+    background-color: rgba(251, 70, 255, 0.05);
+  }
+
+  &--assisted {
+    border-bottom: transparent;
     border-bottom-left-radius: 25%;
     border-bottom-right-radius: 25%;
   }
@@ -100,6 +107,10 @@
     height: 8px;
     width: 8px;
     border: 1px groove #d4ab66;
+  }
+
+  &__game-time {
+    text-align: center;
   }
 }
 

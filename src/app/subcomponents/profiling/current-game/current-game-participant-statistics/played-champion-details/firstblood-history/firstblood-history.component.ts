@@ -19,8 +19,12 @@ export class FirstbloodHistoryComponent implements OnInit {
     this.gettext = this.translatorService.getTranslation;
   }
 
-  ngOnInit() {
-    console.log(this.firstblood_records);
+  private getGameTimeAsString(ms: number) {
+    let padded_seconds = ('0'+Math.floor(ms/1000)).slice(-2);
+    let padded_minutes = ('0'+Math.floor(ms/(1000*60))).slice(-2);
+    return padded_minutes+':'+padded_seconds;
   }
+
+  ngOnInit() { }
 
 }

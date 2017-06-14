@@ -138,7 +138,8 @@ export class Analytics {
           other_player: player_kill_event.other_player,
           position: player_kill_event.position,
           assisting_players: player_kill_event.assisting_players,
-          self: player
+          self: player,
+          at_game_time: player_kill_event.ms_passed
         });
 
       } else if (player.stats.objectives.gotFirstBloodAssist) {
@@ -150,7 +151,8 @@ export class Analytics {
           position: player_kill_event.position,
           scoring_player: scoring_player,
           additional_assisting_players: player_kill_event.assisting_players.filter(p => p.player.summoner_id !== player.summoner_id),
-          self: player
+          self: player,
+          at_game_time: player_kill_event.ms_passed
         });
       } else if (record.teams.enemy.stats.gotFirstBlood) {
         let other_player_record = (<GameTimelinePersonalised>record.timeline).enemies.find(p => p.player.stats.objectives.gotFirstBlood);
@@ -161,7 +163,8 @@ export class Analytics {
             other_player: other_player,
             position: player_kill_event.position,
             assisting_players: player_kill_event.assisting_players,
-            self: player
+            self: player,
+            at_game_time: player_kill_event.ms_passed
           });
         }
       }
