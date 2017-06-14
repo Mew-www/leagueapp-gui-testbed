@@ -20,7 +20,10 @@
       </span>
     </div>
     <div class="FirstbloodSummariesTable__td">
-      <div *ngFor="let record of firstblood_records.inflicted_on" class="Firstblood Firstblood--good" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+      <div *ngFor="let record of firstblood_records.inflicted_on.sort(sortByDate)" class="Firstblood Firstblood--good" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+        <div class="Firstblood__irl-date-time">
+          {{getTimeAgoAsString(record.on_date_time)}}
+        </div>
         <div>
           <img
               class="Firstblood__champion-icon"
@@ -35,7 +38,11 @@
           /><span class="Firstblood__summonerspell-icons-container">
             <img class="Firstblood__summonerspell-icon" src="{{record.other_player.summoner_spell1.images.square_url}}" />
             <img class="Firstblood__summonerspell-icon" src="{{record.other_player.summoner_spell2.images.square_url}}" />
-          </span>
+          </span><img
+              *ngFor="let item of record.other_player.items_at_the_time"
+              class="Firstblood__item-icon"
+              src="{{item.images.square_url}}"
+          />
           <span *ngIf="record.assisting_players.length > 0"> &larr; </span>
           <span *ngFor="let assisting of record.assisting_players">
             <img
@@ -45,7 +52,11 @@
             /><span class="Firstblood__assisting-summonerspell-icons-container">
               <img class="Firstblood__assisting-summonerspell-icon" src="{{assisting.summoner_spell1.images.square_url}}" />
               <img class="Firstblood__assisting-summonerspell-icon" src="{{assisting.summoner_spell2.images.square_url}}" />
-            </span>
+            </span><img
+                  *ngFor="let item of assisting.items_at_the_time"
+                  class="Firstblood__assisting-item-icon"
+                  src="{{item.images.square_url}}"
+              />
           </span>
         </div>
         <div class="Firstblood__game-time">
@@ -62,7 +73,10 @@
       </span>
     </div>
     <div class="FirstbloodSummariesTable__td">
-      <div *ngFor="let record of firstblood_records.assisted_on" class="Firstblood Firstblood--good" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+      <div *ngFor="let record of firstblood_records.assisted_on.sort(sortByDate)" class="Firstblood Firstblood--good" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+        <div class="Firstblood__irl-date-time">
+          {{getTimeAgoAsString(record.on_date_time)}}
+        </div>
         <div>
           <img
               class="Firstblood__champion-icon"
@@ -77,7 +91,11 @@
           /><span class="Firstblood__summonerspell-icons-container">
             <img class="Firstblood__summonerspell-icon" src="{{record.other_player.summoner_spell1.images.square_url}}" />
             <img class="Firstblood__summonerspell-icon" src="{{record.other_player.summoner_spell2.images.square_url}}" />
-          </span>
+          </span><img
+              *ngFor="let item of record.other_player.items_at_the_time"
+              class="Firstblood__item-icon"
+              src="{{item.images.square_url}}"
+          />
           <span> &larr; </span>
           <img
               class="Firstblood__champion-icon"
@@ -86,7 +104,11 @@
           /><span class="Firstblood__summonerspell-icons-container">
             <img class="Firstblood__summonerspell-icon" src="{{record.scoring_player.summoner_spell1.images.square_url}}" />
             <img class="Firstblood__summonerspell-icon" src="{{record.scoring_player.summoner_spell2.images.square_url}}" />
-          </span>
+          </span><img
+              *ngFor="let item of record.scoring_player.items_at_the_time"
+              class="Firstblood__item-icon"
+              src="{{item.images.square_url}}"
+          />
           <span *ngIf="record.assisting_players.length > 0"> + </span>
           <span *ngFor="let assisting of record.assisting_players">
             <img
@@ -96,7 +118,11 @@
             /><span class="Firstblood__assisting-summonerspell-icons-container">
               <img class="Firstblood__assisting-summonerspell-icon" src="{{assisting.summoner_spell1.images.square_url}}" />
               <img class="Firstblood__assisting-summonerspell-icon" src="{{assisting.summoner_spell2.images.square_url}}" />
-            </span>
+            </span><img
+                *ngFor="let item of assisting.items_at_the_time"
+                class="Firstblood__assisting-item-icon"
+                src="{{item.images.square_url}}"
+            />
           </span>
         </div>
         <div class="Firstblood__game-time">
@@ -113,7 +139,10 @@
       </span>
     </div>
     <div class="FirstbloodSummariesTable__td">
-      <div *ngFor="let record of firstblood_records.gave_to" class="Firstblood Firstblood--bad" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+      <div *ngFor="let record of firstblood_records.gave_to.sort(sortByDate)" class="Firstblood Firstblood--bad" [class.Firstblood--assisted]="record.assisting_players.length > 0">
+        <div class="Firstblood__irl-date-time">
+          {{getTimeAgoAsString(record.on_date_time)}}
+        </div>
         <div>
           <img
               class="Firstblood__champion-icon"
@@ -129,7 +158,11 @@
           /><span class="Firstblood__summonerspell-icons-container">
             <img class="Firstblood__summonerspell-icon" src="{{record.other_player.summoner_spell1.images.square_url}}" />
             <img class="Firstblood__summonerspell-icon" src="{{record.other_player.summoner_spell2.images.square_url}}" />
-          </span>
+          </span><img
+              *ngFor="let item of record.other_player.items_at_the_time"
+              class="Firstblood__item-icon"
+              src="{{item.images.square_url}}"
+          />
           <span *ngIf="record.assisting_players.length > 0"> + </span>
           <span *ngFor="let assisting of record.assisting_players">
             <img
@@ -139,7 +172,11 @@
             /><span class="Firstblood__assisting-summonerspell-icons-container">
               <img class="Firstblood__assisting-summonerspell-icon" src="{{assisting.summoner_spell1.images.square_url}}" />
               <img class="Firstblood__assisting-summonerspell-icon" src="{{assisting.summoner_spell2.images.square_url}}" />
-            </span>
+            </span><img
+                  *ngFor="let item of assisting.items_at_the_time"
+                  class="Firstblood__assisting-item-icon"
+                  src="{{item.images.square_url}}"
+              />
           </span>
         </div>
         <div class="Firstblood__game-time">

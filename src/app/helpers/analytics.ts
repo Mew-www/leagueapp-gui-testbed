@@ -123,6 +123,25 @@ export class Analytics {
 
   // Returns player's firstbloods vs. number of games
   public static parseFirstbloodRate(game_records) {
+
+    function mapItemsToPlayer(teams_timelines, until_ms) {
+      return function(p) {
+        let player_timeline = teams_timelines.find(a_player => a_player.player.summoner.id === p.summoner.id);
+        p['items_at_the_time'] = player_timeline.item_events.filter(item_event => item_event.ms_passed < until_ms)
+          .reduce((accum_items, item_event) => {
+            if (item_event.type === TimelineEventType.ITEM_PURCHASED) {
+              accum_items.push(item_event.item);
+            }
+            if (item_event.type === TimelineEventType.ITEM_DESTROYED || item_event.type === TimelineEventType.ITEM_SOLD) {
+              let item_first_index = accum_items.map(item => item.id).indexOf(item_event.item.id);
+              accum_items.splice(item_first_index, 1);
+            }
+            return accum_items;
+          }, []);
+        return p;
+      }
+    }
+
     let firstbloods = {
       'inflicted_on': [],
       'assisted_on': [],
@@ -130,41 +149,55 @@ export class Analytics {
     };
     game_records.forEach((record: GameRecordPersonalised) => {
       let player = record.teams.ally.players.find(p => p.is_the_target);
+      let ally_timelines = (<GameTimelinePersonalised>record.timeline).allies;
+      let enemy_timelines = (<GameTimelinePersonalised>record.timeline).enemies;
 
       if (player.stats.objectives.gotFirstBlood) {
-        let player_kill_event = (<GameTimelinePersonalised>record.timeline).allies.find(p => p.player.is_the_target)
-          .player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
+        let player_kill_event = ally_timelines.find(p => p.player.summoner.id === player.summoner.id).player_kill_events
+          .find(e => e.type == TimelineEventType.CHAMPION_KILL);
+        let mapItemsToAllyPlayerFn = mapItemsToPlayer(ally_timelines, player_kill_event.ms_passed);
+        let mapItemsToEnemyPlayerFn = mapItemsToPlayer(enemy_timelines, player_kill_event.ms_passed);
         firstbloods.inflicted_on.push({
-          other_player: player_kill_event.other_player,
+          other_player: mapItemsToEnemyPlayerFn(player_kill_event.other_player),
           position: player_kill_event.position,
-          assisting_players: player_kill_event.assisting_players,
-          self: player,
-          at_game_time: player_kill_event.ms_passed
+          assisting_players: player_kill_event.assisting_players
+            .map(mapItemsToAllyPlayerFn),
+          self: mapItemsToAllyPlayerFn(player),
+          at_game_time: player_kill_event.ms_passed,
+          on_date_time: record.match_start_time
         });
 
       } else if (player.stats.objectives.gotFirstBloodAssist) {
         let scoring_player_record = (<GameTimelinePersonalised>record.timeline).allies.find(p => p.player.stats.objectives.gotFirstBlood);
         let scoring_player = scoring_player_record.player;
         let player_kill_event = scoring_player_record.player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
+        let mapItemsToAllyPlayerFn = mapItemsToPlayer(ally_timelines, player_kill_event.ms_passed);
+        let mapItemsToEnemyPlayerFn = mapItemsToPlayer(enemy_timelines, player_kill_event.ms_passed);
         firstbloods.assisted_on.push({
-          other_player: player_kill_event.other_player,
+          other_player: mapItemsToEnemyPlayerFn(player_kill_event.other_player),
           position: player_kill_event.position,
           scoring_player: scoring_player,
-          additional_assisting_players: player_kill_event.assisting_players.filter(p => p.player.summoner_id !== player.summoner_id),
-          self: player,
-          at_game_time: player_kill_event.ms_passed
+          additional_assisting_players: player_kill_event.assisting_players
+            .filter(p => p.player.summoner.id !== player.summoner.id)
+            .map(mapItemsToAllyPlayerFn),
+          self: mapItemsToAllyPlayerFn(player),
+          at_game_time: player_kill_event.ms_passed,
+          on_date_time: record.match_start_time
         });
       } else if (record.teams.enemy.stats.gotFirstBlood) {
         let other_player_record = (<GameTimelinePersonalised>record.timeline).enemies.find(p => p.player.stats.objectives.gotFirstBlood);
         let other_player = other_player_record.player;
         let player_kill_event = other_player_record.player_kill_events.find(e => e.type == TimelineEventType.CHAMPION_KILL);
-        if (player_kill_event.other_player.summoner_id === player.summoner_id) {
+        let mapItemsToAllyPlayerFn = mapItemsToPlayer(ally_timelines, player_kill_event.ms_passed);
+        let mapItemsToEnemyPlayerFn = mapItemsToPlayer(enemy_timelines, player_kill_event.ms_passed);
+        if (player_kill_event.other_player.summoner.id === player.summoner.id) {
           firstbloods.gave_to.push({
-            other_player: other_player,
+            other_player: mapItemsToEnemyPlayerFn(other_player),
             position: player_kill_event.position,
-            assisting_players: player_kill_event.assisting_players,
-            self: player,
-            at_game_time: player_kill_event.ms_passed
+            assisting_players: player_kill_event.assisting_players.map(mapItemsToEnemyPlayerFn),
+            self: mapItemsToAllyPlayerFn(player),
+            at_game_time: player_kill_event.ms_passed,
+            on_date_time: record.match_start_time
           });
         }
       }
