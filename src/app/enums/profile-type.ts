@@ -1,6 +1,4 @@
 export enum ProfileType {
   HISTORICAL,
-  CURRENT_GAME,
-  EXPLORER,
-  NOTHINGNESS
+  CURRENT_GAME
 }

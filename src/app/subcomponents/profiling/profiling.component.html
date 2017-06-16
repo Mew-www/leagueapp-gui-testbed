@@ -27,12 +27,5 @@
         [summonerspells]="summonerspells"
         [summoner]="selected_summoner">
     </summoner-statistics>
-    <explorer *ngIf="selected_profile_type == profileTypeEnum.EXPLORER"
-              [champions]="champions">
-    </explorer>
-    <div *ngIf="selected_profile_type == profileTypeEnum.NOTHINGNESS">
-      <winrate-graph>
-      </winrate-graph>
-    </div>
   </div>
 </div>

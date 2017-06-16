@@ -12,9 +12,7 @@ export class ProfileTypeSelectorComponent implements OnInit {
   @Output() selectedProfileType = new EventEmitter<ProfileType>();
   private profile_types_available = [
     {'val': ProfileType.CURRENT_GAME, 'text_key': "show_current_game"},
-    {'val': ProfileType.HISTORICAL, 'text_key': "show_historical_stats"},
-    {'val': ProfileType.EXPLORER, 'text_key': "dev_env"},
-    {'val': ProfileType.NOTHINGNESS, 'text_key': "yesterday"}
+    {'val': ProfileType.HISTORICAL, 'text_key': "show_historical_stats"}
   ];
   private gettext: Function;
 
@@ -23,14 +21,6 @@ export class ProfileTypeSelectorComponent implements OnInit {
   }
 
   private onProfileTypeChange(new_type) {
-    if (new_type == ProfileType.EXPLORER) {
-      let definitely_not_a_secret_key = window.prompt('Passphrase?');
-      // 'flowerpower'
-      if (definitely_not_a_secret_key !== '\u0066\u006C\u006F\u0077\u0065\u0072\u0070\u006F\u0077\u0065\u0072') {
-        alert('No. :<');
-        return;
-      }
-    }
     this.selectedProfileType.emit(new_type);
   }
 
