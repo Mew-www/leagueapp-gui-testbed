@@ -25,10 +25,12 @@
   @extend %clearfix;
 
   &__region-selector-container {
+    margin-top: 0;
     float: left;
   }
 
   &__language-selector-container {
+    margin-top: 0;
     float: right;
   }
 }

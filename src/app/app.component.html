@@ -1,12 +1,13 @@
-<app-setup
-    (setupReady)="handleSetupReady($event)">
+<app-setup (setupReady)="handleSetupReady($event)">
+
+  <nav *ngIf="is_setup_ready">
+    <a routerLink="/match" routerLinkActive="active">Match</a>
+    <a routerLink="/summoner" routerLinkActive="active">Profiling</a>
+  </nav>
+
 </app-setup>
 
 <div *ngIf="is_setup_ready">
-  <nav>
-    <a routerLink="/match">Match</a>
-    <a routerLink="/summoner">Profiling</a>
-  </nav>
   <router-outlet></router-outlet>
 </div>
 

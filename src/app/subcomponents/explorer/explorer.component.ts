@@ -1,16 +1,16 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {PlayerApiService} from "../../../services/player-api.service";
-import {RatelimitedRequestsService} from "../../../services/ratelimited-requests.service";
-import {ResType} from "../../../enums/api-response-type";
-import {ExplorerApiService} from "../../../services/explorer-api.service";
-import {GameApiService} from "../../../services/game-api.service";
-import {GameType} from "../../../enums/game-type";
-import {GameReference} from "../../../models/dto/game-reference";
+import {Component, Input, OnInit} from '@angular/core';
+import {PlayerApiService} from "../../services/player-api.service";
+import {RatelimitedRequestsService} from "../../services/ratelimited-requests.service";
+import {ResType} from "../../enums/api-response-type";
+import {ExplorerApiService} from "../../services/explorer-api.service";
+import {GameApiService} from "../../services/game-api.service";
+import {GameType} from "../../enums/game-type";
+import {GameReference} from "../../models/dto/game-reference";
 import {Observable} from "rxjs/Observable";
-import {ApiResponse} from "../../../helpers/api-response";
-import {GameRecord} from "../../../models/dto/game-record";
-import {GameTimeline} from "../../../models/dto/game-timeline";
-import {ChampionsContainer} from "../../../models/dto/containers/champions-container";
+import {ApiResponse} from "../../helpers/api-response";
+import {GameRecord} from "../../models/dto/game-record";
+import {GameTimeline} from "../../models/dto/game-timeline";
+import {ChampionsContainer} from "../../models/dto/containers/champions-container";
 
 @Component({
   selector: 'explorer',

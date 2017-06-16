@@ -2,7 +2,7 @@
   . . .
 </p>
 
-<div class="InitialSetup" *ngIf="initial_preferences_loaded && !initialised">
+<div *ngIf="initial_preferences_loaded && !initialised" class="InitialSetup">
   <app-language-selector
       class="InitialSetup__language-selector-container"
       [is_initial]="true"
@@ -17,13 +17,14 @@
   </app-region-selector>
 </div>
 
-<div class="HeaderSetup" *ngIf="initial_preferences_loaded && initialised">
+<div *ngIf="initial_preferences_loaded && initialised" class="HeaderSetup">
   <app-region-selector
       class="HeaderSetup__region-selector-container"
       [is_initial]="false"
       [active_region]="current_region"
       (selectedRegion)="changeRegion($event)">
   </app-region-selector>
+  <ng-content select="nav"></ng-content>
   <app-language-selector
       class="HeaderSetup__language-selector-container"
       [is_initial]="false"

@@ -1,0 +1,17 @@
+nav {
+  margin-left: 30%;
+  a {
+    border: 1px solid black;
+    padding: 3px 6px;
+    background: #ececec;
+    color: black;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-variant: small-caps;
+
+    &.active {
+      background: #cdffc9;
+    }
+  }
+}
