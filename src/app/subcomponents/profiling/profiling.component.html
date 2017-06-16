@@ -1,4 +1,4 @@
-<div class="Profiling">
+<div class="Profiling" *ngIf="is_metadata_ready">
   <app-summoner-selector
       class="Profiling__summoner-selector-container"
       [region]="current_region"

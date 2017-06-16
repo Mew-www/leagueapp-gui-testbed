@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {StaticApiService} from "./services/static-api.service";
 import {ResType} from "./enums/api-response-type";
-import {Champion} from "./models/dto/champion";
 import {Observable} from "rxjs/Observable";
 import {ChampionsContainer} from "./models/dto/containers/champions-container";
 import {ItemsContainer} from "./models/dto/containers/items-container";

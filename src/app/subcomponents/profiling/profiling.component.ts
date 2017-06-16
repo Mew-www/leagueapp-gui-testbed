@@ -6,6 +6,9 @@ import {ChampionsContainer} from "../../models/dto/containers/champions-containe
 import {ItemsContainer} from "../../models/dto/containers/items-container";
 import {ProfileType} from "../../enums/profile-type";
 import {SummonerspellsContainer} from "../../models/dto/containers/summonerspells-container";
+import {StaticApiService} from "../../services/static-api.service";
+import {Observable} from "rxjs/Observable";
+import {ResType} from "../../enums/api-response-type";
 
 @Component({
   selector: 'profiling',
@@ -14,16 +17,19 @@ import {SummonerspellsContainer} from "../../models/dto/containers/summonerspell
 })
 export class ProfilingComponent implements OnInit {
 
-  @Input() champions: ChampionsContainer;
-  @Input() items: ItemsContainer;
-  @Input() summonerspells: SummonerspellsContainer;
+  private champions: ChampionsContainer;
+  private items: ItemsContainer;
+  private summonerspells: SummonerspellsContainer;
+  private is_metadata_ready: boolean = false;
+
   private selected_summoner: Summoner = null;
   private profileTypeEnum = ProfileType;
   private selected_profile_type: ProfileType = null;
   private gettext: Function;
   private current_region;
 
-  constructor(private translator: TranslatorService,
+  constructor(private static_api: StaticApiService,
+              private translator: TranslatorService,
               private preferencesService: PreferencesService) {
     this.gettext = this.translator.getTranslation;
   }
@@ -43,6 +49,19 @@ export class ProfilingComponent implements OnInit {
         if (new_prefs.hasOwnProperty('region') && new_prefs.region !== this.current_region) {
           this.current_region = new_prefs.region;
           this.selected_summoner = null;
+        }
+      });
+    Observable.forkJoin([
+      this.static_api.getChampions(),
+      this.static_api.getItems(),
+      this.static_api.getSummonerspells()
+    ])
+      .subscribe(static_api_responses => {
+        if (Object.keys(static_api_responses).every(k => static_api_responses[k].type == ResType.SUCCESS)) {
+          this.champions = static_api_responses[0].data;
+          this.items = static_api_responses[1].data;
+          this.summonerspells = static_api_responses[2].data;
+          this.is_metadata_ready = true;
         }
       });
   }

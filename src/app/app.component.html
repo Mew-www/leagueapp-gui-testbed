@@ -2,12 +2,12 @@
     (setupReady)="handleSetupReady($event)">
 </app-setup>
 
-<div *ngIf="is_setup_ready && is_metadata_ready">
-  <profiling
-      [champions]="champions"
-      [items]="items"
-      [summonerspells]="summonerspells">
-  </profiling>
+<div *ngIf="is_setup_ready">
+  <nav>
+    <a routerLink="/match">Match</a>
+    <a routerLink="/summoner">Profiling</a>
+  </nav>
+  <router-outlet></router-outlet>
 </div>
 
 <konami></konami>

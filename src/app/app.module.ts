@@ -39,6 +39,14 @@ import { StartingItemsHistoryComponent } from './subcomponents/profiling/current
 import { FinishedItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/finished-items-history/finished-items-history.component';
 import { WinrateGraphComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/winrate-graph/winrate-graph.component';
 import { FirstbloodHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/firstblood-history/firstblood-history.component';
+import {RouterModule, Routes} from "@angular/router";
+import { MatchComponent } from './subcomponents/match/match.component';
+
+const routes: Routes = [
+  {'path': "summoner", component: ProfilingComponent},
+  {'path': "match", component: MatchComponent},
+  {'path': "**", component: ProfilingComponent}
+];
 
 @NgModule({
   declarations: [
@@ -65,12 +73,14 @@ import { FirstbloodHistoryComponent } from './subcomponents/profiling/current-ga
     StartingItemsHistoryComponent,
     FinishedItemsHistoryComponent,
     WinrateGraphComponent,
-    FirstbloodHistoryComponent
+    FirstbloodHistoryComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [
     PreferencesService, TranslatorService,
