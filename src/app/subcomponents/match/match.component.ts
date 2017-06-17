@@ -7,9 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MatchComponent implements OnInit {
 
-  constructor() { }
+  constructor() {  }
 
   ngOnInit() {
   }
-
 }

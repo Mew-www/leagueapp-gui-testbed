@@ -41,6 +41,10 @@ import { WinrateGraphComponent } from './subcomponents/profiling/current-game/cu
 import { FirstbloodHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/firstblood-history/firstblood-history.component';
 import {RouterModule, Routes} from "@angular/router";
 import { MatchComponent } from './subcomponents/match/match.component';
+import { PreGameComponent } from './subcomponents/match/pre-game/pre-game.component';
+import { PreGameChatparserComponent } from './subcomponents/match/pre-game/pre-game-chatparser/pre-game-chatparser.component';
+import { PreGameTeammatesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammates.component';
+import {DragulaModule} from "ng2-dragula";
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent},
@@ -74,9 +78,13 @@ const routes: Routes = [
     FinishedItemsHistoryComponent,
     WinrateGraphComponent,
     FirstbloodHistoryComponent,
-    MatchComponent
+    MatchComponent,
+    PreGameComponent,
+    PreGameChatparserComponent,
+    PreGameTeammatesComponent
   ],
   imports: [
+    DragulaModule,
     BrowserModule,
     FormsModule,
     HttpModule,

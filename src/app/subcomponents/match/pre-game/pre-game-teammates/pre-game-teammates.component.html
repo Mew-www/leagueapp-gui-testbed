@@ -1,0 +1,7 @@
+<div [dragula]="'teammate-bag'" [dragulaModel]="teammates">
+  <div *ngFor="let s of teammates">
+    <summoner
+        [summoner]="s">
+    </summoner>
+  </div>
+</div>

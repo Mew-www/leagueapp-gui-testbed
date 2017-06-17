@@ -1,0 +1,28 @@
+.ChatParser {
+  display: inline-block;
+
+  &__chat {
+    display: table;
+  }
+  &__chat-helper-text {
+    display: block;
+  }
+  &__chat-paste-area {
+    width: 100%;
+    height: 10em;
+  }
+
+  &__parse-btn {
+
+  }
+}
+
+.ErrorsContainer {
+  display: inline-block;
+
+  &__error {
+    margin: 0;
+    padding: 0;
+    display: table;
+  }
+}
