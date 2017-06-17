@@ -12,6 +12,8 @@ export class PreGameTeammatesComponent implements OnInit {
   @Input() queue: GameType;
   @Input() teammates: Array<Summoner>;
 
+  private display_icons: boolean = false;
+
   constructor() { }
 
   ngOnInit() {

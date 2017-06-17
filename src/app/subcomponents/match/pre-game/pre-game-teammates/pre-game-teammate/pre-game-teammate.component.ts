@@ -15,6 +15,7 @@ export class PreGameTeammateComponent implements OnInit {
 
   @Input() summoner: Summoner;
   @Input() queueing_for: GameType;
+  @Input() display_summoner_icon: boolean = false;
 
   private loaded_rankings: Array<LeaguePosition> = null;
   private error = "";

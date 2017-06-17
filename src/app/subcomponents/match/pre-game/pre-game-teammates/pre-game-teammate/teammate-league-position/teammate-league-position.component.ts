@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {LeaguePosition} from "../../../../../../models/dto/league-position";
 import {RankedTier} from "../../../../../../enums/ranked-tier";
 import {GameType} from "../../../../../../enums/game-type";
+import {Settings} from "../../../../../../constants/settings";
 
 @Component({
   selector: 'teammate-league-position',
@@ -13,12 +14,23 @@ export class TeammateLeaguePositionComponent implements OnInit {
   @Input() primary: boolean;
   @Input() league_position: LeaguePosition;
 
+  private unranked_badge_img_uri   = Settings.STATIC_BASE_URI + "unranked_emblem.png";
+  private bronze_badge_img_uri     = Settings.STATIC_BASE_URI + "bronze_emblem.png";
+  private silver_badge_img_uri     = Settings.STATIC_BASE_URI + "silver_emblem.png";
+  private gold_badge_img_uri       = Settings.STATIC_BASE_URI + "gold_emblem.png";
+  private platinum_badge_img_uri   = Settings.STATIC_BASE_URI + "platinum_emblem.png";
+  private diamond_badge_img_uri    = Settings.STATIC_BASE_URI + "diamond_emblem.png";
+  private master_badge_img_uri     = Settings.STATIC_BASE_URI + "master_emblem.png";
+  private challenger_badge_img_uri = Settings.STATIC_BASE_URI + "challenger_emblem.png";
+
   private Math = Math;
 
   constructor() { }
 
   private getTierString() {
     switch(this.league_position.tier) {
+      case RankedTier.UNRANKED:
+        return "Unranked";
       case RankedTier.BRONZE:
         return "Bronze";
       case RankedTier.SILVER:
@@ -35,6 +47,29 @@ export class TeammateLeaguePositionComponent implements OnInit {
         return "Challenger";
       default:
         return 'Undefined-RankedTier'
+    }
+  }
+
+  private getTierIconUri() {
+    switch(this.league_position.tier) {
+      case RankedTier.UNRANKED:
+        return this.unranked_badge_img_uri;
+      case RankedTier.BRONZE:
+        return this.bronze_badge_img_uri;
+      case RankedTier.SILVER:
+        return this.silver_badge_img_uri;
+      case RankedTier.GOLD:
+        return this.gold_badge_img_uri;
+      case RankedTier.PLATINUM:
+        return this.platinum_badge_img_uri;
+      case RankedTier.DIAMOND:
+        return this.diamond_badge_img_uri;
+      case RankedTier.MASTER:
+        return this.master_badge_img_uri;
+      case RankedTier.CHALLENGER:
+        return this.challenger_badge_img_uri;
+      default:
+        return '404.png'
     }
   }
 

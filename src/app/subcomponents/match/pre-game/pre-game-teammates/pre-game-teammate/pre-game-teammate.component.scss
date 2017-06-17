@@ -1,34 +1,37 @@
 %clearfix { &:after { content: " "; display: table; clear: both; } }
 
-.Summoner {
+.Player {
   @extend %clearfix;
 
   /* First half */
-  &__icon-container {
+  &__summoner-icon-container {
     float: left;
     width: 50px;
   }
-  &__icon {
+  &__summoner-icon {
     width: 100%;
     height: auto;
     border-radius: 50%;
   }
 
   /* Second half */
-  &__details {
+  &__summoner-details {
     float: left;
   }
-  &__name {
+  &__summoner-name {
     margin: 0;
     padding: 0;
     margin-top: 6px;
     margin-left: 5px;
-    font-family: 'Roboto', sans-serif;
+    display: inline-block;
+    font-family: "Roboto Mono", monospace;
   }
-  &__id {
+  &__rankings {
     margin: 0;
     padding: 0;
+    margin-top: 6px;
     margin-left: 5px;
+    display: inline-block;
     font-family: 'Roboto Condensed', sans-serif;
   }
 }

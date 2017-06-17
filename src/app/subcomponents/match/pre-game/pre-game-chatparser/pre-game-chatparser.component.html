@@ -24,14 +24,14 @@
           [class.ChatParser__queue-type-btn--selected]="selected_queue === GameType.SOLO_QUEUE"
           (click)="selected_queue = GameType.SOLO_QUEUE"
           [disabled]="this.subscription !== null && !this.subscription.closed">
-        Solo/Duo queue
+        SOLO/DUO
       </button>
       <button
           class="ChatParser__queue-type-btn"
           [class.ChatParser__queue-type-btn--selected]="selected_queue === GameType.FLEX_QUEUE_5V5"
           (click)="selected_queue = GameType.FLEX_QUEUE_5V5"
           [disabled]="this.subscription !== null && !this.subscription.closed">
-        Flex (5v5) queue
+        FLEX 5V5
       </button>
     </div>
 

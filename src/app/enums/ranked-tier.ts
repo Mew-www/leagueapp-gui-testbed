@@ -1,4 +1,5 @@
 export enum RankedTier {
+  UNRANKED,
   BRONZE,
   SILVER,
   GOLD,

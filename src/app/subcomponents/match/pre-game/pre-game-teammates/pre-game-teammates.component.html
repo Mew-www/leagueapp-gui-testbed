@@ -1,7 +1,15 @@
-<div [dragula]="'teammate-bag'" [dragulaModel]="teammates">
-  <pre-game-teammate
-      *ngFor="let s of teammates"
-      [summoner]="s"
-      [queueing_for]="queue">
-  </pre-game-teammate>
+<div>
+  <label>
+    Show icons?
+    <input type="checkbox" [(ngModel)]="display_icons" />
+  </label>
+  <br/>
+  <div [dragula]="'teammate-bag'" [dragulaModel]="teammates">
+    <pre-game-teammate
+        *ngFor="let s of teammates"
+        [summoner]="s"
+        [queueing_for]="queue"
+        [display_summoner_icon]="display_icons">
+    </pre-game-teammate>
+  </div>
 </div>
