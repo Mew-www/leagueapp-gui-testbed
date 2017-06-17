@@ -50,6 +50,23 @@ export class TeammateLeaguePositionComponent implements OnInit {
     }
   }
 
+  private getSubTierString() {
+    switch(this.league_position.sub_tier) {
+      case 1:
+        return "I";
+      case 2:
+        return "II";
+      case 3:
+        return "III";
+      case 4:
+        return "IV";
+      case 5:
+        return "V";
+      default:
+        return 'Undefined-RankedSubTier'
+    }
+  }
+
   private getTierIconUri() {
     switch(this.league_position.tier) {
       case RankedTier.UNRANKED:

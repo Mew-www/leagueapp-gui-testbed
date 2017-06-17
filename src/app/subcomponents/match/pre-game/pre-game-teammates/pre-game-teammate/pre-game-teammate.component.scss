@@ -1,9 +1,22 @@
+$lane-main-green: #60aa60;
+$lane-main-yellow: #ffb40d;
+$lane-main-red: #b13535;
+
 %clearfix { &:after { content: " "; display: table; clear: both; } }
 
+:host .Player {
+  border-bottom: 2px ridge saddlebrown;
+}
+:host:first-child .Player {
+  border-top: 2px ridge saddlebrown;
+}
+
 .Player {
+  display: table;
+  padding-top: 2px;
   @extend %clearfix;
 
-  /* First half */
+  /* First column */
   &__summoner-icon-container {
     float: left;
     width: 50px;
@@ -13,25 +26,78 @@
     height: auto;
     border-radius: 50%;
   }
+  .Error {
+    padding: 0;
+    margin: 0;
+    color: red;
+  }
 
-  /* Second half */
-  &__summoner-details {
+  /* Second ... */
+  &__details {
     float: left;
+  }
+  &__summoner-details {
+    margin-top: 4px;
   }
   &__summoner-name {
     margin: 0;
     padding: 0;
-    margin-top: 6px;
     margin-left: 5px;
     display: inline-block;
     font-family: "Roboto Mono", monospace;
   }
+  &__lane-main{
+    text-transform: uppercase;
+    &--current-high {
+      border-bottom: 2px solid $lane-main-green;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-green, 0.7),
+              0 2px 0 0 rgba($lane-main-green, 0.4);
+    }
+
+    &--current-medium {
+      border-bottom: 2px solid $lane-main-yellow;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-yellow, 0.7),
+              0 2px 0 0 rgba($lane-main-yellow, 0.4);
+    }
+
+    &--current-low {
+      border-bottom: 2px solid $lane-main-red;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-red, 0.7),
+              0 2px 0 0 rgba($lane-main-red, 0.4);
+    }
+  }
+  &__lane-main-percentages-bar {
+    position: relative;
+    display: inline-block;
+    &--high {
+      background: $lane-main-green;
+    }
+    &--medium {
+      background: $lane-main-yellow;
+    }
+    &--low {
+      background: $lane-main-red;
+    }
+  }
+
+  /* Third ... */
   &__rankings {
-    margin: 0;
-    padding: 0;
-    margin-top: 6px;
-    margin-left: 5px;
+    float: left;
     display: inline-block;
     font-family: 'Roboto Condensed', sans-serif;
+  }
+}
+
+.GameSummary {
+  display: inline-block;
+  padding: 4px;
+  &--win {
+    background: lightgreen;
+  }
+  &--loss {
+    background: lightpink;
   }
 }

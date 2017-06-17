@@ -1,0 +1,21 @@
+select:invalid {
+  color: grey;
+}
+
+.InitialRoleSelector {
+  margin-left: 5px;
+
+  &__choice {
+
+  }
+}
+
+.RoleSelector {
+  margin-left: 5px;
+
+  &__current-role {
+    text-transform: uppercase;
+    font-family: Roboto, 'sans-serif';
+    font-weight: bold;
+  }
+}

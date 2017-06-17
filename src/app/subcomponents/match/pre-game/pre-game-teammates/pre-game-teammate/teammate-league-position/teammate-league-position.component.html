@@ -1,14 +1,44 @@
-<span *ngIf="!primary">
+<p *ngIf="!primary" class="Infotext">
   No data found, player hasn't played any games in that queue. Displaying rankings for {{getQueueString()}}.
-</span>
+</p>
 
-<span>
-  <img src="{{getTierIconUri()}}" title="{{getTierString()}}" class="tier-image" />{{league_position.sub_tier}}
-  ({{league_position.league_points}}LP)
-  [{{Math.round(league_position.wins / (league_position.wins+league_position.losses) * 100)}}% winrate
-    over {{league_position.wins + league_position.losses}} games]
-</span>
+<div class="Container">
 
-<span *ngIf="league_position.in_series">
-  In promos, {{league_position.series.wins}} wins, {{league_position.series.losses}} losses
-</span>
+  <div class="LeaguePosition">
+    <div class="LeaguePosition__tier" title="{{getTierString() + ' ' + league_position.sub_tier.toString()}}">
+      <!-- Tier badge -->
+      <div class="LeaguePosition__tier-badge-container">
+        <img
+            class="LeaguePosition__tier-badge"
+            src="{{getTierIconUri()}}"
+        />
+      </div>
+      <!-- Tier and rank as text -->
+      <div class="LeaguePosition__tier-name-container">
+        <span class="LeaguePosition__tier-name">{{getTierString()}}</span>
+        <span class="LeaguePosition__sub-tier-number">{{getSubTierString()}}</span>
+      </div>
+    </div>
+
+    <!-- LP and promo-info -->
+    <div class="LeaguePosition__position">
+      <p class="LeaguePosition__position-lp">{{league_position.league_points}} LP</p>
+      <p *ngIf="league_position.in_series" class="LeaguePosition__position-series-title">
+        In promos
+      </p>
+      <p *ngIf="league_position.in_series" class="LeaguePosition__position-series">
+        <span *ngFor="let letter of league_position.series.progress.split('')">
+          <span *ngIf="letter === 'W'">O</span>
+          <span *ngIf="letter === 'L'">X</span>
+          <span *ngIf="letter === 'N'">...</span>
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="LeaguePositionAnalysis">
+    <p class="LeaguePositionAnalysis__games-total">{{league_position.wins + league_position.losses}} games</p>
+    <p class="LeaguePositionAnalysis__winrate">{{Math.round(league_position.wins / (league_position.wins+league_position.losses) * 100)}}% winrate</p>
+  </div>
+
+</div>

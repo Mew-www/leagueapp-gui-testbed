@@ -1,19 +1,60 @@
-<div class="Player clearfix">
-  <div class="Player__summoner-icon-container float-left" [hidden]="!display_summoner_icon">
-    <img class="Player__summoner-icon" src="{{summoner.icon.url}}" />
-  </div>
-  <div class="Player__details float-left">
-    <p class="Player__summoner-name">
-      {{summoner.current_name}}
+<div class="Player">
+  <div class="Player__details">
+    <role-selector (selectedRole)="handleSelectedRole($event)"></role-selector>
+
+    <div class="Player__summoner-icon-container" [hidden]="!display_summoner_icon">
+      <img class="Player__summoner-icon" src="{{summoner.icon.url}}" />
+    </div>
+    <div class="Player__summoner-details">
+      <p class="Player__summoner-name">
+        {{summoner.current_name}}
+        <span
+            *ngFor="let l of preferred_lanes"
+            class="Player__lane-main"
+            [class.Player__lane-main--current-high]="l.lane_name === queueing_for && l.percentage > 50"
+            [class.Player__lane-main--current-medium]="l.lane_name === queueing_for && l.percentage <= 50 && l.percentage > 25"
+            [class.Player__lane-main--current-low]="l.lane_name === queueing_for && l.percentage <= 25"
+        >
+          {{l.lane_name}} {{l.percentage}}%<span
+            class="Player__lane-main-percentages-bar"
+            [class.Player__lane-main-percentages-bar--high]="l.percentage > 50"
+            [class.Player__lane-main-percentages-bar--medium]="l.percentage <= 50 && l.percentage > 25"
+            [class.Player__lane-main-percentages-bar--low]="l.percentage <= 25"
+            [style.height.px]="Math.round(20*l.percentage/100)"
+            [style.top.px]="(-3)+(20-Math.round(20*l.percentage/100))"
+          >&nbsp;&nbsp;</span>
+
+        </span>
+        <span
+            *ngIf="role !== null && preferred_lanes !== null && preferred_lanes.map(mapToLaneName).indexOf(role.toUpperCase()) === -1"
+            class="Error"
+        >
+          {{gettext('unlucky_autofill')}}
+        </span>
+      </p>
+    </div>
+    <p *ngFor="let e of errors" class="Error">
+      {{e}}
     </p>
-    <p class="Player__rankings">
-      <span *ngIf="!loaded_rankings">Loading ranked stats ...</span>
-      <span *ngIf="loaded_rankings">
-        <teammate-league-position
-            [primary]="getMeaningfulLeaguePosition().queue === queueing_for"
-            [league_position]="getMeaningfulLeaguePosition()">
-        </teammate-league-position>
+    <p *ngIf="!loading_ready" class="Error">
+      Loading match history from past 3 weeks (up to 20 most recent games) . . .
+    </p>
+    <div *ngIf="loading_ready">
+      <span *ngFor="let s of game_summaries" class="GameSummary"
+            [class.GameSummary--win]="s.victory"
+            [class.GameSummary--loss]="!s.victory">
+        <img src="{{s.player_as_participant.champion.images.square_url}}" [style.width.px]="25" [style.height.px]="25"/>
       </span>
-    </p>
+    </div>
+
+  </div>
+
+  <div class="Player__rankings">
+    <span *ngIf="!loaded_rankings">Loading ranked stats ...</span>
+    <teammate-league-position
+        *ngIf="loaded_rankings"
+        [primary]="getMeaningfulLeaguePosition().queue === queueing_for"
+        [league_position]="getMeaningfulLeaguePosition()">
+    </teammate-league-position>
   </div>
 </div>

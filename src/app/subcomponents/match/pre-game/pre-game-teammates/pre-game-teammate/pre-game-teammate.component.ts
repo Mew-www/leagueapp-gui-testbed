@@ -5,6 +5,19 @@ import {PlayerApiService} from "../../../../../services/player-api.service";
 import {RatelimitedRequestsService} from "../../../../../services/ratelimited-requests.service";
 import {ResType} from "../../../../../enums/api-response-type";
 import {GameType} from "../../../../../enums/game-type";
+import {GameReference} from "../../../../../models/dto/game-reference";
+import {ChampionsContainer} from "../../../../../models/dto/containers/champions-container";
+import {GameRecordPersonalised} from "../../../../../models/game-record-personalised";
+import {Observable} from "rxjs/Observable";
+import {GameApiService} from "../../../../../services/game-api.service";
+import {GameRecord} from "../../../../../models/dto/game-record";
+import {ApiResponse} from "../../../../../helpers/api-response";
+import {ItemsContainer} from "../../../../../models/dto/containers/items-container";
+import {SummonerspellsContainer} from "../../../../../models/dto/containers/summonerspells-container";
+import {GameTimelinePersonalised} from "../../../../../models/game-timeline-personalised";
+import {GameTimeline} from "../../../../../models/dto/game-timeline";
+import {Analytics} from "../../../../../helpers/analytics";
+import {TranslatorService} from "../../../../../services/translator.service";
 
 @Component({
   selector: 'pre-game-teammate',
@@ -17,11 +30,36 @@ export class PreGameTeammateComponent implements OnInit {
   @Input() queueing_for: GameType;
   @Input() display_summoner_icon: boolean = false;
 
+  // Metadata
+  @Input() champions: ChampionsContainer;
+  @Input() items: ItemsContainer;
+  @Input() summonerspells: SummonerspellsContainer;
+
+  private role = null;
+  private errors = [];
+  private readonly time_limit_days = 21;
   private loaded_rankings: Array<LeaguePosition> = null;
-  private error = "";
+  private loaded_few_games: Array<GameRecordPersonalised> = [];
+  private preferred_lanes: Array<any> = null;
+  private game_summaries = [];
+  private loading_ready: boolean = false;
+
+  private gettext: Function;
+  private Math = Math;
 
   constructor(private player_api: PlayerApiService,
-              private buffered_requests: RatelimitedRequestsService) {
+              private game_api: GameApiService,
+              private buffered_requests: RatelimitedRequestsService,
+              private translator: TranslatorService) {
+    this.gettext = translator.getTranslation;
+  }
+
+  private handleSelectedRole(role) {
+    this.role = role;
+  }
+
+  private mapToLaneName(lane) {
+    return lane.lane_name;
   }
 
   private getMeaningfulLeaguePosition() {
@@ -72,6 +110,7 @@ export class PreGameTeammateComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Autoload rankings
     this.buffered_requests.buffer(() => {
       return this.player_api.getRankings(this.summoner.region, this.summoner.id);
     })
@@ -80,12 +119,124 @@ export class PreGameTeammateComponent implements OnInit {
           this.loaded_rankings = api_res.data;
         }
         if (api_res.type === ResType.NOT_FOUND) {
-          this.error = "Player has no previous rankings?";
+          this.errors.push("Player has no previous rankings?");
         }
         if (api_res.type === ResType.ERROR) {
-          this.error = api_res.error;
+          this.errors.push(api_res.error);
         }
       });
+
+    // Autoload game history -> (max) 20 last ranked games from one queue
+    this.buffered_requests.buffer(() => {
+      return this.player_api.getListOfRankedGamesJson(this.summoner.region, this.summoner.account_id, GameType.SOLO_AND_FLEXQUEUE_5V5)
+    })
+      .subscribe(api_res => {
+        if (api_res.type === ResType.SUCCESS) {
+          let gamehistory = api_res.data.map(record => new GameReference(record, this.champions));
+          let games_within_time_limit = gamehistory
+            .filter((gameref: GameReference) => gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*this.time_limit_days));
+          let primary_queue_games = games_within_time_limit
+            .filter((gameref: GameReference) => gameref.game_type === this.queueing_for);
+
+          // If 0 games found, switch queue type
+          if (primary_queue_games.length === 0) {
+            this.errors.push("Did not found any games in this queue, during past 3 weeks. Switching to secondary queue stats.");
+            let secondary_queue = this.queueing_for === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE_5V5 : GameType.SOLO_QUEUE;
+            let secondary_queue_games = games_within_time_limit
+              .filter((gameref: GameReference) => gameref.game_type === secondary_queue);
+            if (secondary_queue_games.length === 0) {
+              this.errors.push("Player has not played ranked in 3 weeks (solo/duo, flex5v5). Unable to produce stats.");
+              return;
+            }
+            // Else replace primary with secondary queue for further processing
+            primary_queue_games = secondary_queue_games;
+          }
+
+          // Less than 5 is still acceptable, just notify
+          if (primary_queue_games.length > 0 && primary_queue_games.length < 5) {
+            this.errors.push("Found only 5 games in this queue, during past 3 weeks. Results may not be accurate.");
+          }
+
+          // Limit to 20
+          primary_queue_games = primary_queue_games.slice(0,20);
+
+          // Here put up the preferred lanes
+          this.preferred_lanes = Analytics.parsePreferredLanes(primary_queue_games);
+
+          Observable.forkJoin(
+            primary_queue_games.map((gameref: GameReference) => this.buffered_requests.buffer(() => {
+              return this.game_api.getHistoricalGame(this.summoner.region, gameref.game_id);
+            }))
+          )
+            .subscribe(record_responses => {
+              if (Object.keys(record_responses).every(k => record_responses[k].type == ResType.SUCCESS)) {
+                for (let i=0; i<primary_queue_games.length; i++) {
+                  this.loaded_few_games.push(new GameRecordPersonalised(
+                    (<GameRecord> (<ApiResponse<GameRecord, any, number>>record_responses[i]).data).raw_origin,
+                    this.summoner,
+                    this.champions,
+                    this.items,
+                    this.summonerspells
+                  ));
+                }
+                // Next fetch timelines of each loaded game-record
+                Observable.forkJoin(
+                  this.loaded_few_games.map(r => {
+                    return this.buffered_requests.buffer(() => {
+                      return this.game_api.getHistoricalTimeline(this.summoner.region, r.game_id);
+                    });
+                  })
+                )
+                  .subscribe(timeline_responses => {
+                    if (Object.keys(timeline_responses).every(k => timeline_responses[k].type == ResType.SUCCESS)) {
+                      for (let i = 0; i < this.loaded_few_games.length; i++) {
+                        let game_record = this.loaded_few_games[i];
+                        let players_by_participant_id_by_teams = game_record.raw_origin.participantIdentities.reduce((mapping, p) => {
+                          let ally = game_record.teams.ally.players.find(ally => (<Summoner>ally.summoner).id === p.player.summonerId);
+                          let enemy = game_record.teams.enemy.players.find(enemy => (<Summoner>enemy.summoner).id === p.player.summonerId);
+                          if (ally) {
+                            mapping['allies'][p.participantId] = ally;
+                          }
+                          if (enemy) {
+                            mapping['enemies'][p.participantId] = enemy;
+                          }
+                          return mapping;
+                        }, {allies: {}, enemies: {}});
+                        game_record.timeline = new GameTimelinePersonalised(
+                          (<GameTimeline> timeline_responses[i].data).raw_origin,
+                          players_by_participant_id_by_teams,
+                          this.items
+                        );
+                      }
+                      this.game_summaries = this.loaded_few_games.map(g => {
+                        let player_itself = g.teams.ally.players.find(p => p.is_the_target);
+                        return {
+                          player_as_participant: player_itself,
+                          victory: g.teams.ally.stats.isWinningTeam
+                        }
+                      });
+                      this.loading_ready = true;
+                      /*
+                      this.loaded_items_habit = Analytics.parseStartingAndFinishedItemsHabit(
+                        this.loaded_few_games.map(game_record => {
+                          return (<GameTimelinePersonalised>game_record.timeline).allies.find(ally => ally.player.is_the_target).item_events;
+                        }),
+                        []
+                      );
+                      */
+                    }
+                  });
+              }
+            });
+        }
+        if (api_res.type === ResType.NOT_FOUND) {
+          this.errors.push("Player has no previous rankings?");
+        }
+        if (api_res.type === ResType.ERROR) {
+          this.errors.push(api_res.error);
+        }
+      });
+
   }
 
 }

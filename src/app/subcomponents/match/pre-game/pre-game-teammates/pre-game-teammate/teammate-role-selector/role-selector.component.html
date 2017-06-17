@@ -1,0 +1,22 @@
+<div *ngIf="!role" class="InitialRoleSelector">
+  <button class="InitialRoleSelector__choice" (click)="role = 'top'">TOP</button>
+  <button class="InitialRoleSelector__choice" (click)="role = 'jungle'">JUNGLE</button>
+  <button class="InitialRoleSelector__choice" (click)="role = 'mid'">MID</button>
+  <button class="InitialRoleSelector__choice" (click)="role = 'bottom'">BOTTOM</button>
+  <button class="InitialRoleSelector__choice" (click)="role = 'support'">SUPPORT</button>
+</div>
+
+<div *ngIf="role" class="RoleSelector">
+  <span class="RoleSelector__current-role">{{role}}</span>
+  <label>
+    <!-- Have required -attribute to force selected:invalid -style for default text -->
+    <select (change)="role = $event.target.value" required="required">
+      <option value="" selected="selected" disabled="disabled" hidden="hidden">Change?</option>
+      <option value="top" [disabled]="role === 'top'">TOP</option>
+      <option value="jungle" [disabled]="role === 'jungle'">JUNGLE</option>
+      <option value="mid" [disabled]="role === 'mid'">MID</option>
+      <option value="bottom" [disabled]="role === 'bottom'">BOTTOM</option>
+      <option value="support" [disabled]="role === 'support'">SUPPORT</option>
+    </select>
+  </label>
+</div>
