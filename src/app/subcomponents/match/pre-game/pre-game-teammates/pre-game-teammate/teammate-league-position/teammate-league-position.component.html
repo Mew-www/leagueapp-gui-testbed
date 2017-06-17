@@ -1,0 +1,11 @@
+<p *ngIf="!primary">
+  No data found, player hasn't played any games in that queue. Displaying rankings for {{getQueueString()}}.
+</p>
+<p>
+  {{getTierString()}} {{league_position.sub_tier}} ({{league_position.league_points}}LP)
+  [{{Math.round(league_position.wins / (league_position.wins+league_position.losses) * 100)}}% winrate
+    over {{league_position.wins + league_position.losses}} games]
+</p>
+<p *ngIf="league_position.in_series">
+  In promos, {{league_position.series.wins}} wins, {{league_position.series.losses}} losses
+</p>

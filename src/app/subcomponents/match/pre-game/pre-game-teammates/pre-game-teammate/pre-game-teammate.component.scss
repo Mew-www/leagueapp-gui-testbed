@@ -1,0 +1,34 @@
+%clearfix { &:after { content: " "; display: table; clear: both; } }
+
+.Summoner {
+  @extend %clearfix;
+
+  /* First half */
+  &__icon-container {
+    float: left;
+    width: 50px;
+  }
+  &__icon {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+  }
+
+  /* Second half */
+  &__details {
+    float: left;
+  }
+  &__name {
+    margin: 0;
+    padding: 0;
+    margin-top: 6px;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+  }
+  &__id {
+    margin: 0;
+    padding: 0;
+    margin-left: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+}

@@ -7,7 +7,7 @@
     <input type="checkbox" [(ngModel)]="show_also_secondary_queue_stats" [disabled]="!all_gamehistories_ready" />
     Show also Flexqueue's stats?
   </label>
-  <label *ngIf="current_game.game_type === GameType.FLEX_QUEUE"
+  <label *ngIf="current_game.game_type === GameType.FLEX_QUEUE_5V5"
          class="CurrentGame__control"
          [class.CurrentGame__control--disabled]="!all_gamehistories_ready"
          [class.CurrentGame__control--enabled]="all_gamehistories_ready">

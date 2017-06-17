@@ -1,6 +1,6 @@
 <div class="ChatParser">
   <label class="ChatParser__chat">
-    <span class="ChatParser__chat-helper-text">Copy and paste champion-selection chat in here</span>
+    <span class="ChatParser__chat-helper-text">1) Copy and paste champion-selection chat in here</span>
     <textarea
         class="ChatParser__chat-paste-area"
         [(ngModel)]="chat_content"
@@ -16,14 +16,35 @@
         + 'Darling Danish joined the lobby'
       }}"></textarea>
   </label>
-  <button
-      class="ChatParser__parse-btn"
-      (click)="chat_content.length > 0 && parseChat()"
-      [disabled]="this.subscription !== null && !this.subscription.closed"
-  >
-    {{errors.length === 0 ? "Start" : "Try again"}}
-  </button>
+  <div class="ChatParser__secondary-controls">
+    <span class="ChatParser__secondary-controls-helper-text">2) Choose the queue you're in</span>
+    <div class="ChatParser__queue-type-selectors">
+      <button
+          class="ChatParser__queue-type-btn"
+          [class.ChatParser__queue-type-btn--selected]="selected_queue === GameType.SOLO_QUEUE"
+          (click)="selected_queue = GameType.SOLO_QUEUE"
+          [disabled]="this.subscription !== null && !this.subscription.closed">
+        Solo/Duo queue
+      </button>
+      <button
+          class="ChatParser__queue-type-btn"
+          [class.ChatParser__queue-type-btn--selected]="selected_queue === GameType.FLEX_QUEUE_5V5"
+          (click)="selected_queue = GameType.FLEX_QUEUE_5V5"
+          [disabled]="this.subscription !== null && !this.subscription.closed">
+        Flex (5v5) queue
+      </button>
+    </div>
+
+    <button
+        class="ChatParser__parse-btn"
+        (click)="parseChat()"
+        [disabled]="chat_content.length === 0 || selected_queue === null || this.subscription !== null && !this.subscription.closed"
+    >
+      {{errors.length === 0 ? "Start" : "Try again"}}
+    </button>
+  </div>
 </div>
+
 <div class="ErrorsContainer">
   <p *ngFor="let error of errors" class="ErrorsContainer__error">{{error}}</p>
 </div>

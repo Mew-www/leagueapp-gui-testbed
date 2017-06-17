@@ -7,6 +7,7 @@ import {RatelimitedRequestsService} from "../../../../services/ratelimited-reque
 import {PreferencesService} from "../../../../services/preferences.service";
 import {TranslatorService} from "../../../../services/translator.service";
 import {Summoner} from "../../../../models/dto/summoner";
+import {GameType} from "../../../../enums/game-type";
 
 @Component({
   selector: 'pre-game-chatparser',
@@ -16,14 +17,17 @@ import {Summoner} from "../../../../models/dto/summoner";
 export class PreGameChatparserComponent implements OnInit {
 
   @Output() parsedSummoners: EventEmitter<Array<Summoner>> = new EventEmitter();
+  @Output() selectedQueueType: EventEmitter<GameType> = new EventEmitter();
 
   private current_region = null;
 
   private chat_content = "";
+  private selected_queue: GameType = null;
   private errors = [];
   private subscription: Subscription = null;
 
   private gettext: Function;
+  private GameType = GameType;
 
   constructor(private player_api: PlayerApiService,
               private bufferedRequests: RatelimitedRequestsService,
@@ -50,6 +54,7 @@ export class PreGameChatparserComponent implements OnInit {
       .subscribe(api_responses => {
         let responses = Object.keys(api_responses).map(k => api_responses[k]);
         if (responses.every(api_res => api_res.type === ResType.SUCCESS)) {
+          this.selectedQueueType.emit(this.selected_queue);
           this.parsedSummoners.emit(responses.map(api_res => <Summoner>api_res.data));
         } else {
           responses.forEach((api_res, i) => {

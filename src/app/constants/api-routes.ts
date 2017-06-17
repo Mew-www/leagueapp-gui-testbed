@@ -28,6 +28,12 @@ export class ApiRoutes {
       + "&account_id=" + account_id;
   };
 
+  public static PLAYER_RANKINGS_URI = (region, summoner_id) => {
+    return Settings.API_BASE_URI + "player/rankings"
+      + "?region=" + region
+      + "&summoner_id=" + summoner_id;
+  };
+
   public static PLAYER_CHAMPIONMASTERIES_URI = (region, summoner_id) => {
     return Settings.API_BASE_URI + "player/championmasteries"
       + "?region=" + region
@@ -42,7 +48,7 @@ export class ApiRoutes {
 
   public static PLAYER_RANKED_GAME_HISTORY_URI = (game_type: GameType, region, account_id) => {
     switch (game_type) {
-      case GameType.FLEX_QUEUE:
+      case GameType.FLEX_QUEUE_5V5:
         return Settings.API_BASE_URI + "player/history/flex/preview"
           + "?region=" + region
           + "&account_id=" + account_id;
@@ -50,7 +56,7 @@ export class ApiRoutes {
         return Settings.API_BASE_URI + "player/history/solo/preview"
           + "?region=" + region
           + "&account_id=" + account_id;
-      case GameType.SOLO_AND_FLEXQUEUE:
+      case GameType.SOLO_AND_FLEXQUEUE_5V5:
         return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
           + "&account_id=" + account_id;
@@ -62,7 +68,7 @@ export class ApiRoutes {
   };
   public static PLAYER_RANKED_GAME_HISTORY_SPECTATORCACHED_URI = (game_type: GameType, region, account_id, in_match_id) => {
     switch (game_type) {
-      case GameType.FLEX_QUEUE:
+      case GameType.FLEX_QUEUE_5V5:
         return Settings.API_BASE_URI + "player/history/flex/preview"
           + "?region=" + region
           + "&account_id=" + account_id
@@ -72,7 +78,7 @@ export class ApiRoutes {
           + "?region=" + region
           + "&account_id=" + account_id
           + "&inmatch=" + in_match_id;
-      case GameType.SOLO_AND_FLEXQUEUE:
+      case GameType.SOLO_AND_FLEXQUEUE_5V5:
         return Settings.API_BASE_URI + "player/history/solo_and_flex/preview"
           + "?region=" + region
           + "&account_id=" + account_id

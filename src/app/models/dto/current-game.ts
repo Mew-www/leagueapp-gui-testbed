@@ -24,7 +24,7 @@ export class CurrentGame {
         case 420:
           return GameType.SOLO_QUEUE;
         case 440:
-          return GameType.FLEX_QUEUE;
+          return GameType.FLEX_QUEUE_5V5;
         default:
           return GameType.UNKNOWN_UNDEFINED;
       }

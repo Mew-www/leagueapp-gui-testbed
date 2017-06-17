@@ -10,7 +10,7 @@ export class StringifyGameTypePipe implements PipeTransform {
     switch (value) {
       case GameType.SOLO_QUEUE:
         return "Ranked Solo/Duo";
-      case GameType.FLEX_QUEUE:
+      case GameType.FLEX_QUEUE_5V5:
         return "Ranked Flex";
       case GameType.UNKNOWN_UNDEFINED:
         return "Ranked(?) Undefined Game Type";

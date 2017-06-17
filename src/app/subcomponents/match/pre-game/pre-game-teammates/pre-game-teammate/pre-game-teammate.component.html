@@ -1,0 +1,19 @@
+<div class="Summoner clearfix">
+  <div class="Summoner__icon-container float-left">
+    <img class="Summoner__icon" src="{{summoner.icon.url}}" />
+  </div>
+  <div class="Summoner__details float-left">
+    <p class="Summoner__name">
+      {{summoner.current_name}}
+    </p>
+    <p *ngIf="loaded_rankings" class="Summoner__id">
+      <span *ngFor="let r of loaded_rankings">{{r.tier}} {{r.sub_tier}}<br/></span>
+    </p>
+  </div>
+  <div *ngIf="loaded_rankings">
+    <teammate-league-position
+        [primary]="getMeaningfulLeaguePosition().queue === queueing_for"
+        [league_position]="getMeaningfulLeaguePosition()">
+    </teammate-league-position>
+  </div>
+</div>

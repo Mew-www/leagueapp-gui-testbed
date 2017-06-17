@@ -1,7 +1,7 @@
 <div [dragula]="'teammate-bag'" [dragulaModel]="teammates">
-  <div *ngFor="let s of teammates">
-    <summoner
-        [summoner]="s">
-    </summoner>
-  </div>
+  <pre-game-teammate
+      *ngFor="let s of teammates"
+      [summoner]="s"
+      [queueing_for]="queue">
+  </pre-game-teammate>
 </div>

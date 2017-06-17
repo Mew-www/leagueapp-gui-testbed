@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Summoner} from "../../../../models/dto/summoner";
+import {GameType} from "../../../../enums/game-type";
 
 @Component({
   selector: 'pre-game-teammates',
@@ -8,6 +9,7 @@ import {Summoner} from "../../../../models/dto/summoner";
 })
 export class PreGameTeammatesComponent implements OnInit {
 
+  @Input() queue: GameType;
   @Input() teammates: Array<Summoner>;
 
   constructor() { }

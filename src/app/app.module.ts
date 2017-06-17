@@ -45,6 +45,8 @@ import { PreGameComponent } from './subcomponents/match/pre-game/pre-game.compon
 import { PreGameChatparserComponent } from './subcomponents/match/pre-game/pre-game-chatparser/pre-game-chatparser.component';
 import { PreGameTeammatesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammates.component';
 import {DragulaModule} from "ng2-dragula";
+import { PreGameTeammateComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/pre-game-teammate.component';
+import { TeammateLeaguePositionComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/teammate-league-position/teammate-league-position.component';
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent},
@@ -81,7 +83,9 @@ const routes: Routes = [
     MatchComponent,
     PreGameComponent,
     PreGameChatparserComponent,
-    PreGameTeammatesComponent
+    PreGameTeammatesComponent,
+    PreGameTeammateComponent,
+    TeammateLeaguePositionComponent
   ],
   imports: [
     DragulaModule,

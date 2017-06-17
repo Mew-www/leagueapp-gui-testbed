@@ -8,6 +8,7 @@ import {
   ApiResponseTryLater
 } from "../helpers/api-response";
 import {GameType} from "../enums/game-type";
+import {LeaguePosition} from "../models/dto/league-position";
 
 @Injectable()
 export class PlayerApiService {
@@ -99,7 +100,7 @@ export class PlayerApiService {
             game_type: ((queue_const: number) => {
               switch (queue_const) {
                 case 440:
-                  return GameType.FLEX_QUEUE;
+                  return GameType.FLEX_QUEUE_5V5;
                 case 420:
                   return GameType.SOLO_QUEUE;
                 default:
@@ -144,7 +145,7 @@ export class PlayerApiService {
             game_type: ((queue_const: number) => {
               switch (queue_const) {
                 case 440:
-                  return GameType.FLEX_QUEUE;
+                  return GameType.FLEX_QUEUE_5V5;
                 case 420:
                   return GameType.SOLO_QUEUE;
                 default:
@@ -178,6 +179,27 @@ export class PlayerApiService {
       .map(res => {
         let masteries_json = res.json();
         return new ApiResponseSuccess(masteries_json);
+      }).catch(error_res => {
+        switch (error_res.status) {
+
+          case 500:
+            if (error_res.json().hasOwnProperty("status") && error_res.json()['status'] === 418) {
+              return Observable.of(new ApiResponseTryLater(error_res.json()['data']['Retry-After']));
+            } else {
+              return Observable.of(new ApiResponseError(error_res.json()['data'].toString()));
+            }
+
+          default:
+            return Observable.of(new ApiResponseError(error_res.text()));
+        }
+      });
+  }
+  public getRankings(region, summoner_id): Observable<ApiResponse<Array<LeaguePosition>, string, Number>> {
+    return this.http.get(ApiRoutes.PLAYER_RANKINGS_URI(region, summoner_id))
+      .map(res => {
+        let league_positions_json = res.json();
+        let league_positions = league_positions_json.map(position_json => new LeaguePosition(position_json));
+        return new ApiResponseSuccess(league_positions);
       }).catch(error_res => {
         switch (error_res.status) {
 

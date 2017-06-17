@@ -22,7 +22,7 @@ export class SummonerGamehistoryComponent implements OnInit {
 
   private available_queue_filters = [
     {'val': GameType.SOLO_QUEUE, 'text_key': "solo_queue"},
-    {'val': GameType.FLEX_QUEUE, 'text_key': "flex_queue"}
+    {'val': GameType.FLEX_QUEUE_5V5, 'text_key': "flex_queue"}
   ];
   private available_champion_filters: Function;
 

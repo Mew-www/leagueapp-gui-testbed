@@ -94,7 +94,7 @@ export class ParticipantPlayedChampionsComponent implements OnInit, OnChanges {
     this.top_played_champions_altqueue = null;
     this.non_top_current_champion_altqueue = null;
 
-    let altqueue_type = this.gametype === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE : GameType.SOLO_QUEUE;
+    let altqueue_type = this.gametype === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE_5V5 : GameType.SOLO_QUEUE;
 
     let played_champions_mainqueue = Analytics.parsePlayedChampions(this.gamehistory.filter(gameref => gameref.game_type === this.gametype), this.champions)
       .sort((a, b) => b.nr_of_games - a.nr_of_games);
