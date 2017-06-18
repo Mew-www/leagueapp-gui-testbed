@@ -48,6 +48,7 @@ $lane-main-red: #b13535;
   }
   &__lane-main{
     text-transform: uppercase;
+    font-family: 'Roboto Condensed', 'sans-serif';
     &--current-high {
       border-bottom: 2px solid $lane-main-green;
       box-shadow:
