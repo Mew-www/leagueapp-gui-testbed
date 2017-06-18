@@ -82,12 +82,7 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
     if (!lane_name) {
       return;
     }
-
-    if (lane_name === "BOTTOM1" || lane_name === "BOTTOM2") {
-      this.current_lane = "BOTTOM";
-    } else {
-      this.current_lane = lane_name;
-    }
+    this.current_lane = lane_name;
   }
 
   private getTimeAgoAsString(date: Date) {
