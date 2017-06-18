@@ -220,7 +220,13 @@ export class PreGameTeammateComponent implements OnInit {
                   return {
                     player_as_participant: player_itself,
                     victory: g.teams.ally.stats.isWinningTeam,
-                    start_time: g.match_start_time
+                    start_time: g.match_start_time,
+                    nr_carry: g.teams.ally.players
+                      .sort((p1,p2) => p2.stats.combat_totals.damage_dealt_vs_champions.all - p1.stats.combat_totals.damage_dealt_vs_champions.all)
+                      .map(p => p.summoner.id)
+                      .indexOf(this.summoner.id)+1,
+                    kda: player_itself.stats.kda.kills + '/' + player_itself.stats.kda.deaths + '/' + player_itself.stats.kda.assists,
+                    cs: player_itself.stats.creeps.lane + player_itself.stats.creeps.jungle
                   }
                 });
                 this.loading_ready = true;

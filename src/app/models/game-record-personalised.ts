@@ -75,7 +75,7 @@ export class GameRecordPersonalised extends GameRecord {
                 final_champion_level: pstats.champLevel,
                 gold_earned: pstats.goldEarned,
                 creeps: {
-                  lane: pstats.minionsKilled,
+                  lane: pstats.totalMinionsKilled,
                   jungle: pstats.neutralMinionsKilled,
                   counterjungle: pstats.neutralMinionsKilledEnemyJungle,
                   allyjungle: pstats.neutralMinionsKilledTeamJungle
