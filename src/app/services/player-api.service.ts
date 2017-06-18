@@ -9,6 +9,7 @@ import {
 } from "../helpers/api-response";
 import {GameType} from "../enums/game-type";
 import {LeaguePosition} from "../models/dto/league-position";
+import {GameReference} from "../models/dto/game-reference";
 
 @Injectable()
 export class PlayerApiService {
@@ -84,7 +85,7 @@ export class PlayerApiService {
         }
       });
   }
-  public getListOfRankedGamesJson(region, account_id, gametype): Observable<ApiResponse<Object, string, Number>> {
+  public getListOfRankedGamesJson(region, account_id, gametype, champions): Observable<ApiResponse<Array<GameReference>, string, Number>> {
     return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_URI(gametype, region, account_id))
       .map(res => {
         let historical_data = res.json();
@@ -92,25 +93,9 @@ export class PlayerApiService {
         if (total_existing_records === 0) {
           return new ApiResponseNotFound();
         }
-        let records = historical_data['matches'].map(match => {
-          return {
-            game_id: match['gameId'],
-            timestamp: match['timestamp'],
-            chosen_champion_id: match['champion'],
-            game_type: ((queue_const: number) => {
-              switch (queue_const) {
-                case 440:
-                  return GameType.FLEX_QUEUE_5V5;
-                case 420:
-                  return GameType.SOLO_QUEUE;
-                default:
-                  return GameType.UNKNOWN_UNDEFINED;
-              }
-            })(match['queue']),
-            lane: match['lane'],
-          }
-        }).sort((a, b) => b['timestamp'] - a['timestamp']);
-        return new ApiResponseSuccess(records);
+        let sorted_gamerefs = historical_data['matches'].map(match_ref_json => new GameReference(match_ref_json, champions))
+          .sort((a, b) => b['timestamp'] - a['timestamp']);
+        return new ApiResponseSuccess(sorted_gamerefs);
       }).catch(error_res => {
         switch (error_res.status) {
 
@@ -129,7 +114,7 @@ export class PlayerApiService {
         }
       });
   }
-  public getListOfRankedGamesJsonSpectatorcached(region, account_id, gametype, in_match_id): Observable<ApiResponse<Object, string, Number>> {
+  public getListOfRankedGamesJsonSpectatorcached(region, account_id, gametype, in_match_id, champions): Observable<ApiResponse<Array<GameReference>, string, Number>> {
     return this.http.get(ApiRoutes.PLAYER_RANKED_GAME_HISTORY_SPECTATORCACHED_URI(gametype, region, account_id, in_match_id))
       .map(res => {
         let historical_data = res.json();
@@ -137,25 +122,9 @@ export class PlayerApiService {
         if (total_existing_records === 0) {
           return new ApiResponseNotFound();
         }
-        let records = historical_data['matches'].map(match => {
-          return {
-            game_id: match['gameId'],
-            timestamp: match['timestamp'],
-            chosen_champion_id: match['champion'],
-            game_type: ((queue_const: number) => {
-              switch (queue_const) {
-                case 440:
-                  return GameType.FLEX_QUEUE_5V5;
-                case 420:
-                  return GameType.SOLO_QUEUE;
-                default:
-                  return GameType.UNKNOWN_UNDEFINED;
-              }
-            })(match['queue']),
-            lane: match['lane'],
-          }
-        }).sort((a, b) => b['timestamp'] - a['timestamp']);
-        return new ApiResponseSuccess(records);
+        let sorted_gamerefs = historical_data['matches'].map(match_ref_json => new GameReference(match_ref_json, champions))
+          .sort((a, b) => b['timestamp'] - a['timestamp']);
+        return new ApiResponseSuccess(sorted_gamerefs);
       }).catch(error_res => {
         switch (error_res.status) {
 

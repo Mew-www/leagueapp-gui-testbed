@@ -56,7 +56,7 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
   private _processGamehistoryJsonResponse(api_res) {
     switch (api_res.type) {
       case ResType.SUCCESS:
-        this.gamehistory = api_res.data.map(record => new GameReference(record, this.champions));
+        this.gamehistory = api_res.data;
         break;
 
       case ResType.ERROR:
@@ -106,7 +106,7 @@ export class SummonerStatisticsComponent implements OnInit, OnChanges {
       let account_id = this.summoner.account_id;
       let summoner_id = this.summoner.id;
       this.ongoing_request = Observable.forkJoin([
-        this.ratelimitedRequests.buffer(() => {return this.player_api.getListOfRankedGamesJson(region, account_id, GameType.SOLO_AND_FLEXQUEUE_5V5)}),
+        this.ratelimitedRequests.buffer(() => {return this.player_api.getListOfRankedGamesJson(region, account_id, GameType.SOLO_AND_FLEXQUEUE_5V5, this.champions)}),
         this.ratelimitedRequests.buffer(() => {return this.player_api.getMasteryPointCountsJson(region, summoner_id)})
       ])
         .subscribe(api_responses => {

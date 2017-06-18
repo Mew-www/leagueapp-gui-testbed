@@ -37,13 +37,18 @@
       {{e}}
     </p>
     <p *ngIf="!loading_ready" class="Error">
-      Loading match history from past 3 weeks (up to 20 most recent games) . . .
+      Loading match history from past 3 weeks (up to 15 most recent games) . . .
     </p>
     <div *ngIf="loading_ready">
       <span *ngFor="let s of game_summaries" class="GameSummary"
             [class.GameSummary--win]="s.victory"
             [class.GameSummary--loss]="!s.victory">
-        <img src="{{s.player_as_participant.champion.images.square_url}}" [style.width.px]="25" [style.height.px]="25"/>
+        <img
+            src="{{s.player_as_participant.champion.images.square_url}}"
+            title="{{getTimeAgoAsString(s.start_time)}}"
+            [style.width.px]="25"
+            [style.height.px]="25"
+        />
       </span>
     </div>
 

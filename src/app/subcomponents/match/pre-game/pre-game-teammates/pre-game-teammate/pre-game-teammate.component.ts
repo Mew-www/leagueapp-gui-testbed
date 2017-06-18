@@ -62,6 +62,42 @@ export class PreGameTeammateComponent implements OnInit {
     return lane.lane_name;
   }
 
+  private getTimeAgoAsString(date: Date) {
+
+    let time_difference_ms = new Date().getTime() - date.getTime(); // now - then
+    let local_yesterday_begin = ((new Date()).getHours() + 24) * 1000 * 60 * 60; // (Hours today + 24 hours) earlier
+
+    if (time_difference_ms < 1000*60*60*24) {
+      // Less-than-day ago
+      let full_hours_ago = Math.floor(time_difference_ms / (1000*60*60));
+      if (full_hours_ago == 0) {
+        // Count minutes instead
+        let full_minutes_ago = Math.floor(time_difference_ms / (1000*60));
+        if (full_minutes_ago == 0) {
+          return `${this.gettext("just_now")}`;
+        }
+        if (full_minutes_ago == 1) {
+          return `1 ${this.gettext("minute_ago")}`;
+        }
+        // Else
+        return `${full_minutes_ago} ${this.gettext("n_minutes_ago")}`;
+      }
+      if (full_hours_ago == 1) {
+        return `1  ${this.gettext("hour_ago")}`;
+      }
+      // Else
+      return `${full_hours_ago} ${this.gettext("n_hours_ago")}`;
+
+    } else if (time_difference_ms < local_yesterday_begin) {
+      // Since (local-/browsertime) "yesterday" began
+      return this.gettext("yesterday");
+
+    } else {
+      // DD. MM. YYYY
+      return ("0"+date.getDate()).slice(-2) + '.' + ("0"+(date.getMonth()+1)).slice(-2) + '.' + date.getFullYear();
+    }
+  }
+
   private getMeaningfulLeaguePosition() {
     if (!this.loaded_rankings) {
       return '';
@@ -128,12 +164,11 @@ export class PreGameTeammateComponent implements OnInit {
 
     // Autoload game history -> (max) 20 last ranked games from one queue
     this.buffered_requests.buffer(() => {
-      return this.player_api.getListOfRankedGamesJson(this.summoner.region, this.summoner.account_id, GameType.SOLO_AND_FLEXQUEUE_5V5)
+      return this.player_api.getListOfRankedGamesJson(this.summoner.region, this.summoner.account_id, GameType.SOLO_AND_FLEXQUEUE_5V5, this.champions)
     })
       .subscribe(api_res => {
         if (api_res.type === ResType.SUCCESS) {
-          let gamehistory = api_res.data.map(record => new GameReference(record, this.champions));
-          let games_within_time_limit = gamehistory
+          let games_within_time_limit = api_res.data
             .filter((gameref: GameReference) => gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*this.time_limit_days));
           let primary_queue_games = games_within_time_limit
             .filter((gameref: GameReference) => gameref.game_type === this.queueing_for);
@@ -157,8 +192,8 @@ export class PreGameTeammateComponent implements OnInit {
             this.errors.push("Found only 5 games in this queue, during past 3 weeks. Results may not be accurate.");
           }
 
-          // Limit to 20
-          primary_queue_games = primary_queue_games.slice(0,20);
+          // Limit to 15
+          primary_queue_games = primary_queue_games.slice(0,15);
 
           // Here put up the preferred lanes
           this.preferred_lanes = Analytics.parsePreferredLanes(primary_queue_games);
@@ -179,64 +214,28 @@ export class PreGameTeammateComponent implements OnInit {
                     this.summonerspells
                   ));
                 }
-                // Next fetch timelines of each loaded game-record
-                Observable.forkJoin(
-                  this.loaded_few_games.map(r => {
-                    return this.buffered_requests.buffer(() => {
-                      return this.game_api.getHistoricalTimeline(this.summoner.region, r.game_id);
-                    });
-                  })
-                )
-                  .subscribe(timeline_responses => {
-                    if (Object.keys(timeline_responses).every(k => timeline_responses[k].type == ResType.SUCCESS)) {
-                      for (let i = 0; i < this.loaded_few_games.length; i++) {
-                        let game_record = this.loaded_few_games[i];
-                        let players_by_participant_id_by_teams = game_record.raw_origin.participantIdentities.reduce((mapping, p) => {
-                          let ally = game_record.teams.ally.players.find(ally => (<Summoner>ally.summoner).id === p.player.summonerId);
-                          let enemy = game_record.teams.enemy.players.find(enemy => (<Summoner>enemy.summoner).id === p.player.summonerId);
-                          if (ally) {
-                            mapping['allies'][p.participantId] = ally;
-                          }
-                          if (enemy) {
-                            mapping['enemies'][p.participantId] = enemy;
-                          }
-                          return mapping;
-                        }, {allies: {}, enemies: {}});
-                        game_record.timeline = new GameTimelinePersonalised(
-                          (<GameTimeline> timeline_responses[i].data).raw_origin,
-                          players_by_participant_id_by_teams,
-                          this.items
-                        );
-                      }
-                      this.game_summaries = this.loaded_few_games.map(g => {
-                        let player_itself = g.teams.ally.players.find(p => p.is_the_target);
-                        return {
-                          player_as_participant: player_itself,
-                          victory: g.teams.ally.stats.isWinningTeam
-                        }
-                      });
-                      this.loading_ready = true;
-                      /*
-                      this.loaded_items_habit = Analytics.parseStartingAndFinishedItemsHabit(
-                        this.loaded_few_games.map(game_record => {
-                          return (<GameTimelinePersonalised>game_record.timeline).allies.find(ally => ally.player.is_the_target).item_events;
-                        }),
-                        []
-                      );
-                      */
-                    }
-                  });
+
+                this.game_summaries = this.loaded_few_games.map(g => {
+                  let player_itself = g.teams.ally.players.find(p => p.is_the_target);
+                  return {
+                    player_as_participant: player_itself,
+                    victory: g.teams.ally.stats.isWinningTeam,
+                    start_time: g.match_start_time
+                  }
+                });
+                this.loading_ready = true;
+                /*
+                this.loaded_items_habit = Analytics.parseStartingAndFinishedItemsHabit(
+                  this.loaded_few_games.map(game_record => {
+                    return (<GameTimelinePersonalised>game_record.timeline).allies.find(ally => ally.player.is_the_target).item_events;
+                  }),
+                  []
+                );
+                */
               }
             });
         }
-        if (api_res.type === ResType.NOT_FOUND) {
-          this.errors.push("Player has no previous rankings?");
-        }
-        if (api_res.type === ResType.ERROR) {
-          this.errors.push(api_res.error);
-        }
       });
-
   }
 
 }

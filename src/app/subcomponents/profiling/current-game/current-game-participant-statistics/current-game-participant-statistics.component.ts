@@ -188,12 +188,12 @@ export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChan
             this.loading_gamehistory = true;
             let queues_to_look_up = this.show_also_secondary_queue_stats ? GameType.SOLO_AND_FLEXQUEUE_5V5 : this.gametype;
             this.ongoing_gamehistory_request = this.ratelimitedRequests.buffer(() => {
-              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, queues_to_look_up, this.spectatorcache_id);
+              return this.player_api.getListOfRankedGamesJsonSpectatorcached(this.region, this.summoner.account_id, queues_to_look_up, this.spectatorcache_id, this.champions);
             })
               .subscribe(gamehistory_api_res => {
                 switch (gamehistory_api_res.type) {
                   case ResType.SUCCESS:
-                    let gamehistory = gamehistory_api_res.data.map(record => new GameReference(record, this.champions));
+                    let gamehistory = gamehistory_api_res.data;
                     if (this.show_also_secondary_queue_stats) {
                       this._cached_gamehistories.combined = gamehistory;
                     } else {

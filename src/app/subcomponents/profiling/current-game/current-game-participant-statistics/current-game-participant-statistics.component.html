@@ -52,6 +52,10 @@
             *ngIf="l.lane_name === 'BOTTOM'"
             src="{{bottom_lane_queue_img_uri}}"
             title="{{l.lane_name}}"
+          /><img
+            *ngIf="l.lane_name === 'SUPPORT'"
+            src="{{bottom_lane_queue_img_uri}}"
+            title="{{l.lane_name}}"
           /><span
             class="Participant__lane-main-percentages-bar"
             [class.Participant__lane-main-percentages-bar--high]="l.percentage > 50"

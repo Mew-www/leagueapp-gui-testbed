@@ -69,7 +69,7 @@ export class ExplorerComponent implements OnInit {
       });
 
     this.bufferedRequests.buffer(() => {
-      return this.player_api.getListOfRankedGamesJson(this.region_euw, summoners_account_id, GameType.SOLO_QUEUE);
+      return this.player_api.getListOfRankedGamesJson(this.region_euw, summoners_account_id, GameType.SOLO_QUEUE, this.champions);
     })
       .subscribe(res => {
         if (res.type === ResType.ERROR) {
@@ -87,7 +87,7 @@ export class ExplorerComponent implements OnInit {
           this.loadEUW(next_target);
           return;
         }
-        let meaningful_history = res.data.map(altered_gameref_json => new GameReference(altered_gameref_json, this.champions))
+        let meaningful_history = res.data
           .filter((gameref: GameReference) => gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*this.days_to_past))
           .map((gameref: GameReference) => gameref.game_id);
         this.number_of_games = meaningful_history.length;

@@ -15,11 +15,24 @@ export class GameReference {
   public game_timeline: GameTimelinePersonalised = null;
 
   // https://developer.riotgames.com/api-methods/#match-v3/GET_getMatchlist
-  constructor(altered_game_ref_json, champions: ChampionsContainer) {
-    this.game_id = altered_game_ref_json.game_id;
-    this.game_start_time = new Date(altered_game_ref_json.timestamp);
-    this.chosen_champion = champions.getChampionById(altered_game_ref_json.chosen_champion_id);
-    this.game_type = altered_game_ref_json.game_type;
-    this.presumed_lane = altered_game_ref_json.lane;
+  constructor(game_ref_json, champions) {
+    this.game_id = game_ref_json.gameId;
+    this.game_start_time = new Date(game_ref_json.timestamp);
+    this.chosen_champion = champions.getChampionById(game_ref_json.champion);
+    this.game_type =((queue_const: number) => {
+      switch (queue_const) {
+        case 440:
+          return GameType.FLEX_QUEUE_5V5;
+        case 420:
+          return GameType.SOLO_QUEUE;
+        default:
+          return GameType.UNKNOWN_UNDEFINED;
+      }
+    })(game_ref_json.queue);
+    if (game_ref_json.lane !== 'BOTTOM') {
+      this.presumed_lane = game_ref_json.lane;
+    } else {
+      this.presumed_lane = game_ref_json.role === 'DUO_CARRY' ? 'BOTTOM' : 'SUPPORT';
+    }
   }
 }
