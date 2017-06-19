@@ -50,12 +50,24 @@
             [style.height.px]="25"
         />
         <br/>
-        <span title="{{s.nr_carry}}. carry in total damage to players">{{s.nr_carry}}. C</span>
-        <br/>
         {{s.kda}}
         <br/>
-        {{s.cs}}
+        <span title="{{s.cs_lane}}">{{s.cs_lane+s.cs_jungle}} cs</span>
+        <br/>
+        <span *ngIf="s.victory" title="{{s.nr_carry}}. carry in total damage to players">{{s.nr_carry}}. C</span>
+        <br *ngIf="!s.victory"/>
       </span>
+    </div>
+    <div *ngIf="loading_ready">
+      <select (change)="target_champion = $event.target.value">
+        <option *ngFor="let c of getChampionsNameOrdered()" value="{{c.id}}">
+          {{c.name}}
+        </option>
+      </select>
+      <div *ngIf="target_champion">
+        <button (click)="target_champion = null">X</button>
+        <p>{{target_games.length}} games on this champion in past 3 weeks</p>
+      </div>
     </div>
 
   </div>
@@ -63,9 +75,10 @@
   <div class="Player__rankings">
     <span *ngIf="!loaded_rankings">Loading ranked stats ...</span>
     <teammate-league-position
-        *ngIf="loaded_rankings"
+        *ngIf="loaded_rankings && getMeaningfulLeaguePosition() !== null"
         [primary]="getMeaningfulLeaguePosition().queue === queueing_for"
         [league_position]="getMeaningfulLeaguePosition()">
     </teammate-league-position>
+    <span *ngIf="getMeaningfulLeaguePosition() === null">Unranked in all ranked queues</span>
   </div>
 </div>

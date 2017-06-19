@@ -20,4 +20,9 @@ export class ChampionsContainer {
       'ddragon_key': "404"
     })
   }
+
+  public listChampions() {
+    return Object.keys(this._champions_by_id).map(id => this._champions_by_id[id]);
+  }
+
 }

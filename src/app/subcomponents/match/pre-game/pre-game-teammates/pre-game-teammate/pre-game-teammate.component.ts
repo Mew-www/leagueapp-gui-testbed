@@ -18,6 +18,7 @@ import {GameTimelinePersonalised} from "../../../../../models/game-timeline-pers
 import {GameTimeline} from "../../../../../models/dto/game-timeline";
 import {Analytics} from "../../../../../helpers/analytics";
 import {TranslatorService} from "../../../../../services/translator.service";
+import {Champion} from "../../../../../models/dto/champion";
 
 @Component({
   selector: 'pre-game-teammate',
@@ -38,6 +39,7 @@ export class PreGameTeammateComponent implements OnInit {
   private role = null;
   private errors = [];
   private readonly time_limit_days = 21;
+  private games_past_3_weeks = null;
   private loaded_rankings: Array<LeaguePosition> = null;
   private loaded_few_games: Array<GameRecordPersonalised> = [];
   private preferred_lanes: Array<any> = null;
@@ -46,6 +48,17 @@ export class PreGameTeammateComponent implements OnInit {
 
   private gettext: Function;
   private Math = Math;
+
+  private _target_champion = null;
+  private target_games = null;
+
+  get target_champion() {
+    return this._target_champion;
+  }
+  set target_champion(id) {
+    this._target_champion = id;
+    this.target_games = this.games_past_3_weeks.filter(gameref => gameref.chosen_champion.id === id);
+  }
 
   constructor(private player_api: PlayerApiService,
               private game_api: GameApiService,
@@ -143,6 +156,12 @@ export class PreGameTeammateComponent implements OnInit {
         }
       }
     }
+    // Else unranked everywhere
+    return null;
+  }
+
+  private getChampionsNameOrdered(): Array<Champion> {
+    return this.champions.listChampions().sort((a,b) => a.name.localeCompare(b.name));
   }
 
   ngOnInit() {
@@ -188,9 +207,12 @@ export class PreGameTeammateComponent implements OnInit {
           }
 
           // Less than 5 is still acceptable, just notify
-          if (primary_queue_games.length > 0 && primary_queue_games.length < 5) {
+          if (primary_queue_games.length < 5) {
             this.errors.push("Found only 5 games in this queue, during past 3 weeks. Results may not be accurate.");
           }
+
+          // Save un-limited for further use
+          this.games_past_3_weeks = primary_queue_games;
 
           // Limit to 15
           primary_queue_games = primary_queue_games.slice(0,15);
@@ -226,7 +248,8 @@ export class PreGameTeammateComponent implements OnInit {
                       .map(p => p.summoner.id)
                       .indexOf(this.summoner.id)+1,
                     kda: player_itself.stats.kda.kills + '/' + player_itself.stats.kda.deaths + '/' + player_itself.stats.kda.assists,
-                    cs: player_itself.stats.creeps.lane + player_itself.stats.creeps.jungle
+                    cs_lane: player_itself.stats.creeps.lane,
+                    cs_jungle: player_itself.stats.creeps.jungle
                   }
                 });
                 this.loading_ready = true;
