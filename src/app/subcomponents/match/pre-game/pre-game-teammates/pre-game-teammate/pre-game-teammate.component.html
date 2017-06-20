@@ -43,12 +43,8 @@
 
   <!-- Second column -->
   <div class="Player__rankings">
-    <span *ngIf="!loaded_rankings">Loading ranked stats ...</span>
     <teammate-league-position
-        *ngIf="loaded_rankings && getMeaningfulLeaguePosition() !== null"
-        [primary]="getMeaningfulLeaguePosition().queue === queueing_for"
-        [league_position]="getMeaningfulLeaguePosition()">
+        [summoner]="summoner">
     </teammate-league-position>
-    <span *ngIf="getMeaningfulLeaguePosition() === null">Unranked in all ranked queues</span>
   </div>
 </div>

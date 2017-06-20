@@ -3,6 +3,11 @@ import {LeaguePosition} from "../../../../../../models/dto/league-position";
 import {RankedTier} from "../../../../../../enums/ranked-tier";
 import {GameType} from "../../../../../../enums/game-type";
 import {Settings} from "../../../../../../constants/settings";
+import {Summoner} from "../../../../../../models/dto/summoner";
+import {RatelimitedRequestsService} from "../../../../../../services/ratelimited-requests.service";
+import {PlayerApiService} from "../../../../../../services/player-api.service";
+import {ResType} from "../../../../../../enums/api-response-type";
+import {TranslatorService} from "../../../../../../services/translator.service";
 
 @Component({
   selector: 'teammate-league-position',
@@ -11,8 +16,9 @@ import {Settings} from "../../../../../../constants/settings";
 })
 export class TeammateLeaguePositionComponent implements OnInit {
 
-  @Input() primary: boolean;
-  @Input() league_position: LeaguePosition;
+  @Input() summoner: Summoner;
+  private loaded_rankings: Array<LeaguePosition> = null;
+  private errors = [];
 
   private unranked_badge_img_uri   = Settings.STATIC_BASE_URI + "unranked_emblem.png";
   private bronze_badge_img_uri     = Settings.STATIC_BASE_URI + "bronze_emblem.png";
@@ -23,12 +29,18 @@ export class TeammateLeaguePositionComponent implements OnInit {
   private master_badge_img_uri     = Settings.STATIC_BASE_URI + "master_emblem.png";
   private challenger_badge_img_uri = Settings.STATIC_BASE_URI + "challenger_emblem.png";
 
+  private gettext: Function;
+  private GameType = GameType;
   private Math = Math;
 
-  constructor() { }
+  constructor(private buffered_requests: RatelimitedRequestsService,
+              private player_api: PlayerApiService,
+              private translator: TranslatorService) {
+    this.gettext = this.translator.getTranslation;
+  }
 
-  private getTierString() {
-    switch(this.league_position.tier) {
+  private getTierString(league_position) {
+    switch(league_position.tier) {
       case RankedTier.UNRANKED:
         return "Unranked";
       case RankedTier.BRONZE:
@@ -50,8 +62,8 @@ export class TeammateLeaguePositionComponent implements OnInit {
     }
   }
 
-  private getSubTierString() {
-    switch(this.league_position.sub_tier) {
+  private getSubTierString(league_position) {
+    switch(league_position.sub_tier) {
       case 1:
         return "I";
       case 2:
@@ -67,8 +79,8 @@ export class TeammateLeaguePositionComponent implements OnInit {
     }
   }
 
-  private getTierIconUri() {
-    switch(this.league_position.tier) {
+  private getTierIconUri(league_position) {
+    switch(league_position.tier) {
       case RankedTier.UNRANKED:
         return this.unranked_badge_img_uri;
       case RankedTier.BRONZE:
@@ -90,20 +102,27 @@ export class TeammateLeaguePositionComponent implements OnInit {
     }
   }
 
-  private getQueueString() {
-    switch (this.league_position.queue) {
-      case GameType.SOLO_QUEUE:
-        return 'solo_queue';
-      case GameType.FLEX_QUEUE_5V5:
-        return 'flex_queue';
-      case GameType.FLEX_QUEUE_3V3:
-        return 'flex_queue_tt';
-      default:
-        return 'Undefined-Queue';
-    }
+  private sortByQueue(a: LeaguePosition, b: LeaguePosition) {
+    let order = [GameType.SOLO_QUEUE, GameType.FLEX_QUEUE_5V5, GameType.FLEX_QUEUE_3V3];
+    return order.indexOf(a.queue) - order.indexOf(b.queue);
   }
 
   ngOnInit() {
+    // Autoload rankings
+    this.buffered_requests.buffer(() => {
+      return this.player_api.getRankings(this.summoner.region, this.summoner.id);
+    })
+      .subscribe(api_res => {
+        if (api_res.type === ResType.SUCCESS) {
+          this.loaded_rankings = api_res.data;
+        }
+        if (api_res.type === ResType.NOT_FOUND) {
+          this.loaded_rankings = [];
+        }
+        if (api_res.type === ResType.ERROR) {
+          this.errors.push(JSON.stringify(api_res.error));
+        }
+      });
   }
 
 }

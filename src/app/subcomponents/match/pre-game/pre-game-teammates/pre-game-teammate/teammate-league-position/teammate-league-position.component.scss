@@ -1,75 +1,26 @@
-%clearfix { &:after { content: " "; display: table; clear: both; } }
-
-.Infotext {
-  padding: 0;
-  margin: 0;
-}
-
-.Container {
-  display: inline-block;
-  @extend %clearfix;
-}
-
-.LeaguePosition {
-  float: left;
-
-  &__tier-badge-container {
-    width: 50px;
-    margin: 0 auto; // If tier name is longer then width of icon, make it centered
+.Ranking {
+  &__name {
+    font-family: Roboto, 'sans-serif';
   }
-  &__tier-badge {
-    width: 100%;
-    height: auto;
+  &__badge {
+    width: 20px;
+    height: 20px;
   }
-
-  &__tier-name-container {
+  &__tier-name {
     text-transform: uppercase;
     font-family: 'Roboto Condensed', 'sans-serif';
-    text-align: center;
-    &__tier-name {
-    }
-    &__sub-tier-number {
-    }
+    font-weight: 700;
   }
-
-  &__position-lp {
-    padding: 0;
-    margin: 0;
+  &__league-points {
     font-family: 'Roboto Condensed', 'sans-serif';
-    font-size: 14px;
-    text-align: center;
   }
-  &__position-series-title {
-    padding: 0;
-    margin: 0;
-    font-family: 'Roboto Condensed', 'sans-serif';
-    font-size: 14px;
-    text-align: left;
+  &__series-position {
+    font-family: "Roboto Mono", monospace;
   }
-  &__position-series {
-    padding: 0;
-    margin: 0;
-    font-family: Roboto, 'sans-serif';
-    font-weight: bold;
-    font-size: 14px;
-    text-align: left;
-  }
-
-}
-
-.LeaguePositionAnalysis {
-  float: left;
-  margin-top: 30px;
-  margin-left: 8px;
-
   &__games-total {
-    padding: 0;
-    margin: 0;
-    font-family: Roboto, 'sans-serif';
+    font-family: 'Roboto Condensed', 'sans-serif';
   }
   &__winrate {
-    padding: 0;
-    margin: 0;
     font-family: 'Roboto Condensed', 'sans-serif';
   }
 }

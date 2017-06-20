@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Summoner} from "../../../../../models/dto/summoner";
-import {LeaguePosition} from "../../../../../models/dto/league-position";
 import {PlayerApiService} from "../../../../../services/player-api.service";
 import {RatelimitedRequestsService} from "../../../../../services/ratelimited-requests.service";
 import {ResType} from "../../../../../enums/api-response-type";
@@ -32,7 +31,6 @@ export class PreGameTeammateComponent implements OnInit {
   private errors = [];
   private readonly time_limit_days = 21;
   private games_past_3_weeks = null;
-  private loaded_rankings: Array<LeaguePosition> = null;
   private loading_ready: boolean = false;
 
   private _target_champion = null;
@@ -55,76 +53,11 @@ export class PreGameTeammateComponent implements OnInit {
     this.role = role;
   }
 
-  private getMeaningfulLeaguePosition() {
-    if (!this.loaded_rankings) {
-      return '';
-    }
-    // Primary -> this queue
-    let primary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === this.queueing_for);
-    if (primary_queue_ranking) {
-      return primary_queue_ranking;
-    }
-    // Firsttime SOLO/DUO ? -> FLEX 5v5 -> FLEX 3v3
-    if (this.queueing_for === GameType.SOLO_QUEUE) {
-      let secondary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === GameType.FLEX_QUEUE_5V5);
-      if (secondary_queue_ranking) {
-        return secondary_queue_ranking;
-      } else {
-        let tertiary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === GameType.FLEX_QUEUE_3V3);
-        if (tertiary_queue_ranking) {
-          return tertiary_queue_ranking;
-        }
-      }
-    }
-    // Firsttime FLEX 5v5? -> SOLO/DUO -> FLEX 3v3
-    if (this.queueing_for === GameType.FLEX_QUEUE_5V5) {
-      let secondary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === GameType.SOLO_QUEUE);
-      if (secondary_queue_ranking) {
-        return secondary_queue_ranking;
-      } else {
-        let tertiary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === GameType.FLEX_QUEUE_3V3);
-        if (tertiary_queue_ranking) {
-          return tertiary_queue_ranking;
-        }
-      }
-    }
-    // Firsttime FLEX 3v3? -> FLEX 5v5 -> SOLO/DUO
-    if (this.queueing_for === GameType.FLEX_QUEUE_3V3) {
-      let secondary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === GameType.FLEX_QUEUE_5V5);
-      if (secondary_queue_ranking) {
-        return secondary_queue_ranking;
-      } else {
-        let tertiary_queue_ranking = this.loaded_rankings.find(lea => lea.queue === GameType.SOLO_QUEUE);
-        if (tertiary_queue_ranking) {
-          return tertiary_queue_ranking;
-        }
-      }
-    }
-    // Else unranked everywhere
-    return null;
-  }
-
   private getChampionsNameOrdered(): Array<Champion> {
     return this.champions.listChampions().sort((a,b) => a.name.localeCompare(b.name));
   }
 
   ngOnInit() {
-    // Autoload rankings
-    this.buffered_requests.buffer(() => {
-      return this.player_api.getRankings(this.summoner.region, this.summoner.id);
-    })
-      .subscribe(api_res => {
-        if (api_res.type === ResType.SUCCESS) {
-          this.loaded_rankings = api_res.data;
-        }
-        if (api_res.type === ResType.NOT_FOUND) {
-          this.errors.push("Player has no previous rankings?");
-        }
-        if (api_res.type === ResType.ERROR) {
-          this.errors.push(JSON.stringify(api_res.error));
-        }
-      });
-
     // Autoload game history -> (max) 20 last ranked games from one queue
     this.buffered_requests.buffer(() => {
       return this.player_api.getListOfRankedGamesJson(this.summoner.region, this.summoner.account_id, GameType.SOLO_AND_FLEXQUEUE_5V5, this.champions)
