@@ -46,10 +46,11 @@ $lane-main-red: #b13535;
 
   &__autofill-infotext {
     position: relative;
-    top: -6px;
-    left: 10px;
+    top: -3px;
+    left: 2px;
+    margin-right: 4px;
     font-family: Roboto, 'sans-serif';
-    font-size: 20px;
+    font-size: 18px;
     color: $lane-main-red;
     box-shadow: 0 0 2px 1px $lane-main-red;
   }

@@ -13,11 +13,12 @@
         </role-selector>
         <p class="Player__header-title-text">
           {{summoner.current_name}}
-          <preferred-lanes
-              *ngIf="games_past_3_weeks"
-              [slice_of_gamehistory]="games_past_3_weeks"
-              [chosen_lane]="role || null">
-          </preferred-lanes>
+          <squarebrace-titled-container *ngIf="games_past_3_weeks" [title]="'past 3 weeks'" [style.display]="'inline-block'">
+            <preferred-lanes
+                [slice_of_gamehistory]="games_past_3_weeks"
+                [chosen_lane]="role || null">
+            </preferred-lanes>
+          </squarebrace-titled-container>
         </p>
       </div>
     </div>

@@ -12,8 +12,8 @@
         [class.PreferredLanes__lane-percentage-bar--high]="l.percentage > 50"
         [class.PreferredLanes__lane-percentage-bar--medium]="l.percentage <= 50 && l.percentage > 25"
         [class.PreferredLanes__lane-percentage-bar--low]="l.percentage <= 25"
-        [style.height.px]="Math.round(20*l.percentage/100)"
-        [style.top.px]="(-3)+(20-Math.round(20*l.percentage/100))"
+        [style.height.px]="Math.ceil(20*l.percentage/100)"
+        [style.top.px]="(-3)+(20-Math.ceil(20*l.percentage/100))"
     >&nbsp;&nbsp;&nbsp;</span>
   </span>
   <span

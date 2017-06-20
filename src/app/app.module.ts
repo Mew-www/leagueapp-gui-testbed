@@ -50,6 +50,7 @@ import { TeammateLeaguePositionComponent } from './subcomponents/match/pre-game/
 import { RoleSelectorComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/teammate-role-selector/role-selector.component';
 import { PreferredLanesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/preferred-lanes/preferred-lanes.component';
 import { PreviousGamesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-games/previous-games.component';
+import { SquarebraceTitledContainerComponent } from './genericcomponents/squarebrace-titled-container/squarebrace-titled-container.component';
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent},
@@ -91,7 +92,8 @@ const routes: Routes = [
     TeammateLeaguePositionComponent,
     RoleSelectorComponent,
     PreferredLanesComponent,
-    PreviousGamesComponent
+    PreviousGamesComponent,
+    SquarebraceTitledContainerComponent
   ],
   imports: [
     DragulaModule,
