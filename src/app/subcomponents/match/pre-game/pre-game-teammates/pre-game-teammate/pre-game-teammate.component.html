@@ -5,70 +5,36 @@
     <div class="Player__summoner-icon-container" [hidden]="!display_summoner_icon">
       <img class="Player__summoner-icon" src="{{summoner.icon.url}}" />
     </div>
+
     <div class="Player__summoner-details">
       <p class="Player__summoner-name">
         {{summoner.current_name}}
-        <span
-            *ngFor="let l of preferred_lanes"
-            class="Player__lane-main"
-            [class.Player__lane-main--current-high]="l.lane_name === queueing_for && l.percentage > 50"
-            [class.Player__lane-main--current-medium]="l.lane_name === queueing_for && l.percentage <= 50 && l.percentage > 25"
-            [class.Player__lane-main--current-low]="l.lane_name === queueing_for && l.percentage <= 25"
-        >
-          {{l.lane_name}} {{l.percentage}}%<span
-            class="Player__lane-main-percentages-bar"
-            [class.Player__lane-main-percentages-bar--high]="l.percentage > 50"
-            [class.Player__lane-main-percentages-bar--medium]="l.percentage <= 50 && l.percentage > 25"
-            [class.Player__lane-main-percentages-bar--low]="l.percentage <= 25"
-            [style.height.px]="Math.round(20*l.percentage/100)"
-            [style.top.px]="(-3)+(20-Math.round(20*l.percentage/100))"
-          >&nbsp;&nbsp;&nbsp;</span>
-
-        </span>
-        <span
-            *ngIf="role !== null && preferred_lanes !== null && preferred_lanes.map(mapToLaneName).indexOf(role.toUpperCase()) === -1"
-            class="Error"
-        >
-          {{gettext('unlucky_autofill')}}
-        </span>
+        <preferred-lanes
+            *ngIf="games_past_3_weeks"
+            [slice_of_gamehistory]="games_past_3_weeks">
+        </preferred-lanes>
       </p>
     </div>
+
     <p *ngFor="let e of errors" class="Error">
       {{e}}
     </p>
     <p *ngIf="!loading_ready" class="Error">
       Loading match history from past 3 weeks (up to 15 most recent games) . . .
     </p>
-    <div *ngIf="loading_ready">
-      <span *ngFor="let s of game_summaries" class="GameSummary"
-            [class.GameSummary--win]="s.victory"
-            [class.GameSummary--loss]="!s.victory">
-        <img
-            src="{{s.player_as_participant.champion.images.square_url}}"
-            title="{{getTimeAgoAsString(s.start_time)}}"
-            [style.width.px]="25"
-            [style.height.px]="25"
-        />
-        <br/>
-        {{s.kda}}
-        <br/>
-        <span title="{{s.cs_lane}}">{{s.cs_lane+s.cs_jungle}} cs</span>
-        <br/>
-        <span *ngIf="s.victory" title="{{s.nr_carry}}. carry in total damage to players">{{s.nr_carry}}. C</span>
-        <br *ngIf="!s.victory"/>
-      </span>
-    </div>
-    <div *ngIf="loading_ready">
-      <select (change)="target_champion = $event.target.value">
-        <option *ngFor="let c of getChampionsNameOrdered()" value="{{c.id}}">
-          {{c.name}}
-        </option>
-      </select>
-      <div *ngIf="target_champion">
-        <button (click)="target_champion = null">X</button>
-        <p>{{target_games.length}} games on this champion in past 3 weeks</p>
-      </div>
-    </div>
+
+    <previous-games
+        *ngIf="games_past_3_weeks"
+        [summoner]="summoner"
+        [slice_of_gamehistory]="games_past_3_weeks"
+        [limit]="15"
+
+        [champions]="champions"
+        [items]="items"
+        [summonerspells]="summonerspells"
+
+        (loaded)="loading_ready = true">
+    </previous-games>
 
   </div>
 

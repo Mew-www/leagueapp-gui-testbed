@@ -1,0 +1,45 @@
+$lane-main-green: #60aa60;
+$lane-main-yellow: #ffb40d;
+$lane-main-red: #b13535;
+
+.PreferredLanes {
+  display: inline;
+
+  &__lane-name {
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed', 'sans-serif';
+    &--current-high {
+      border-bottom: 2px solid $lane-main-green;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-green, 0.7),
+              0 2px 0 0 rgba($lane-main-green, 0.4);
+    }
+
+    &--current-medium {
+      border-bottom: 2px solid $lane-main-yellow;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-yellow, 0.7),
+              0 2px 0 0 rgba($lane-main-yellow, 0.4);
+    }
+
+    &--current-low {
+      border-bottom: 2px solid $lane-main-red;
+      box-shadow:
+              0 1px 0 0 rgba($lane-main-red, 0.7),
+              0 2px 0 0 rgba($lane-main-red, 0.4);
+    }
+  }
+  &__lane-percentage-bar {
+    position: relative;
+    display: inline-block;
+    &--high {
+      background: $lane-main-green;
+    }
+    &--medium {
+      background: $lane-main-yellow;
+    }
+    &--low {
+      background: $lane-main-red;
+    }
+  }
+}

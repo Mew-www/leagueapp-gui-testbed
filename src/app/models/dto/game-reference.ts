@@ -3,6 +3,7 @@ import {GameType} from "../../enums/game-type";
 import {GameRecordPersonalised} from "../game-record-personalised";
 import {ChampionsContainer} from "./containers/champions-container";
 import {GameTimelinePersonalised} from "../game-timeline-personalised";
+import {platform} from "os";
 
 export class GameReference {
 
@@ -10,6 +11,7 @@ export class GameReference {
   public readonly game_start_time: Date;
   public readonly chosen_champion: Champion;
   public readonly game_type: GameType;
+  public readonly region;
   public readonly presumed_lane;
   public game_details: GameRecordPersonalised = null;
   public game_timeline: GameTimelinePersonalised = null;
@@ -29,6 +31,14 @@ export class GameReference {
           return GameType.UNKNOWN_UNDEFINED;
       }
     })(game_ref_json.queue);
+    this.region = ((platform_const: string) => {
+      switch (platform_const) {
+        case 'EUW1':
+          return "euw";
+        case 'EUN1':
+          return "eune";
+      }
+    })(game_ref_json.platformId);
     if (game_ref_json.lane !== 'BOTTOM') {
       this.presumed_lane = game_ref_json.lane;
     } else {

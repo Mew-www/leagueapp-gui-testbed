@@ -1,0 +1,10 @@
+.GameSummary {
+  display: inline-block;
+  padding: 4px;
+  &--win {
+    background: lightgreen;
+  }
+  &--loss {
+    background: lightpink;
+  }
+}

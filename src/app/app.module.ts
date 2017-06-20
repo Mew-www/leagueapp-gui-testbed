@@ -48,6 +48,8 @@ import {DragulaModule} from "ng2-dragula";
 import { PreGameTeammateComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/pre-game-teammate.component';
 import { TeammateLeaguePositionComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/teammate-league-position/teammate-league-position.component';
 import { RoleSelectorComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/teammate-role-selector/role-selector.component';
+import { PreferredLanesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/preferred-lanes/preferred-lanes.component';
+import { PreviousGamesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-games/previous-games.component';
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent},
@@ -87,7 +89,9 @@ const routes: Routes = [
     PreGameTeammatesComponent,
     PreGameTeammateComponent,
     TeammateLeaguePositionComponent,
-    RoleSelectorComponent
+    RoleSelectorComponent,
+    PreferredLanesComponent,
+    PreviousGamesComponent
   ],
   imports: [
     DragulaModule,
