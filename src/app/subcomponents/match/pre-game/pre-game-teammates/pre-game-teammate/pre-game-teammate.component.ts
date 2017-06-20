@@ -121,7 +121,7 @@ export class PreGameTeammateComponent implements OnInit {
           this.errors.push("Player has no previous rankings?");
         }
         if (api_res.type === ResType.ERROR) {
-          this.errors.push(api_res.error);
+          this.errors.push(JSON.stringify(api_res.error));
         }
       });
 
