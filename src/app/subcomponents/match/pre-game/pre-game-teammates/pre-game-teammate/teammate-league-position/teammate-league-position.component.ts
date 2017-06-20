@@ -107,6 +107,10 @@ export class TeammateLeaguePositionComponent implements OnInit {
     return order.indexOf(a.queue) - order.indexOf(b.queue);
   }
 
+  private mapToQueue(lea: LeaguePosition) {
+    return lea.queue;
+  }
+
   ngOnInit() {
     // Autoload rankings
     this.buffered_requests.buffer(() => {

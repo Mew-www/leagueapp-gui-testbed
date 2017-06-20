@@ -1,26 +1,48 @@
 .Ranking {
+  margin-left: 11px;
+  margin-bottom: 11px;
+
+  &__header {
+    display: inline-block;
+  }
   &__name {
     font-family: Roboto, 'sans-serif';
+    position: relative;
+    top: 2px;
   }
   &__badge {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
   }
+
   &__tier-name {
     text-transform: uppercase;
     font-family: 'Roboto Condensed', 'sans-serif';
     font-weight: 700;
+    position: relative;
+    top: -2px;
   }
   &__league-points {
     font-family: 'Roboto Condensed', 'sans-serif';
+    position: relative;
+    top: -3px;
   }
   &__series-position {
     font-family: "Roboto Mono", monospace;
   }
+
   &__games-total {
     font-family: 'Roboto Condensed', 'sans-serif';
   }
   &__winrate {
     font-family: 'Roboto Condensed', 'sans-serif';
   }
+}
+
+.UnrankedNotice {
+  padding: 0;
+  margin: 0;
+  margin-left: 11px;
+  margin-bottom: 11px;
+  color: #714848;
 }

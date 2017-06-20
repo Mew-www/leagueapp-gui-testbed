@@ -1,19 +1,17 @@
 <div *ngIf="loaded_rankings">
   <div *ngFor="let ranking of loaded_rankings.sort(sortByQueue)" class="Ranking">
-    <span *ngIf="ranking.queue === GameType.SOLO_QUEUE" class="Ranking__name">
-      SOLO/DUO
-    </span>
-    <span *ngIf="ranking.queue === GameType.FLEX_QUEUE_5V5" class="Ranking__name">
-      FLEX 5v5
-    </span>
-    <span *ngIf="ranking.queue === GameType.FLEX_QUEUE_3V3" class="Ranking__name">
-      FLEX 3v3
-    </span>
+    <div class="Ranking__header">
+      <span *ngIf="ranking.queue === GameType.SOLO_QUEUE" class="Ranking__name">SOLO/DUO</span>
+      <span *ngIf="ranking.queue === GameType.FLEX_QUEUE_5V5" class="Ranking__name">FLEX 5v5</span>
+      <span *ngIf="ranking.queue === GameType.FLEX_QUEUE_3V3" class="Ranking__name">FLEX 3v3</span>
+      <br/>
 
+      <span class="Ranking__tier-name">{{getTierString(ranking)}} {{getSubTierString(ranking)}}</span>
+    </div>
     <img class="Ranking__badge" src="{{getTierIconUri(ranking)}}"/>
-    <span class="Ranking__tier-name">{{getTierString(ranking)}} {{getSubTierString(ranking)}}</span>
-    <span class="Ranking__league-points">{{ranking.league_points}} LP</span>
+    <br/>
 
+    <span class="Ranking__league-points">{{ranking.league_points}} LP</span>
     <span *ngIf="ranking.in_series">
       <span class="Ranking_series-position" *ngFor="let letter of ranking.series.progress.split('')">
         <span *ngIf="letter === 'W'">O</span>
@@ -21,8 +19,18 @@
         <span *ngIf="letter === 'N'">...</span>
       </span>
     </span>
+    <br/>
 
-    <span class="Ranking__games-total">{{ranking.wins + ranking.losses}} {{gettext('games')}}</span>
     <span class="Ranking__winrate">{{Math.round(ranking.wins / (ranking.wins+ranking.losses) * 100)}}% winrate</span>
+    <span class="Ranking__games-total">{{ranking.wins + ranking.losses}} {{gettext('games')}}</span>
   </div>
+  <p *ngIf="loaded_rankings.map(mapToQueue).indexOf(GameType.SOLO_QUEUE) === -1" class="UnrankedNotice">
+    SOLO/DUO unranked
+  </p>
+  <p *ngIf="loaded_rankings.map(mapToQueue).indexOf(GameType.FLEX_QUEUE_5V5) === -1" class="UnrankedNotice">
+    FLEX 5v5 unranked
+  </p>
+  <p *ngIf="loaded_rankings.map(mapToQueue).indexOf(GameType.FLEX_QUEUE_3V3) === -1" class="UnrankedNotice">
+    FLEX 3v3 unranked
+  </p>
 </div>
