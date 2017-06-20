@@ -55,10 +55,6 @@ export class PreGameTeammateComponent implements OnInit {
     this.role = role;
   }
 
-  private mapToLaneName(lane) {
-    return lane.lane_name;
-  }
-
   private getMeaningfulLeaguePosition() {
     if (!this.loaded_rankings) {
       return '';

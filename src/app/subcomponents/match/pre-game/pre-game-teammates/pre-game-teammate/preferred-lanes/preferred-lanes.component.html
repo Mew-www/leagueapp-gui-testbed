@@ -16,4 +16,10 @@
         [style.top.px]="(-3)+(20-Math.round(20*l.percentage/100))"
     >&nbsp;&nbsp;&nbsp;</span>
   </span>
+  <span
+      *ngIf="chosen_lane && preferred_lanes.map(mapToLaneName).indexOf(chosen_lane) === -1"
+      class="PreferredLanes__autofill-infotext"
+  >
+    {{gettext('unlucky_autofill')}}
+  </span>
 </span>

@@ -29,6 +29,7 @@ $lane-main-red: #b13535;
               0 2px 0 0 rgba($lane-main-red, 0.4);
     }
   }
+
   &__lane-percentage-bar {
     position: relative;
     display: inline-block;
@@ -41,5 +42,15 @@ $lane-main-red: #b13535;
     &--low {
       background: $lane-main-red;
     }
+  }
+
+  &__autofill-infotext {
+    position: relative;
+    top: -6px;
+    left: 10px;
+    font-family: Roboto, 'sans-serif';
+    font-size: 20px;
+    color: $lane-main-red;
+    box-shadow: 0 0 2px 1px $lane-main-red;
   }
 }

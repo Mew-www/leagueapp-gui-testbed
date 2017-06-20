@@ -12,38 +12,42 @@
   padding-top: 2px;
   @extend %clearfix;
 
-  /* First column */
-  &__summoner-icon-container {
+  &__details {
+    float: left;
+  }
+
+  &__header {
+    @extend %clearfix;
+  }
+  /* header float 1/2 */
+  &__header-summoner-icon-container {
     float: left;
     width: 50px;
   }
-  &__summoner-icon {
+  &__header-summoner-icon {
     width: 100%;
     height: auto;
     border-radius: 50%;
   }
+  /* header float 2/2 */
+  &__header-title {
+    float: left;
+  }
+  &__header-title-text {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding: 0;
+    margin-left: 5px;
+    display: table;
+    font-family: "Roboto Mono", monospace;
+  }
+
   .Error {
     padding: 0;
     margin: 0;
     color: red;
   }
 
-  /* Second ... */
-  &__details {
-    float: left;
-  }
-  &__summoner-details {
-    margin-top: 4px;
-  }
-  &__summoner-name {
-    margin: 0;
-    padding: 0;
-    margin-left: 5px;
-    display: inline-block;
-    font-family: "Roboto Mono", monospace;
-  }
-
-  /* Third ... */
   &__rankings {
     float: left;
     display: inline-block;

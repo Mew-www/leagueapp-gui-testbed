@@ -1,26 +1,29 @@
 <div class="Player">
+  <!-- First column -->
   <div class="Player__details">
-    <role-selector (selectedRole)="handleSelectedRole($event)"></role-selector>
 
-    <div class="Player__summoner-icon-container" [hidden]="!display_summoner_icon">
-      <img class="Player__summoner-icon" src="{{summoner.icon.url}}" />
-    </div>
+    <div class="Player__header">
+      <div class="Player__header-summoner-icon-container" [hidden]="!display_summoner_icon">
+        <img class="Player__header-summoner-icon" src="{{summoner.icon.url}}" />
+      </div>
 
-    <div class="Player__summoner-details">
-      <p class="Player__summoner-name">
-        {{summoner.current_name}}
-        <preferred-lanes
-            *ngIf="games_past_3_weeks"
-            [slice_of_gamehistory]="games_past_3_weeks">
-        </preferred-lanes>
-      </p>
+      <div class="Player__header-title">
+        <role-selector
+            (selectedRole)="handleSelectedRole($event)">
+        </role-selector>
+        <p class="Player__header-title-text">
+          {{summoner.current_name}}
+          <preferred-lanes
+              *ngIf="games_past_3_weeks"
+              [slice_of_gamehistory]="games_past_3_weeks"
+              [chosen_lane]="role || null">
+          </preferred-lanes>
+        </p>
+      </div>
     </div>
 
     <p *ngFor="let e of errors" class="Error">
       {{e}}
-    </p>
-    <p *ngIf="!loading_ready" class="Error">
-      Loading match history from past 3 weeks (up to 15 most recent games) . . .
     </p>
 
     <previous-games
@@ -38,6 +41,7 @@
 
   </div>
 
+  <!-- Second column -->
   <div class="Player__rankings">
     <span *ngIf="!loaded_rankings">Loading ranked stats ...</span>
     <teammate-league-position

@@ -1,4 +1,8 @@
 <div>
+  <p *ngIf="ongoing_request && !ongoing_request.closed">
+    Loading game details of {{limit}} most recent games) . . .
+  </p>
+
   <span *ngFor="let s of game_summaries" class="GameSummary"
         [class.GameSummary--win]="s.victory"
         [class.GameSummary--loss]="!s.victory">

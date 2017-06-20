@@ -12,7 +12,7 @@ export class RoleSelectorComponent implements OnInit {
 
   set role(new_role) {
     this._role = new_role;
-    this.selectedRole.emit(new_role);
+    this.selectedRole.emit(new_role.toUpperCase());
   }
 
   get role() {
