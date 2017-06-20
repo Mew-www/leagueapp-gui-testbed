@@ -10,7 +10,6 @@ import {ChampionsContainer} from "../../../../../models/dto/containers/champions
 import {GameApiService} from "../../../../../services/game-api.service";
 import {ItemsContainer} from "../../../../../models/dto/containers/items-container";
 import {SummonerspellsContainer} from "../../../../../models/dto/containers/summonerspells-container";
-import {TranslatorService} from "../../../../../services/translator.service";
 import {Champion} from "../../../../../models/dto/champion";
 
 @Component({
@@ -36,9 +35,6 @@ export class PreGameTeammateComponent implements OnInit {
   private loaded_rankings: Array<LeaguePosition> = null;
   private loading_ready: boolean = false;
 
-  private gettext: Function;
-  private Math = Math;
-
   private _target_champion = null;
   private target_games = null;
 
@@ -52,9 +48,7 @@ export class PreGameTeammateComponent implements OnInit {
 
   constructor(private player_api: PlayerApiService,
               private game_api: GameApiService,
-              private buffered_requests: RatelimitedRequestsService,
-              private translator: TranslatorService) {
-    this.gettext = translator.getTranslation;
+              private buffered_requests: RatelimitedRequestsService) {
   }
 
   private handleSelectedRole(role) {
