@@ -30,19 +30,15 @@ export class PreGameTeammateComponent implements OnInit {
   private role = null;
   private errors = [];
   private readonly time_limit_days = 21;
-  private games_past_3_weeks = null;
+  private soloqueue_games_this_season = null;
+  private flexqueue_games_this_season = null;
+  private soloqueue_games_past_3_weeks = null;
+  private flexqueue_games_past_3_weeks = null;
+  private current_queue_past_3_weeks = null;
   private loading_ready: boolean = false;
 
-  private _target_champion = null;
-  private target_games = null;
-
-  get target_champion() {
-    return this._target_champion;
-  }
-  set target_champion(id) {
-    this._target_champion = id;
-    this.target_games = this.games_past_3_weeks.filter(gameref => gameref.chosen_champion.id === id);
-  }
+  // Utils
+  private GameType = GameType;
 
   constructor(private player_api: PlayerApiService,
               private game_api: GameApiService,
@@ -64,32 +60,33 @@ export class PreGameTeammateComponent implements OnInit {
     })
       .subscribe(api_res => {
         if (api_res.type === ResType.SUCCESS) {
-          let games_within_time_limit = api_res.data
-            .filter((gameref: GameReference) => gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*this.time_limit_days));
-          let primary_queue_games = games_within_time_limit
-            .filter((gameref: GameReference) => gameref.game_type === this.queueing_for);
+          let all_games = <Array<GameReference>>api_res.data;
+          let soloqueue_games_this_season = all_games.filter(gameref => gameref.game_type === GameType.SOLO_QUEUE);
+          let flexqueue_games_this_season = all_games.filter(gameref => gameref.game_type === GameType.FLEX_QUEUE_5V5);
+          let soloqueue_games_past_3_weeks = soloqueue_games_this_season
+            .filter(gameref => gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*this.time_limit_days));
+          let flexqueue_games_past_3_weeks = flexqueue_games_this_season
+            .filter(gameref => gameref.game_start_time.getTime() > (new Date().getTime()-1000*60*60*24*this.time_limit_days))
 
-          // If 0 games found, switch queue type
-          if (primary_queue_games.length === 0) {
-            this.errors.push("Did not found any games in this queue, during past 3 weeks. Switching to secondary queue stats.");
-            let secondary_queue = this.queueing_for === GameType.SOLO_QUEUE ? GameType.FLEX_QUEUE_5V5 : GameType.SOLO_QUEUE;
-            let secondary_queue_games = games_within_time_limit
-              .filter((gameref: GameReference) => gameref.game_type === secondary_queue);
-            if (secondary_queue_games.length === 0) {
-              this.errors.push("Player has not played ranked in 3 weeks (solo/duo, flex5v5). Unable to produce stats.");
-              return;
-            }
-            // Else replace primary with secondary queue for further processing
-            primary_queue_games = secondary_queue_games;
+          if (soloqueue_games_this_season.length > 0) {
+            this.soloqueue_games_this_season = soloqueue_games_this_season;
+          }
+          if (flexqueue_games_this_season.length > 0) {
+            this.flexqueue_games_this_season = flexqueue_games_this_season;
+          }
+          if (soloqueue_games_past_3_weeks.length > 0) {
+            this.soloqueue_games_past_3_weeks = soloqueue_games_past_3_weeks;
+          }
+          if (flexqueue_games_past_3_weeks.length > 0) {
+            this.flexqueue_games_past_3_weeks = flexqueue_games_past_3_weeks;
           }
 
-          // Less than 5 is still acceptable, just notify
-          if (primary_queue_games.length < 5) {
-            this.errors.push("Found less than 5 games in this queue, during past 3 weeks. Results may not be accurate.");
+          if (this.queueing_for === GameType.SOLO_QUEUE) {
+            this.current_queue_past_3_weeks = soloqueue_games_past_3_weeks;
+          } else if (this.queueing_for === GameType.FLEX_QUEUE_5V5) {
+            this.current_queue_past_3_weeks = flexqueue_games_past_3_weeks;
           }
 
-          // Save un-limited for further use
-          this.games_past_3_weeks = primary_queue_games;
         }
       });
   }

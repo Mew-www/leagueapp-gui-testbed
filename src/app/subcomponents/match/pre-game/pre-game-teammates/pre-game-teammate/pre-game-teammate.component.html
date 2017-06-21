@@ -8,17 +8,46 @@
       </div>
 
       <div class="Player__header-title">
-        <role-selector
-            (selectedRole)="handleSelectedRole($event)">
-        </role-selector>
         <p class="Player__header-title-text">
-          {{summoner.current_name}}
-          <squarebrace-titled-container *ngIf="games_past_3_weeks" [title]="'past 3 weeks'" [style.display]="'inline-block'">
-            <preferred-lanes
-                [slice_of_gamehistory]="games_past_3_weeks"
-                [chosen_lane]="role || null">
-            </preferred-lanes>
-          </squarebrace-titled-container>
+          <span [style.display]="'inline-block'" [style.vertical-align]="'top'">
+            <role-selector
+                [style.display]="'inline-block'"
+                (selectedRole)="handleSelectedRole($event)">
+            </role-selector>
+            <br/>
+            {{summoner.current_name}}
+          </span>
+          <span [style.display]="'inline-block'" [style.vertical-align]="'top'">
+            <squarebrace-titled-container *ngIf="soloqueue_games_this_season" class="Player__preferred-lanes-container" [title]="'SOLO/DUO this season'">
+              <preferred-lanes
+                  [slice_of_gamehistory]="soloqueue_games_this_season"
+                  [chosen_lane]="role || null"
+                  [check_autofill]="queueing_for === GameType.SOLO_QUEUE">
+              </preferred-lanes>
+            </squarebrace-titled-container>
+            <squarebrace-titled-container *ngIf="flexqueue_games_this_season" class="Player__preferred-lanes-container" [title]="'FLEX 5v5 this season'">
+              <preferred-lanes
+                  [slice_of_gamehistory]="flexqueue_games_this_season"
+                  [chosen_lane]="role || null"
+                  [check_autofill]="queueing_for === GameType.FLEX_QUEUE_5V5">
+              </preferred-lanes>
+            </squarebrace-titled-container>
+            <br/>
+            <squarebrace-titled-container *ngIf="soloqueue_games_past_3_weeks" class="Player__preferred-lanes-container" [title]="'SOLO/DUO past 3 weeks'">
+              <preferred-lanes
+                  [slice_of_gamehistory]="soloqueue_games_past_3_weeks"
+                  [chosen_lane]="role || null"
+                  [check_autofill]="queueing_for === GameType.SOLO_QUEUE">
+              </preferred-lanes>
+            </squarebrace-titled-container>
+            <squarebrace-titled-container *ngIf="flexqueue_games_past_3_weeks" class="Player__preferred-lanes-container" [title]="'FLEX 5v5 past 3 weeks'">
+              <preferred-lanes
+                  [slice_of_gamehistory]="flexqueue_games_past_3_weeks"
+                  [chosen_lane]="role || null"
+                  [check_autofill]="queueing_for === GameType.FLEX_QUEUE_5V5">
+              </preferred-lanes>
+            </squarebrace-titled-container>
+          </span>
         </p>
       </div>
     </div>
@@ -28,9 +57,9 @@
     </p>
 
     <previous-games
-        *ngIf="games_past_3_weeks"
+        *ngIf="current_queue_past_3_weeks"
         [summoner]="summoner"
-        [slice_of_gamehistory]="games_past_3_weeks"
+        [slice_of_gamehistory]="current_queue_past_3_weeks"
         [limit]="15"
 
         [champions]="champions"

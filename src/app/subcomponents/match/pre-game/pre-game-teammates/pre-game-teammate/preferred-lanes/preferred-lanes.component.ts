@@ -10,6 +10,7 @@ import {TranslatorService} from "../../../../../../services/translator.service";
 })
 export class PreferredLanesComponent implements OnInit, OnChanges {
 
+  @Input() check_autofill = false; // Optional
   @Input() chosen_lane = null; // Optional
   @Input() slice_of_gamehistory: Array<GameReference>; // Required
 

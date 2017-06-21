@@ -41,6 +41,11 @@
     display: table;
     font-family: "Roboto Mono", monospace;
   }
+  &__preferred-lanes-container {
+    display: inline-block;
+    font-family: 'Roboto Condensed', 'sans-serif';
+    font-size: 14px;
+  }
 
   .Error {
     padding: 0;

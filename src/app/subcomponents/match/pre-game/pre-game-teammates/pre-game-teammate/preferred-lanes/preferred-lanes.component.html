@@ -17,7 +17,7 @@
     >&nbsp;&nbsp;&nbsp;</span>
   </span>
   <span
-      *ngIf="chosen_lane && preferred_lanes.map(mapToLaneName).indexOf(chosen_lane) === -1"
+      *ngIf="check_autofill && chosen_lane && preferred_lanes.map(mapToLaneName).indexOf(chosen_lane) === -1"
       class="PreferredLanes__autofill-infotext"
   >
     {{gettext('unlucky_autofill')}}
