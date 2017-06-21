@@ -55,7 +55,7 @@ import { SquarebraceTitledContainerComponent } from './genericcomponents/squareb
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent},
   {'path': "match", component: MatchComponent},
-  {'path': "**", component: ProfilingComponent}
+  {'path': "**", component: MatchComponent}
 ];
 
 @NgModule({
