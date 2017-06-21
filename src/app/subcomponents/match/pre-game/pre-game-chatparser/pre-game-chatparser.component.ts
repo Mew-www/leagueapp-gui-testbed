@@ -57,7 +57,7 @@ export class PreGameChatparserComponent implements OnInit {
       return;
     }
     // Check (if given) user_itself is amongst initial players
-    let user_itself_trimmed = this.user_itself.trim();
+    let user_itself_trimmed = this.user_itself.split(' joined')[0].trim();
     if (user_itself_trimmed.length > 0) {
       if (players_names.indexOf(user_itself_trimmed) === -1) {
         this.errors.push("You pasted your own nickname wrong, check it and try again.");
@@ -66,7 +66,7 @@ export class PreGameChatparserComponent implements OnInit {
       players_names.splice(players_names.indexOf(user_itself_trimmed), 1);
     }
     // Check (if given) duoqueue_partner is amongst initial players
-    let duoqueue_partner_trimmed = this.duoqueue_partner.trim();
+    let duoqueue_partner_trimmed = this.duoqueue_partner.split(' joined')[0].trim();
     if (duoqueue_partner_trimmed.length > 0) {
       if (players_names.indexOf(duoqueue_partner_trimmed) === -1) {
         this.errors.push("You pasted your duoqueuer's nickname wrong, check it and try again.");
