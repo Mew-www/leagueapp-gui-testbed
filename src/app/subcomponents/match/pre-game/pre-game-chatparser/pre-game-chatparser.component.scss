@@ -3,22 +3,92 @@
 .ChatParser {
   display: inline-block;
 
-  &__chat {
-    display: table;
-  }
-  &__chat-helper-text {
-    display: block;
-  }
-  &__chat-paste-area {
-    width: 100%;
-    height: 10em;
+  &__header {
+    padding: 2px 4px;
+    margin: 0;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.33+0,0+100; */
+    background: -moz-linear-gradient(left, rgba(0,0,0,0.33) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0.33) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(0,0,0,0.33) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    &-text {
+      font-family: "Roboto Mono", monospace;
+    }
+    &-toggle-btn {
+
+    }
   }
 
+  // #1 Float begin
+  &__primary-controls {
+    @extend %clearfix;
+  }
+  &__chat {
+    float: left;
+    display: table;
+    margin-right: 30px;
+    &-helper-text {
+      display: block;
+      font-family: Roboto, 'sans-serif';
+    }
+    &-paste-area {
+      width: 100%;
+      height: 10em;
+    }
+  }
+  &__optional-inputs {
+    float: left;
+    display: table;
+  }
+  .OptionalNotice {
+    font-size: 12px;
+    vertical-align: top;
+  }
+  &__self {
+    display: table;
+    margin-bottom: 10px;
+    &-helper-text {
+      display: block;
+      font-family: Roboto, 'sans-serif';
+    }
+    &-clarification-text {
+      display: block;
+      font-family: Roboto, 'sans-serif';
+      font-size: 14px;
+      color: darkmagenta;
+    }
+    &-paste-input {
+      font-family: monospace, serif;
+    }
+  }
+  &__duo-queuer {
+    display: table;
+    margin-bottom: 10px;
+    &-helper-text {
+      display: block;
+      font-family: Roboto, 'sans-serif';
+    }
+    &-clarification-text {
+      display: block;
+      font-family: Roboto, 'sans-serif';
+      font-size: 14px;
+      color: darkmagenta;
+    }
+    &-paste-input {
+      font-family: monospace, serif;
+    }
+  }
+  // #1 Float end
+
+  // #2 Float begin
   &__secondary-controls {
     @extend %clearfix;
   }
   &__secondary-controls-helper-text {
     display: block;
+    font-family: Roboto, 'sans-serif';
+    margin-bottom: 1px;
   }
   &__queue-type-selectors {
     float: left;
@@ -32,12 +102,13 @@
     }
   }
   &__parse-btn {
-    float: right;
+    float: left;
     padding: 6px 8px;
     font-family: Roboto, 'sans-serif';
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 20px;
+    margin-left: 20px;
   }
+  // #2 Float end
 }
 
 .ErrorsContainer {
@@ -47,5 +118,7 @@
     margin: 0;
     padding: 0;
     display: table;
+    color: red;
+    font-style: italic;
   }
 }

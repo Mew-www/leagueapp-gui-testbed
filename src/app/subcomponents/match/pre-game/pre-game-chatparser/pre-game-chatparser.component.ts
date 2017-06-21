@@ -22,9 +22,13 @@ export class PreGameChatparserComponent implements OnInit {
   private current_region = null;
 
   private chat_content = "";
+  private user_itself = "";
+  private duoqueue_partner = "";
   private selected_queue: GameType = null;
   private errors = [];
   private subscription: Subscription = null;
+
+  private minimized = false;
 
   private gettext: Function;
   private GameType = GameType;
@@ -39,12 +43,37 @@ export class PreGameChatparserComponent implements OnInit {
   private parseChat() {
     this.errors = [];
 
-    let entries = this.chat_content.split('\n').slice(0,5);
-    if (entries.length < 5) {
+    let lines = this.chat_content.split('\n');
+    let entries = lines.filter(line => line.indexOf(' joined') !== -1);
+    let players_names = entries.map(entry => entry.split(' joined')[0].trim());
+    // Check empty names
+    if (players_names.filter(name => name.length === 0).length > 0) {
+      this.errors.push("Some player names (before word 'joined') were empty/missing, try again.");
+      return;
+    }
+    // Check we got initially 5 (even if filtered)
+    if (players_names.length < 5) {
       this.errors.push("Less than 5 names found, please copy and paste all 5 joins.");
       return;
     }
-    let players_names = entries.map(entry => entry.split(' joined')[0]);
+    // Check (if given) user_itself is amongst initial players
+    let user_itself_trimmed = this.user_itself.trim();
+    if (user_itself_trimmed.length > 0) {
+      if (players_names.indexOf(user_itself_trimmed) === -1) {
+        this.errors.push("You pasted your own nickname wrong, check it and try again.");
+        return;
+      }
+      players_names.splice(players_names.indexOf(user_itself_trimmed), 1);
+    }
+    // Check (if given) duoqueue_partner is amongst initial players
+    let duoqueue_partner_trimmed = this.duoqueue_partner.trim();
+    if (duoqueue_partner_trimmed.length > 0) {
+      if (players_names.indexOf(duoqueue_partner_trimmed) === -1) {
+        this.errors.push("You pasted your duoqueuer's nickname wrong, check it and try again.");
+        return;
+      }
+      players_names.splice(players_names.indexOf(duoqueue_partner_trimmed), 1);
+    }
 
     this.subscription = Observable.forkJoin(
       players_names.map(name => this.bufferedRequests.buffer(() => {
@@ -56,6 +85,7 @@ export class PreGameChatparserComponent implements OnInit {
         if (responses.every(api_res => api_res.type === ResType.SUCCESS)) {
           this.selectedQueueType.emit(this.selected_queue);
           this.parsedSummoners.emit(responses.map(api_res => <Summoner>api_res.data));
+          this.minimized = true;
         } else {
           responses.forEach((api_res, i) => {
             if (api_res.type === ResType.NOT_FOUND) {

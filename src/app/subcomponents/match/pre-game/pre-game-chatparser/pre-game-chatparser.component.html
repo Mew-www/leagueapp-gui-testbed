@@ -1,10 +1,18 @@
 <div class="ChatParser">
-  <label class="ChatParser__chat">
-    <span class="ChatParser__chat-helper-text">1) Copy and paste champion-selection chat in here</span>
-    <textarea
-        class="ChatParser__chat-paste-area"
-        [(ngModel)]="chat_content"
-        placeholder="{{
+  <p class="ChatParser__header">
+    <span class="ChatParser__header-text">PRE-GAME CONTROLS</span>
+    <button class="ChatParser__header-toggle-btn" (click)="minimized = !minimized">
+      {{gettext(minimized ? 'show_more' : 'show_less')}}
+    </button>
+  </p>
+
+  <div *ngIf="!minimized" class="ChatParser__primary-controls">
+    <label class="ChatParser__chat">
+      <span class="ChatParser__chat-helper-text">1a) Copy and paste champion-selection chat in here</span>
+      <textarea
+          class="ChatParser__chat-paste-area"
+          [(ngModel)]="chat_content"
+          placeholder="{{
         'Cueball joined the lobby'
         + '                    '
         + 'Megan joined the lobby'
@@ -15,8 +23,23 @@
         + '                    '
         + 'Darling Danish joined the lobby'
       }}"></textarea>
-  </label>
-  <div class="ChatParser__secondary-controls">
+    </label>
+    <div class="ChatParser__optional-inputs">
+      <label class="ChatParser__self">
+        <span class="ChatParser__self-helper-text">1b) <span class="OptionalNotice">&lt;optional&gt;</span> Copy and paste your own in-game name here</span>
+        <span class="ChatParser__self-clarification-text">(Why: No time spent downloading your own match history. You know what you queued for.)</span>
+        <input class="ChatParser__self-paste-input" type="text" [(ngModel)]="user_itself" placeholder="Cueball"/>
+      </label>
+      <label class="ChatParser__duo-queuer">
+        <span class="ChatParser__duo-queuer-helper-text">1c) <span class="OptionalNotice">&lt;optional&gt;</span> IF YOU WANT TO SKIP YOUR PARTNER'S STATS TOO...</span>
+        <span class="ChatParser__duo-queuer-helper-text">... then copy and paste your duoqueue partner's in-game name here</span>
+        <span class="ChatParser__duo-queuer-clarification-text">(So no time spent downloading her/his own match history.)</span>
+        <input class="ChatParser__duo-queuer-paste-input" type="text" [(ngModel)]="duoqueue_partner" placeholder="Megan"/>
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="!minimized" class="ChatParser__secondary-controls">
     <span class="ChatParser__secondary-controls-helper-text">2) Choose the queue you're in</span>
     <div class="ChatParser__queue-type-selectors">
       <button
@@ -34,7 +57,6 @@
         FLEX 5V5
       </button>
     </div>
-
     <button
         class="ChatParser__parse-btn"
         (click)="parseChat()"
@@ -44,7 +66,7 @@
     </button>
   </div>
 </div>
-
+<br/>
 <div class="ErrorsContainer">
   <p *ngFor="let error of errors" class="ErrorsContainer__error">{{error}}</p>
 </div>
