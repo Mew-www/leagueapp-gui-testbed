@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Summoner} from "../../../../../models/dto/summoner";
 import {PlayerApiService} from "../../../../../services/player-api.service";
 import {RatelimitedRequestsService} from "../../../../../services/ratelimited-requests.service";
@@ -27,6 +27,9 @@ export class PreGameTeammateComponent implements OnInit {
   @Input() items: ItemsContainer;
   @Input() summonerspells: SummonerspellsContainer;
 
+  @Input() hide_statistics: boolean;
+  @Output() selectedInitialRole: EventEmitter<boolean> = new EventEmitter();
+
   private role = null;
   private errors = [];
   private readonly time_limit_days = 21;
@@ -46,7 +49,13 @@ export class PreGameTeammateComponent implements OnInit {
   }
 
   private handleSelectedRole(role) {
+    let is_initial_update = this.role === null;
+    // First update role
     this.role = role;
+    // Then send upstream "we have selected initial role" if so
+    if (is_initial_update) {
+      this.selectedInitialRole.emit(true);
+    }
   }
 
   private getChampionsNameOrdered(): Array<Champion> {

@@ -17,7 +17,7 @@
             <br/>
             {{summoner.current_name}}
           </span>
-          <span [style.display]="'inline-block'" [style.vertical-align]="'top'">
+          <span [style.display]="'inline-block'" [style.vertical-align]="'top'" [hidden]="hide_statistics">
             <squarebrace-titled-container *ngIf="soloqueue_games_this_season" class="Player__preferred-lanes-container" [title]="'SOLO/DUO this season'">
               <preferred-lanes
                   [slice_of_gamehistory]="soloqueue_games_this_season"
@@ -58,6 +58,8 @@
 
     <previous-games
         *ngIf="current_queue_past_3_weeks"
+        [hidden]="hide_statistics"
+
         [summoner]="summoner"
         [slice_of_gamehistory]="current_queue_past_3_weeks"
         [limit]="15"
@@ -72,7 +74,7 @@
   </div>
 
   <!-- Second column -->
-  <div class="Player__rankings">
+  <div class="Player__rankings" [hidden]="hide_statistics">
     <teammate-league-position
         [summoner]="summoner">
     </teammate-league-position>

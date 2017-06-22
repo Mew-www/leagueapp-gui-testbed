@@ -3,6 +3,10 @@
     Show icons?
     <input type="checkbox" [(ngModel)]="display_icons" />
   </label>
+  <label>
+    Wait until all roles selected before statistics?
+    <input type="checkbox" [(ngModel)]="wait_role_selection" />
+  </label>
   <br/>
   <div [dragula]="'teammate-bag'" [dragulaModel]="teammates">
     <pre-game-teammate
@@ -13,7 +17,10 @@
 
         [champions]="champions"
         [items]="items"
-        [summonerspells]="summonerspells">
+        [summonerspells]="summonerspells"
+
+        [hide_statistics]="wait_role_selection && roles_selected !== teammates.length"
+        (selectedInitialRole)="handleSelectedInitialRole()">
     </pre-game-teammate>
   </div>
 </div>
