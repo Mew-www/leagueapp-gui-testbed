@@ -12,6 +12,7 @@ import {ChampionsContainer} from "../../../../../../models/dto/containers/champi
 import {ItemsContainer} from "../../../../../../models/dto/containers/items-container";
 import {SummonerspellsContainer} from "../../../../../../models/dto/containers/summonerspells-container";
 import {TranslatorService} from "../../../../../../services/translator.service";
+import {Champion} from "../../../../../../models/dto/champion";
 
 @Component({
   selector: 'previous-games',
@@ -36,6 +37,7 @@ export class PreviousGamesComponent implements OnInit {
   private ongoing_request: Subscription = null;
   private days_ago_collections = null;
   private error = '';
+  private champion_id_filter = null;
 
   // Utils
   private gettext: Function;
@@ -90,27 +92,46 @@ export class PreviousGamesComponent implements OnInit {
       return this.gettext("yesterday");
     } else {
       if (collection.contents.length === 1) {
-        return nr_of_days.toString() + ' ' + this.gettext("days_ago").slice(0,1) + '...';
+        return nr_of_days.toString() + ' ' + this.gettext("days_ago").slice(0,1) + '..';
       } else {
         return nr_of_days.toString() + ' ' + this.gettext("days_ago");
       }
     }
   }
 
-  ngOnInit() {
-    // If limit is set then apply it
-    let first_n_gamereferences = this.limit ? this.slice_of_gamehistory.slice(0, this.limit) : this.slice_of_gamehistory;
+  private getPlayedChampionsNameOrdered(): Array<Champion> {
+    let played_champions = this.slice_of_gamehistory.map(gameref => gameref.chosen_champion.id)
+      .filter((id, idx, self) => self.indexOf(id) === idx); // Filter unique, like set(<list>) in python
+    return this.champions.listChampions()
+      .filter(champion => played_champions.indexOf(champion.id) !== -1)
+      .sort((a,b) => a.name.localeCompare(b.name));
+  }
+
+  private loadPreviousGames(opt_champion_id_filter?) {
+    // Cancel if any unfinished ongoing requests
+    if (this.ongoing_request && !this.ongoing_request.closed) {
+      return;
+    }
+
+    // If champion-filter is set then apply it
+    let gamereferences = opt_champion_id_filter ?
+      this.slice_of_gamehistory.filter(gameref => gameref.chosen_champion.id.toString() === opt_champion_id_filter)
+      : this.slice_of_gamehistory;
+
+    // If limit is set then apply it -> first N gamereferences
+    gamereferences = this.limit ? gamereferences.slice(0, this.limit) : gamereferences;
 
     // Start loading (optionally limited) game details
+    this.loadStart.emit(true);
     this.ongoing_request = Observable.forkJoin(
-      first_n_gamereferences.map((gameref: GameReference) => this.buffered_requests.buffer(() => {
+      gamereferences.map((gameref: GameReference) => this.buffered_requests.buffer(() => {
         return this.game_api.getHistoricalGame(gameref.region, gameref.game_id);
       }))
     )
       .subscribe(game_api_responses => {
         if (game_api_responses.every(api_res => api_res.type == ResType.SUCCESS)) {
           let game_details = [];
-          for (let i=0; i<first_n_gamereferences.length; i++) {
+          for (let i=0; i<gamereferences.length; i++) {
             game_details.push(new GameRecordPersonalised(
               (<GameRecord> game_api_responses[i].data).raw_origin,
               this.summoner,
@@ -156,6 +177,10 @@ export class PreviousGamesComponent implements OnInit {
         }
         this.loaded.emit(true);
       });
+  }
+
+  ngOnInit() {
+    this.loadPreviousGames();
   }
 
 }

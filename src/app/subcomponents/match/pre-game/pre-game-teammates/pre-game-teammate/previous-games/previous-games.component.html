@@ -1,4 +1,17 @@
 <div>
+
+  <label>
+    Games on champion
+    <select #championSelector (change)="loadPreviousGames(championSelector.value)" [disabled]="ongoing_request && !ongoing_request.closed">
+      <option value="" selected="selected" disabled="disabled">Any</option>
+      <option *ngFor="let c of getPlayedChampionsNameOrdered()" value="{{c.id}}">{{c.name}}</option>
+    </select>
+  </label>
+  <button (click)="championSelector.value = ''; loadPreviousGames()" [disabled]="championSelector.value === '' || ongoing_request && !ongoing_request.closed">
+    Reset
+  </button>
+  <br/>
+
   <p *ngIf="ongoing_request && !ongoing_request.closed">
     Loading game details of {{limit}} most recent games) . . .
   </p>

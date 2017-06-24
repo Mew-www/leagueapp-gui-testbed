@@ -21,7 +21,7 @@ export class ChampionsContainer {
     })
   }
 
-  public listChampions() {
+  public listChampions(): Array<Champion> {
     return Object.keys(this._champions_by_id).map(id => this._champions_by_id[id]);
   }
 

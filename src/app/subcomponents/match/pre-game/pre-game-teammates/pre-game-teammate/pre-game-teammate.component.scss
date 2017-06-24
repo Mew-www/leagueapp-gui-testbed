@@ -18,6 +18,7 @@
 
   &__header {
     @extend %clearfix;
+    margin-bottom: 4px;
   }
   /* header float 1/2 */
   &__header-summoner-icon-container {

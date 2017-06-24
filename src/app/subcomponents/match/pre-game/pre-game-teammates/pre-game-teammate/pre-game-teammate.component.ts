@@ -58,10 +58,6 @@ export class PreGameTeammateComponent implements OnInit {
     }
   }
 
-  private getChampionsNameOrdered(): Array<Champion> {
-    return this.champions.listChampions().sort((a,b) => a.name.localeCompare(b.name));
-  }
-
   ngOnInit() {
     // Autoload game history -> (max) 20 last ranked games from one queue
     this.buffered_requests.buffer(() => {
