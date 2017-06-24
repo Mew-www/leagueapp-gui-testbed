@@ -4,6 +4,9 @@
     padding: 0;
     margin: 0;
     text-align: center;
+    &--caption-like {
+      display: table-caption;
+    }
   }
   &__pseudo-underline {
     width: 100%;

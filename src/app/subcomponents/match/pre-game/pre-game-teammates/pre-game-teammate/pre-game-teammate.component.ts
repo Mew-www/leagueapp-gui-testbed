@@ -94,6 +94,10 @@ export class PreGameTeammateComponent implements OnInit {
             this.current_queue_past_3_weeks = soloqueue_games_past_3_weeks;
           } else if (this.queueing_for === GameType.FLEX_QUEUE_5V5) {
             this.current_queue_past_3_weeks = flexqueue_games_past_3_weeks;
+          } else {
+            // Unsupported queue type
+            this.errors.push("Unsupported queue type. (This shouldn't be possible. UI y u let this happen?)");
+            this.current_queue_past_3_weeks = [];
           }
 
         }

@@ -77,7 +77,9 @@ export class i18n {
       'firstbloods_in_past': "Firstbloods in past",
       'inflicted_on': "Inflicted on",
       'assisted_on': "Assisted on",
-      'gave_to': "Gave to"
+      'gave_to': "Gave to",
+      'today': "Today",
+      'days_ago': "days ago"
     },
     'fi': {
       'supported_regions': "Tuetut palvelinalueet:",
@@ -156,7 +158,9 @@ export class i18n {
       'firstbloods_in_past': "Firstbloodit menneiss\u00e4",
       'inflicted_on': "Aiheutettu",
       'assisted_on': "Avustettu",
-      'gave_to': "Annettu"
+      'gave_to': "Annettu",
+      'today': "T\u00e4n\u00e4\u00e4n",
+      'days_ago': "pv sitten"
     }
   }
 

@@ -55,6 +55,9 @@
     <p *ngFor="let e of errors" class="Error">
       {{e}}
     </p>
+    <p *ngIf="!current_queue_past_3_weeks" [hidden]="hide_statistics">
+      Loading game history...
+    </p>
 
     <previous-games
         *ngIf="current_queue_past_3_weeks"
@@ -68,6 +71,7 @@
         [items]="items"
         [summonerspells]="summonerspells"
 
+        (loadStart)="loading_ready = false"
         (loaded)="loading_ready = true">
     </previous-games>
 

@@ -3,21 +3,24 @@
     Loading game details of {{limit}} most recent games) . . .
   </p>
 
-  <span *ngFor="let s of game_summaries" class="GameSummary"
-        [class.GameSummary--win]="s.victory"
-        [class.GameSummary--loss]="!s.victory">
-    <img
-        src="{{s.player_as_participant.champion.images.square_url}}"
-        title="{{getTimeAgoAsString(s.start_time)}}"
-        [style.width.px]="25"
-        [style.height.px]="25"
-    />
-    <br/>
-    {{s.kda}}
-    <br/>
-    <span title="{{s.cs_lane}}">{{s.cs_lane+s.cs_jungle}} cs</span>
-    <br/>
-    <span *ngIf="s.victory" title="{{s.nr_carry}}. carry in total damage to players">{{s.nr_carry}}. C</span>
-    <br *ngIf="!s.victory"/>
-  </span>
+  <squarebrace-titled-container *ngFor="let c of days_ago_collections" class="DailyGames" [title]="'&nbsp;'+getDaysAgoAsString(c)+'&nbsp;'" [captionlike_title]="true">
+    <span *ngFor="let s of c.contents" class="GameSummary"
+          [class.GameSummary--win]="s.victory"
+          [class.GameSummary--loss]="!s.victory">
+      <img
+          src="{{s.player_as_participant.champion.images.square_url}}"
+          title="{{getTimeAgoAsString(s.start_time)}}"
+          [style.width.px]="25"
+          [style.height.px]="25"
+      />
+      <br/>
+      {{s.kda}}
+      <br/>
+      <span title="{{s.cs_lane}}">{{s.cs_lane+s.cs_jungle}} cs</span>
+      <br/>
+      <span *ngIf="s.victory" title="{{s.nr_carry}}. carry in total damage to players">{{s.nr_carry}}. C</span>
+      <br *ngIf="!s.victory"/>
+    </span>
+  </squarebrace-titled-container>
+
 </div>

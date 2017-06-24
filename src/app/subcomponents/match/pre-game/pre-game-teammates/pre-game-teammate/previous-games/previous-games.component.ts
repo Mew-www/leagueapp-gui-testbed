@@ -30,10 +30,11 @@ export class PreviousGamesComponent implements OnInit {
   @Input() summonerspells: SummonerspellsContainer;
 
   // State output
+  @Output() loadStart: EventEmitter<boolean> = new EventEmitter();
   @Output() loaded: EventEmitter<boolean> = new EventEmitter();
 
   private ongoing_request: Subscription = null;
-  private game_summaries = null;
+  private days_ago_collections = null;
   private error = '';
 
   // Utils
@@ -81,6 +82,21 @@ export class PreviousGamesComponent implements OnInit {
     }
   }
 
+  private getDaysAgoAsString(collection) {
+    let nr_of_days = collection.days_ago;
+    if (nr_of_days === 0) {
+      return this.gettext("today");
+    } else if (nr_of_days === 1) {
+      return this.gettext("yesterday");
+    } else {
+      if (collection.contents.length === 1) {
+        return nr_of_days.toString() + ' ' + this.gettext("days_ago").slice(0,1) + '...';
+      } else {
+        return nr_of_days.toString() + ' ' + this.gettext("days_ago");
+      }
+    }
+  }
+
   ngOnInit() {
     // If limit is set then apply it
     let first_n_gamereferences = this.limit ? this.slice_of_gamehistory.slice(0, this.limit) : this.slice_of_gamehistory;
@@ -104,9 +120,24 @@ export class PreviousGamesComponent implements OnInit {
             ));
           }
 
-          this.game_summaries = game_details.map(g => {
+          let time_now = (new Date()).getTime();
+          let time_since_daybreak = (new Date()).getHours() * 1000 * 60 * 60; // Hour accuracy
+          this.days_ago_collections = game_details.reduce((days_ago_collections, g) => {
+            // Parse the [today: [matches], yesterday: [matches], etc.] times
+            let time_then = g.match_start_time.getTime();
+            let happened_today = (time_now - time_then - time_since_daybreak) <= 0;
+            let days_ago = happened_today ? 0 : Math.ceil((time_now - time_then - time_since_daybreak) / (1000*60*60*24));
+            let collection = days_ago_collections.find(coll => coll.days_ago === days_ago);
+            if (!collection) {
+              collection = {
+                days_ago: days_ago,
+                contents: []
+              };
+              days_ago_collections.push(collection);
+            }
+            // Parse match itself
             let player_itself = g.teams.ally.players.find(p => p.is_the_target);
-            return {
+            collection.contents.push({
               player_as_participant: player_itself,
               victory: g.teams.ally.stats.isWinningTeam,
               start_time: g.match_start_time,
@@ -117,8 +148,9 @@ export class PreviousGamesComponent implements OnInit {
               kda: player_itself.stats.kda.kills + '/' + player_itself.stats.kda.deaths + '/' + player_itself.stats.kda.assists,
               cs_lane: player_itself.stats.creeps.lane,
               cs_jungle: player_itself.stats.creeps.jungle
-            }
-          });
+            });
+            return days_ago_collections;
+          }, []);
         } else {
           this.error = 'Something went wrong when requesting game details.';
         }

@@ -8,6 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class SquarebraceTitledContainerComponent implements OnInit {
 
   @Input() title: string;
+  @Input() captionlike_title: boolean = false;
 
   constructor() { }
 
