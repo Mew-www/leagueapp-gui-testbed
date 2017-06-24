@@ -13,7 +13,7 @@
   <br/>
 
   <p *ngIf="ongoing_request && !ongoing_request.closed">
-    Loading game details of {{limit}} most recent games) . . .
+    Loading game details of {{limit}} most recent games . . .
   </p>
 
   <squarebrace-titled-container *ngFor="let c of days_ago_collections" class="DailyGames" [title]="'&nbsp;'+getDaysAgoAsString(c)+'&nbsp;'" [captionlike_title]="true">

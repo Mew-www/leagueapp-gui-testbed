@@ -10,12 +10,11 @@
       <div class="Player__header-title">
         <p class="Player__header-title-text">
           <span [style.display]="'inline-block'" [style.vertical-align]="'top'">
+            {{summoner.current_name}}
             <role-selector
-                [style.display]="'inline-block'"
+                [style.display]="role ? 'inline-block' : 'block'"
                 (selectedRole)="handleSelectedRole($event)">
             </role-selector>
-            <br/>
-            {{summoner.current_name}}
           </span>
           <span [style.display]="'inline-block'" [style.vertical-align]="'top'" [hidden]="hide_statistics">
             <span class="Player__preferred-lanes-containers-in-timeframe">
