@@ -78,7 +78,7 @@ export class i18n {
       'inflicted_on': "Inflicted on",
       'assisted_on': "Assisted on",
       'gave_to': "Gave to",
-      'today': "Today",
+      'today': "today",
       'days_ago': "days ago"
     },
     'fi': {
@@ -159,7 +159,7 @@ export class i18n {
       'inflicted_on': "Aiheutettu",
       'assisted_on': "Avustettu",
       'gave_to': "Annettu",
-      'today': "T\u00e4n\u00e4\u00e4n",
+      'today': "t\u00e4n\u00e4\u00e4n",
       'days_ago': "pv sitten"
     }
   }

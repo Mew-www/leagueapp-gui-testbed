@@ -1,10 +1,14 @@
 .DailyGames {
   display: inline-block;
+  font-family: 'Roboto Condensed', 'sans-serif';
+  font-size: 14px;
 }
 
 .GameSummary {
   display: inline-block;
   padding: 4px;
+  font-family: initial;
+  font-size: initial;
   &--win {
     background: lightgreen;
   }
