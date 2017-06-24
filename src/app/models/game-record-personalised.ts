@@ -80,6 +80,11 @@ export class GameRecordPersonalised extends GameRecord {
                   counterjungle: pstats.neutralMinionsKilledEnemyJungle,
                   allyjungle: pstats.neutralMinionsKilledTeamJungle
                 },
+                timeline: {
+                  cs_at_ten: p.timeline.hasOwnProperty('creepsPerMinDeltas') && p.timeline.creepsPerMinDeltas.hasOwnProperty('0-10') ?
+                    Math.round(p.timeline.creepsPerMinDeltas['0-10']*10)
+                    : null
+                },
                 gold_spent: pstats.goldSpent,
                 final_items: [
                   pstats.item0 ? items.getItemById(pstats.item0) : null,

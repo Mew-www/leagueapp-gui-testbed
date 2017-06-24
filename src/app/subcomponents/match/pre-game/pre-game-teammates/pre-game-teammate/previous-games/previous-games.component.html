@@ -22,14 +22,16 @@
           [class.GameSummary--loss]="!s.victory">
       <img
           src="{{s.player_as_participant.champion.images.square_url}}"
-          title="{{getTimeAgoAsString(s.start_time)}}"
+          title="{{getTimeAgoAsString(s.start_time) + ' (' + Math.floor(s.duration/60) + 'min game)'}}"
           [style.width.px]="25"
           [style.height.px]="25"
       />
       <br/>
       {{s.kda}}
       <br/>
-      <span title="{{s.cs_lane}}">{{s.cs_lane+s.cs_jungle}} cs</span>
+      <span title="{{s.cs_lane}} in lane">{{s.cs_lane+s.cs_jungle}} cs</span>
+      <br/>
+      <span title="Theoretical maximum 107 lane cs, 7 more spawns at exactly 10">{{s.cs_at_ten ? s.cs_at_ten+'cs @10' : ''}}</span>
       <br/>
       <span *ngIf="s.victory" title="{{s.nr_carry}}. carry in total damage to players">{{s.nr_carry}}. C</span>
       <br *ngIf="!s.victory"/>
