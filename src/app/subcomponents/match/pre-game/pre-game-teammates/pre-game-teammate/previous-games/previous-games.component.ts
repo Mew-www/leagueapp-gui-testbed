@@ -108,7 +108,7 @@ export class PreviousGamesComponent implements OnInit {
       .sort((a,b) => a.name.localeCompare(b.name));
   }
 
-  private loadPreviousGames(opt_champion_id_filter?) {
+  private loadPreviousGames(opt_champion_id_filter?, opt_role_filter?) {
     // Cancel if any unfinished ongoing requests
     if (this.ongoing_request && !this.ongoing_request.closed) {
       return;
@@ -119,8 +119,18 @@ export class PreviousGamesComponent implements OnInit {
       this.slice_of_gamehistory.filter(gameref => gameref.chosen_champion.id.toString() === opt_champion_id_filter)
       : this.slice_of_gamehistory;
 
+    // If role-filter is set then apply it
+    gamereferences = opt_role_filter ?
+      gamereferences.filter(gameref => gameref.presumed_lane === opt_role_filter)
+      : gamereferences;
+
     // If limit is set then apply it -> first N gamereferences
     gamereferences = this.limit ? gamereferences.slice(0, this.limit) : gamereferences;
+
+    if (gamereferences.length === 0) {
+      this.days_ago_collections = [];
+      return;
+    }
 
     // Start loading (optionally limited) game details
     this.loadStart.emit(true);
@@ -144,7 +154,7 @@ export class PreviousGamesComponent implements OnInit {
 
           let time_now = (new Date()).getTime();
           let time_since_daybreak = (new Date()).getHours() * 1000 * 60 * 60; // Hour accuracy
-          this.days_ago_collections = game_details.reduce((days_ago_collections, g) => {
+          this.days_ago_collections = game_details.reduce((days_ago_collections, g, i) => {
             // Parse the [today: [matches], yesterday: [matches], etc.] times
             let time_then = g.match_start_time.getTime();
             let happened_today = (time_now - time_then - time_since_daybreak) <= 0;
@@ -161,6 +171,7 @@ export class PreviousGamesComponent implements OnInit {
             let player_itself = g.teams.ally.players.find(p => p.is_the_target);
             collection.contents.push({
               player_as_participant: player_itself,
+              role: gamereferences[i].presumed_lane,
               victory: g.teams.ally.stats.isWinningTeam,
               start_time: g.match_start_time,
               duration: g.match_duration_seconds,

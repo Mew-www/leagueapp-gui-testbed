@@ -1,20 +1,45 @@
-<div>
+<div class="PreviousGames">
 
-  <label>
-    Games on champion
-    <select #championSelector (change)="loadPreviousGames(championSelector.value)" [disabled]="ongoing_request && !ongoing_request.closed">
-      <option value="" selected="selected" disabled="disabled">Any</option>
-      <option *ngFor="let c of getPlayedChampionsNameOrdered()" value="{{c.id}}">{{c.name}}</option>
-    </select>
-  </label>
-  <button (click)="championSelector.value = ''; loadPreviousGames()" [disabled]="championSelector.value === '' || ongoing_request && !ongoing_request.closed">
-    Reset
-  </button>
-  <br/>
-
-  <p *ngIf="ongoing_request && !ongoing_request.closed">
-    Loading game details of {{limit}} most recent games . . .
-  </p>
+  <div class="PreviousGames__controls">
+    <span>Games past 3 weeks</span>
+    <br/>
+    <label class="PreviousGames__controls-row">
+      <span class="PreviousGames__controls-row-label">on lane/role</span>
+      <select
+          #roleSelector
+          class="PreviousGames__controls-row-control"
+          (change)="loadPreviousGames(championSelector.value, roleSelector.value)"
+          [disabled]="ongoing_request && !ongoing_request.closed"
+      >
+        <option value="" selected="selected">Any</option>
+        <option value="TOP">TOP</option>
+        <option value="JUNGLE">JUNGLE</option>
+        <option value="MID">MID</option>
+        <option value="BOTTOM">BOTTOM</option>
+        <option value="SUPPORT">SUPPORT</option>
+      </select>
+    </label>
+    <label class="PreviousGames__controls-row">
+      <span class="PreviousGames__controls-row-label">on champion</span>
+      <select
+          #championSelector
+          class="PreviousGames__controls-row-control"
+          (change)="loadPreviousGames(championSelector.value, roleSelector.value)"
+          [disabled]="ongoing_request && !ongoing_request.closed"
+      >
+        <option value="" selected="selected">Any</option>
+        <option *ngFor="let c of getPlayedChampionsNameOrdered()" value="{{c.id}}">{{c.name}}</option>
+      </select>
+    </label>
+    <p>
+      <button
+          (click)="championSelector.value = ''; roleSelector.value = ''; loadPreviousGames()"
+          [disabled]="championSelector.value === '' && roleSelector.value === '' || ongoing_request && !ongoing_request.closed"
+      >
+        Reset
+      </button>
+    </p>
+  </div>
 
   <squarebrace-titled-container *ngFor="let c of days_ago_collections" class="DailyGames" [title]="'&nbsp;'+getDaysAgoAsString(c)+'&nbsp;'" [captionlike_title]="true">
     <span *ngFor="let s of c.contents" class="GameSummary"
@@ -22,7 +47,11 @@
           [class.GameSummary--loss]="!s.victory">
       <img
           src="{{s.player_as_participant.champion.images.square_url}}"
-          title="{{getTimeAgoAsString(s.start_time) + ' (' + Math.floor(s.duration/60) + 'min game)'}}"
+          title="{{
+              getTimeAgoAsString(s.start_time) + ' (' + Math.floor(s.duration/60) + 'min game)'
+              + '&#013;&#010;'
+              + s.role.charAt(0).toUpperCase()+s.role.slice(1).toLowerCase() + ' ' + s.player_as_participant.champion.name
+            }}"
           [style.width.px]="25"
           [style.height.px]="25"
       />
@@ -37,5 +66,18 @@
       <br *ngIf="!s.victory"/>
     </span>
   </squarebrace-titled-container>
+
+  <p *ngIf="ongoing_request && !ongoing_request.closed">
+    Loading game details of {{limit}} most recent games . . .
+  </p>
+
+  <p *ngIf="days_ago_collections && days_ago_collections.length === 0">
+    <span *ngIf="championSelector.value === '' && roleSelector.value === ''">No games found.</span>
+    <span *ngIf="championSelector.value !== '' || roleSelector.value !== ''">
+      No games found matching those filters
+      ({{roleSelector.value === '' ? 'Any lane' : roleSelector.value.charAt(0).toUpperCase()+roleSelector.value.slice(1).toLowerCase()}}
+      {{championSelector.value === '' ? 'any champion' : champions.getChampionById(championSelector.value).name}}).
+    </span>
+  </p>
 
 </div>

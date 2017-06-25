@@ -1,3 +1,26 @@
+.PreviousGames {
+  &__controls {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: 1em;
+
+    font-family: 'Roboto Condensed', 'sans-serif';
+    font-size: 14px;
+    &-row {
+      display: table-row;
+      &-label {
+        display: table-cell;
+        padding-right: 2px;
+      }
+      &-control {
+        display: table-cell;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
 .DailyGames {
   display: inline-block;
   font-family: 'Roboto Condensed', 'sans-serif';
