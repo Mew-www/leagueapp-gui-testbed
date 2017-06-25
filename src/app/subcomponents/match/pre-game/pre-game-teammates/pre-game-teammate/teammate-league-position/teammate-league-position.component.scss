@@ -39,10 +39,34 @@
   }
 }
 
+.RankingMinified {
+  margin-left: 11px;
+  margin-bottom: 11px;
+  font-family: 'Roboto Condensed', 'sans-serif';
+  color: #714848;
+
+  &__header {
+    display: inline-block;
+  }
+  &__name {
+  }
+  &__badge {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4px;
+  }
+  &__tier-name {
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+
 .UnrankedNotice {
   padding: 0;
   margin: 0;
   margin-left: 11px;
   margin-bottom: 11px;
+  font-family: 'Roboto Condensed', 'sans-serif';
   color: #714848;
 }

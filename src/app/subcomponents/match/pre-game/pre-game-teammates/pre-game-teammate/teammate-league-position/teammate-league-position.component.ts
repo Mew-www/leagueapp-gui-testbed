@@ -17,6 +17,7 @@ import {TranslatorService} from "../../../../../../services/translator.service";
 export class TeammateLeaguePositionComponent implements OnInit {
 
   @Input() summoner: Summoner;
+  @Input() current_queue: GameType;
   private loaded_rankings: Array<LeaguePosition> = null;
   private errors = [];
 
