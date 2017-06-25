@@ -19,7 +19,7 @@
         [items]="items"
         [summonerspells]="summonerspells"
 
-        [hide_statistics]="wait_role_selection && roles_selected !== teammates.length"
+        [hide_statistics]="wait_role_selection && roles_selected < teammates.length"
         (selectedInitialRole)="handleSelectedInitialRole()">
     </pre-game-teammate>
   </div>
