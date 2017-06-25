@@ -28,7 +28,8 @@
     </div>
     <a *ngFor="let h of search_history"
        class="SummonerSelector__history-link"
-       href="#{{h.region+h.account_id}}"
+       routerLink="/summoner"
+       fragment="{{h.region+h.account_id}}"
        (click)="searchHistoricalSummoner(h.region, h.account_id)">
       <span class="SummonerSelector__history-link-name">{{h.name}}</span>
       <span class="SummonerSelector__history-link-uid">({{h.region}}#{{h.account_id}})</span>
