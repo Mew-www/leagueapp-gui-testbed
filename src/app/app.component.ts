@@ -6,6 +6,7 @@ import {ChampionsContainer} from "./models/dto/containers/champions-container";
 import {ItemsContainer} from "./models/dto/containers/items-container";
 import {SummonerspellsContainer} from "./models/dto/containers/summonerspells-container";
 import {Router} from "@angular/router";
+import {PlatformLocation} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -21,12 +22,17 @@ export class AppComponent {
   public items: ItemsContainer;
   public summonerspells: SummonerspellsContainer;
 
-  constructor(private router: Router, private static_api: StaticApiService) {}
+  constructor(private platformLocation: PlatformLocation, private router: Router, private static_api: StaticApiService) {}
 
   public handleSetupReady(e) {
+    // Activate menu
     this.is_setup_ready = true;
-    // If setup was first time instantiated, it goes to / but doesn't trigger it automatically
-    if (this.router.url === '/') {
+    // If setup was first time instantiated, default route redirects any given path to /
+    // ...so if it's NOT first time, then pathname != base href.
+    // Initially router doesn't trigger the default route when CanActivateViaRouteGuard would let it
+    // ...so we trigger it here manually after "isFirstTime" -check.
+    // Else (if it's NOT first time) the Guard won't prevent router, and it'll route by itself.
+    if (this.platformLocation.getBaseHrefFromDOM() === this.platformLocation.pathname) {
       this.router.navigateByUrl('/');
     }
   }
