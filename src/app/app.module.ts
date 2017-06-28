@@ -51,11 +51,12 @@ import { RoleSelectorComponent } from './subcomponents/match/pre-game/pre-game-t
 import { PreferredLanesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/preferred-lanes/preferred-lanes.component';
 import { PreviousGamesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-games/previous-games.component';
 import { SquarebraceTitledContainerComponent } from './genericcomponents/squarebrace-titled-container/squarebrace-titled-container.component';
+import {CanActivateViaRegionGuard} from "./guards/can-activate-via-region.guard";
 
 const routes: Routes = [
-  {'path': "summoner", component: ProfilingComponent},
-  {'path': "match", component: MatchComponent},
-  {'path': "**", component: MatchComponent}
+  {'path': "summoner", component: ProfilingComponent, canActivate: [CanActivateViaRegionGuard]},
+  {'path': "match", component: MatchComponent, canActivate: [CanActivateViaRegionGuard]},
+  {'path': "**", component: MatchComponent, canActivate: [CanActivateViaRegionGuard]}
 ];
 
 @NgModule({
@@ -104,6 +105,7 @@ const routes: Routes = [
   ],
   providers: [
     PreferencesService, TranslatorService,
+    CanActivateViaRegionGuard,
     StaticApiService, PlayerApiService, GameApiService,
     RatelimitedRequestsService,
     ExplorerApiService

@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {ChampionsContainer} from "./models/dto/containers/champions-container";
 import {ItemsContainer} from "./models/dto/containers/items-container";
 import {SummonerspellsContainer} from "./models/dto/containers/summonerspells-container";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -20,10 +21,14 @@ export class AppComponent {
   public items: ItemsContainer;
   public summonerspells: SummonerspellsContainer;
 
-  constructor(private static_api: StaticApiService) {}
+  constructor(private router: Router, private static_api: StaticApiService) {}
 
   public handleSetupReady(e) {
     this.is_setup_ready = true;
+    // If setup was first time instantiated, it goes to / but doesn't trigger it automatically
+    if (this.router.url === '/') {
+      this.router.navigateByUrl('/');
+    }
   }
 
   ngOnInit() {

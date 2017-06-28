@@ -43,7 +43,7 @@ export class ProfilingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.current_region = this.preferencesService['region']; // Expected to be set before init (see: Setup -component)
+    this.current_region = this.preferencesService.getPref('region'); // Expected to be set before init (see: Setup -component)
     this.preferencesService.preferences$
       .subscribe(new_prefs => {
         if (new_prefs.hasOwnProperty('region') && new_prefs.region !== this.current_region) {
