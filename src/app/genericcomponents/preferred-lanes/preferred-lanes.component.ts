@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {GameReference} from "../../../../../../models/dto/game-reference";
-import {Analytics} from "../../../../../../helpers/analytics";
-import {TranslatorService} from "../../../../../../services/translator.service";
+import {GameReference} from "../../models/dto/game-reference";
+import {Analytics} from "../../helpers/analytics";
+import {TranslatorService} from "../../services/translator.service";
 
 @Component({
   selector: 'preferred-lanes',

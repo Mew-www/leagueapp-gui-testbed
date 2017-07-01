@@ -48,10 +48,11 @@ import {DragulaModule} from "ng2-dragula";
 import { PreGameTeammateComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/pre-game-teammate.component';
 import { TeammateLeaguePositionComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/teammate-league-position/teammate-league-position.component';
 import { RoleSelectorComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/teammate-role-selector/role-selector.component';
-import { PreferredLanesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/preferred-lanes/preferred-lanes.component';
+import { PreferredLanesComponent } from './genericcomponents/preferred-lanes/preferred-lanes.component';
 import { PreviousGamesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-games/previous-games.component';
 import { SquarebraceTitledContainerComponent } from './genericcomponents/squarebrace-titled-container/squarebrace-titled-container.component';
 import {CanActivateViaRegionGuard} from "./guards/can-activate-via-region.guard";
+import { PreviousRolesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-roles/previous-roles.component';
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent, canActivate: [CanActivateViaRegionGuard]},
@@ -94,7 +95,8 @@ const routes: Routes = [
     RoleSelectorComponent,
     PreferredLanesComponent,
     PreviousGamesComponent,
-    SquarebraceTitledContainerComponent
+    SquarebraceTitledContainerComponent,
+    PreviousRolesComponent
   ],
   imports: [
     DragulaModule,

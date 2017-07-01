@@ -1,0 +1,35 @@
+<span class="PreviousRoles">
+  <span class="PreviousRoles__row">
+    <squarebrace-titled-container *ngIf="soloqueue_games_this_season" class="PreviousRoles__cell" [title]="'SOLO/DUO this season'">
+      <preferred-lanes
+          [slice_of_gamehistory]="soloqueue_games_this_season"
+          [chosen_lane]="role || null"
+          [check_autofill]="queueing_for === GameType.SOLO_QUEUE">
+      </preferred-lanes>
+    </squarebrace-titled-container>
+    <squarebrace-titled-container *ngIf="flexqueue_games_this_season" class="PreviousRoles__cell" [title]="'FLEX 5v5 this season'">
+      <preferred-lanes
+          [slice_of_gamehistory]="flexqueue_games_this_season"
+          [chosen_lane]="role || null"
+          [check_autofill]="queueing_for === GameType.FLEX_QUEUE_5V5">
+      </preferred-lanes>
+    </squarebrace-titled-container>
+  </span>
+
+  <span class="PreviousRoles__row">
+    <squarebrace-titled-container *ngIf="soloqueue_games_past_3_weeks" class="PreviousRoles__cell" [title]="'SOLO/DUO past 3 weeks'">
+      <preferred-lanes
+          [slice_of_gamehistory]="soloqueue_games_past_3_weeks"
+          [chosen_lane]="role || null"
+          [check_autofill]="queueing_for === GameType.SOLO_QUEUE">
+      </preferred-lanes>
+    </squarebrace-titled-container>
+    <squarebrace-titled-container *ngIf="flexqueue_games_past_3_weeks" class="PreviousRoles__cell" [title]="'FLEX 5v5 past 3 weeks'">
+      <preferred-lanes
+          [slice_of_gamehistory]="flexqueue_games_past_3_weeks"
+          [chosen_lane]="role || null"
+          [check_autofill]="queueing_for === GameType.FLEX_QUEUE_5V5">
+      </preferred-lanes>
+    </squarebrace-titled-container>
+  </span>
+</span>

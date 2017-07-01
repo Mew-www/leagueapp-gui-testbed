@@ -42,15 +42,13 @@
     display: table;
     font-family: "Roboto Mono", monospace;
   }
-  &__preferred-lanes-containers-in-timeframe {
-    display: table-row;
+  &__name-and-role {
+    display: inline-block;
+    vertical-align: top;
   }
-  &__preferred-lanes-container {
-    display: table-cell;
-    font-family: 'Roboto Condensed', 'sans-serif';
-    font-size: 14px;
-    padding-left: 4px;
-    padding-right: 4px;
+  &__previous-roles {
+    display: inline-block;
+    vertical-align: top;
   }
 
   .Error {

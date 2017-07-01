@@ -1,0 +1,13 @@
+.PreviousRoles {
+  display: table;
+  &__row {
+    display: table-row;
+  }
+  &__cell {
+    display: table-cell;
+    font-family: 'Roboto Condensed', 'sans-serif';
+    font-size: 14px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}

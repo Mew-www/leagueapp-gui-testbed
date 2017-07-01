@@ -21,6 +21,7 @@ export class PreGameTeammateComponent implements OnInit {
   @Input() summoner: Summoner;
   @Input() queueing_for: GameType;
   @Input() display_summoner_icon: boolean = false;
+  @Input() use_minified_components: boolean = false;
 
   // Metadata
   @Input() champions: ChampionsContainer;

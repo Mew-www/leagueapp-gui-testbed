@@ -4,16 +4,21 @@
     <input type="checkbox" [(ngModel)]="display_icons" />
   </label>
   <label>
+    Minified mode?
+    <input type="checkbox" [(ngModel)]="minified_mode" />
+  </label>
+  <br/>
+  <label>
     Wait until all roles selected before statistics?
     <input type="checkbox" [(ngModel)]="wait_role_selection" />
   </label>
-  <br/>
   <div [dragula]="'teammate-bag'" [dragulaModel]="teammates">
     <pre-game-teammate
         *ngFor="let s of teammates"
         [summoner]="s"
         [queueing_for]="queue"
         [display_summoner_icon]="display_icons"
+        [use_minified_components]="minified_mode"
 
         [champions]="champions"
         [items]="items"
