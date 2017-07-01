@@ -23,11 +23,21 @@ export class Analytics {
       if (!seen_lane) {
         seen_lane = {
           lane_name: gameref.presumed_lane,
-          nr_of_games: 0
+          nr_of_games: 0,
+          champions: []
         };
         seen_lanes.push(seen_lane);
       }
       seen_lane.nr_of_games++;
+      let seen_champion = seen_lane.champions.find(record => record.champion.id === gameref.chosen_champion.id);
+      if (!seen_champion) {
+        seen_champion = {
+          champion: gameref.chosen_champion,
+          nr_of_games: 0
+        };
+        seen_lane.champions.push(seen_champion);
+      }
+      seen_champion.nr_of_games++;
       return seen_lanes;
     }, [])
       .sort((a,b) => b.nr_of_games - a.nr_of_games)
@@ -38,7 +48,7 @@ export class Analytics {
       });
   }
 
-  // Returns player's played champions with their most-played lanes
+  // Returns player's played champions with their played lanes
   public static parsePlayedChampions(gamehistory, champions: ChampionsContainer) {
     return gamehistory.reduce((seen_champions, gameref: GameReference) => {
       let seen_champion = seen_champions.find(s => s.champion.id === gameref.chosen_champion.id);
