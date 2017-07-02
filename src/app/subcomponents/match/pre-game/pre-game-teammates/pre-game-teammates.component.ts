@@ -21,8 +21,8 @@ export class PreGameTeammatesComponent implements OnInit, OnChanges {
   @Input() summonerspells: SummonerspellsContainer;
 
   private display_icons: boolean = false;
-  private wait_role_selection: boolean = true;
   private minified_mode: boolean = true;
+  private wait_role_selection: boolean = true;
   private roles_selected = 0;
 
   constructor() { }
