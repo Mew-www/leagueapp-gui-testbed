@@ -11,3 +11,20 @@
     padding-right: 4px;
   }
 }
+
+.PreviousRolesTextmode {
+  display: table;
+  &__summary {
+    display: table;
+    font-size: 14px;
+    font-family: 'Roboto Condensed', 'sans-serif';
+    white-space: pre-line;
+  }
+  &__warning {
+    display: table;
+    color: red;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Roboto Condensed', 'sans-serif';
+  }
+}

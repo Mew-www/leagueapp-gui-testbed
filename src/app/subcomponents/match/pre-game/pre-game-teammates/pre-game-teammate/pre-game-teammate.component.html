@@ -20,11 +20,14 @@
               class="Player__previous-roles"
               [hidden]="hide_statistics"
 
+              [use_minified]="use_minified_components"
+
               [soloqueue_games_this_season]="soloqueue_games_this_season"
               [flexqueue_games_this_season]="flexqueue_games_this_season"
               [soloqueue_games_past_3_weeks]="soloqueue_games_past_3_weeks"
               [flexqueue_games_past_3_weeks]="flexqueue_games_past_3_weeks"
-              [queueing_for]="queueing_for">
+              [queueing_for]="queueing_for"
+              [role]="role">
           </previous-roles>
         </p>
       </div>
@@ -39,7 +42,7 @@
 
     <previous-games
         *ngIf="current_queue_past_3_weeks"
-        [hidden]="hide_statistics"
+        [hidden]="hide_statistics || use_minified_components"
 
         [summoner]="summoner"
         [slice_of_gamehistory]="current_queue_past_3_weeks"

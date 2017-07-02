@@ -1,4 +1,4 @@
-<span class="PreviousRoles">
+<span *ngIf="!use_minified" class="PreviousRoles">
   <span class="PreviousRoles__row">
     <squarebrace-titled-container *ngIf="soloqueue_games_this_season" class="PreviousRoles__cell" [title]="'SOLO/DUO this season'">
       <preferred-lanes
@@ -32,4 +32,9 @@
       </preferred-lanes>
     </squarebrace-titled-container>
   </span>
+</span>
+
+<span *ngIf="use_minified" class="PreviousRolesTextmode">
+  <span class="PreviousRolesTextmode__summary">{{getSummaryText()}}</span>
+  <span *ngIf="getSummaryText().indexOf(role) === -1" class="PreviousRolesTextmode__warning">Autofill?</span>
 </span>
