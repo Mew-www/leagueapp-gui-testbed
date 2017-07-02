@@ -55,6 +55,9 @@ export class PreviousRolesComponent implements OnInit {
     // Champions will be included anyway since latter ones are subsets of former ones
     let previous_timeframe = null;
     timeframes = timeframes.reduce((acc, timeframe) => {
+      if (!timeframe.primary && !timeframe.secondary) {
+        return acc; // Skip
+      }
       if (previous_timeframe === null) {
         acc.push(timeframe);
         previous_timeframe = timeframe;
