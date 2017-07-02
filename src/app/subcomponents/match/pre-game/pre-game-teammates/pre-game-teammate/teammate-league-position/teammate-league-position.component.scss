@@ -44,6 +44,12 @@
   margin-bottom: 11px;
   font-family: 'Roboto Condensed', 'sans-serif';
   color: #714848;
+  &--current-queue {
+    color: inherit;
+    position: relative;
+    top: -11px;
+
+  }
 
   &__header {
     display: inline-block;

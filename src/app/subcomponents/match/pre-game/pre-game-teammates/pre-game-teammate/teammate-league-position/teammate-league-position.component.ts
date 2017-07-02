@@ -18,6 +18,7 @@ export class TeammateLeaguePositionComponent implements OnInit {
 
   @Input() summoner: Summoner;
   @Input() current_queue: GameType;
+  @Input() use_minified: boolean;
   private loaded_rankings: Array<LeaguePosition> = null;
   private errors = [];
 

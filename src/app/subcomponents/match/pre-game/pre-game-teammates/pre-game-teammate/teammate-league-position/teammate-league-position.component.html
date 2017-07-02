@@ -1,4 +1,4 @@
-<div *ngIf="loaded_rankings">
+<div *ngIf="loaded_rankings && !use_minified">
   <div *ngFor="let ranking of loaded_rankings.sort(sortByQueue)">
 
     <div *ngIf="ranking.queue === current_queue" class="Ranking">
@@ -45,4 +45,16 @@
   <p *ngIf="loaded_rankings.map(mapToQueue).indexOf(GameType.FLEX_QUEUE_3V3) === -1" class="UnrankedNotice">
     FLEX 3v3 unranked
   </p>
+</div>
+
+<div *ngIf="loaded_rankings && use_minified">
+  <div *ngFor="let ranking of loaded_rankings.sort(sortByQueue)">
+    <div *ngIf="ranking.queue === current_queue" class="RankingMinified RankingMinified--current-queue">
+      <div class="RankingMinified__header">
+        <span class="RankingMinified__tier-name">{{getTierString(ranking)}} {{getSubTierString(ranking)}}</span>
+      </div>
+      <img class="RankingMinified__badge" src="{{getTierIconUri(ranking)}}"/>
+      <span>{{ranking.league_points}} LP</span>
+    </div>
+  </div>
 </div>
