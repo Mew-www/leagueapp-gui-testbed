@@ -43,7 +43,6 @@ export class PreGameTeammatesComponent implements OnInit, OnChanges {
       // Reset component state
       this.roles_selected = 0;
       this.wait_role_selection = true;
-      this.minified_mode = true;
     }
   }
 
