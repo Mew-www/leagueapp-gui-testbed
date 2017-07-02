@@ -32,14 +32,19 @@ export class PreviousRolesComponent implements OnInit {
       }
     }
     let lanes_this_season = this.queueing_for === GameType.SOLO_QUEUE ?
-      Analytics.parsePreferredLanes(this.soloqueue_games_this_season)
-      : Analytics.parsePreferredLanes(this.flexqueue_games_this_season);
+      Analytics.parsePreferredLanes(this.soloqueue_games_this_season || [])
+      : Analytics.parsePreferredLanes(this.flexqueue_games_this_season || []);
     let lanes_3_weeks = this.queueing_for === GameType.SOLO_QUEUE ?
-      Analytics.parsePreferredLanes(this.soloqueue_games_past_3_weeks)
-      : Analytics.parsePreferredLanes(this.flexqueue_games_past_3_weeks);
+      Analytics.parsePreferredLanes(this.soloqueue_games_past_3_weeks || [])
+      : Analytics.parsePreferredLanes(this.flexqueue_games_past_3_weeks || []);
     let lanes_max15_games = this.queueing_for === GameType.SOLO_QUEUE ?
-      Analytics.parsePreferredLanes(this.soloqueue_games_past_3_weeks.slice(0,15))
-      : Analytics.parsePreferredLanes(this.flexqueue_games_past_3_weeks.slice(0,15));
+      Analytics.parsePreferredLanes(this.soloqueue_games_past_3_weeks || [])
+      : Analytics.parsePreferredLanes(this.flexqueue_games_past_3_weeks || []);
+
+    if (lanes_this_season.length === 0) {
+      // Not loaded yet or empty
+      return '';
+    }
 
     let timeframes = [
       parseTimeframe('This season', lanes_this_season),
@@ -54,9 +59,11 @@ export class PreviousRolesComponent implements OnInit {
         acc.push(timeframe);
         previous_timeframe = timeframe;
       } else {
-        let primary_lane_name = timeframe.primary ? timeframe.primary.lane_name : null;
-        let secondary_lane_name = timeframe.secondary ? timeframe.secondary.lane_name : null;
-        if (previous_timeframe.primary.lane_name !== primary_lane_name || previous_timeframe.secondary.lane_name !== secondary_lane_name) {
+        let previous_primary = previous_timeframe.primary ? previous_timeframe.primary.lane_name : null;
+        let previous_secondary = previous_timeframe.secondary ? previous_timeframe.secondary.lane_name : null;
+        let current_primary = timeframe.primary ? timeframe.primary.lane_name : null;
+        let current_secondary = timeframe.secondary ? timeframe.secondary.lane_name : null;
+        if (previous_primary !== current_primary || previous_secondary !== current_secondary) {
           acc.push(timeframe);
         }
         previous_timeframe = timeframe;
