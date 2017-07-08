@@ -1,7 +1,7 @@
-<p *ngIf="!is_metadata_ready">Loading metadata (champions, items, etc.) ... please wait.</p>
+<p *ngIf="!isMetadataReady()">Loading metadata (champions, items, etc.) ... please wait.</p>
 
 <pre-game-chatparser
-    *ngIf="is_metadata_ready"
+    *ngIf="isMetadataReady()"
     (selectedQueueType)="handleChosenQueueType($event)"
     (parsedSummoners)="handleNewTeammates($event)">
 </pre-game-chatparser>
@@ -13,5 +13,6 @@
 
     [champions]="champions"
     [items]="items"
-    [summonerspells]="summonerspells">
+    [summonerspells]="summonerspells"
+    (gameStartedWithTeammate)="gameStartedWithTeammate.emit($event)">
 </pre-game-teammates>

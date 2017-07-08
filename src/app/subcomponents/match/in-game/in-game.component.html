@@ -1,0 +1,15 @@
+<div *ngIf="enemies" [dragula]="'teammate-bag'" [dragulaModel]="enemies">
+  <pre-game-teammate
+      *ngFor="let s of enemies"
+      [summoner]="s"
+      [queueing_for]="gamemode"
+      [display_summoner_icon]="true"
+      [use_minified_components]="false"
+
+      [champions]="champions"
+      [items]="items"
+      [summonerspells]="summonerspells"
+
+      [hide_statistics]="false">
+  </pre-game-teammate>
+</div>

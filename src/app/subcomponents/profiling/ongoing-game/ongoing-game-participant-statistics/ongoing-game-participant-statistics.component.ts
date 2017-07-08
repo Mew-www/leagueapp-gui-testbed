@@ -18,11 +18,11 @@ import {ItemsContainer} from "../../../../models/dto/containers/items-container"
 import {PlayedChampionDetails} from "../../../../models/played-champion-details";
 
 @Component({
-  selector: 'current-game-participant-statistics',
-  templateUrl: './current-game-participant-statistics.component.html',
-  styleUrls: ['./current-game-participant-statistics.component.scss']
+  selector: 'ongoing-game-participant-statistics',
+  templateUrl: './ongoing-game-participant-statistics.component.html',
+  styleUrls: ['./ongoing-game-participant-statistics.component.scss']
 })
-export class CurrentGameParticipantStatisticsComponent implements OnInit, OnChanges {
+export class OngoingGameParticipantStatisticsComponent implements OnInit, OnChanges {
 
   @Input() spectatorcache_id;
   @Input() player: CurrentGameParticipant;

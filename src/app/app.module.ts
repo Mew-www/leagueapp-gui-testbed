@@ -28,17 +28,17 @@ import { ProfileTypeSelectorComponent } from './subcomponents/profiling/profile-
 import { SummonerChampionMasteryScrollerComponent } from './subcomponents/profiling/summoner-statistics/summoner-champion-mastery-scroller/summoner-champion-mastery-scroller.component';
 import { SummonerGamehistoryComponent } from './subcomponents/profiling/summoner-statistics/summoner-gamehistory/summoner-gamehistory.component';
 import {RatelimitedRequestsService} from "./services/ratelimited-requests.service";
-import { CurrentGameComponent } from './subcomponents/profiling/current-game/current-game.component';
-import { CurrentGameParticipantStatisticsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/current-game-participant-statistics.component';
+import { OngoingGameComponent } from './subcomponents/profiling/ongoing-game/ongoing-game.component';
+import { OngoingGameParticipantStatisticsComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/ongoing-game-participant-statistics.component';
 import { SummonerSpellIconComponent } from './genericcomponents/summoner-spell-icon/summoner-spell-icon.component';
-import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/participant-played-champions/participant-played-champions.component';
-import { PlayedChampionDetailsComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/played-champion-details.component';
+import { ParticipantPlayedChampionsComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/participant-played-champions/participant-played-champions.component';
+import { PlayedChampionDetailsComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/played-champion-details/played-champion-details.component';
 import { ExplorerComponent } from './subcomponents/explorer/explorer.component';
 import {ExplorerApiService} from "./services/explorer-api.service";
-import { StartingItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/starting-items-history/starting-items-history.component';
-import { FinishedItemsHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/finished-items-history/finished-items-history.component';
-import { WinrateGraphComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/winrate-graph/winrate-graph.component';
-import { FirstbloodHistoryComponent } from './subcomponents/profiling/current-game/current-game-participant-statistics/played-champion-details/firstblood-history/firstblood-history.component';
+import { StartingItemsHistoryComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/played-champion-details/starting-items-history/starting-items-history.component';
+import { FinishedItemsHistoryComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/played-champion-details/finished-items-history/finished-items-history.component';
+import { WinrateGraphComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/played-champion-details/winrate-graph/winrate-graph.component';
+import { FirstbloodHistoryComponent } from './subcomponents/profiling/ongoing-game/ongoing-game-participant-statistics/played-champion-details/firstblood-history/firstblood-history.component';
 import {RouterModule, Routes} from "@angular/router";
 import { MatchComponent } from './subcomponents/match/match.component';
 import { PreGameComponent } from './subcomponents/match/pre-game/pre-game.component';
@@ -53,6 +53,7 @@ import { PreviousGamesComponent } from './subcomponents/match/pre-game/pre-game-
 import { SquarebraceTitledContainerComponent } from './genericcomponents/squarebrace-titled-container/squarebrace-titled-container.component';
 import {CanActivateViaRegionGuard} from "./guards/can-activate-via-region.guard";
 import { PreviousRolesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-roles/previous-roles.component';
+import { InGameComponent } from './subcomponents/match/in-game/in-game.component';
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent, canActivate: [CanActivateViaRegionGuard]},
@@ -76,8 +77,8 @@ const routes: Routes = [
     ProfileTypeSelectorComponent,
     SummonerChampionMasteryScrollerComponent,
     SummonerGamehistoryComponent,
-    CurrentGameComponent,
-    CurrentGameParticipantStatisticsComponent,
+    OngoingGameComponent,
+    OngoingGameParticipantStatisticsComponent,
     SummonerSpellIconComponent,
     ParticipantPlayedChampionsComponent,
     PlayedChampionDetailsComponent,
@@ -96,7 +97,8 @@ const routes: Routes = [
     PreferredLanesComponent,
     PreviousGamesComponent,
     SquarebraceTitledContainerComponent,
-    PreviousRolesComponent
+    PreviousRolesComponent,
+    InGameComponent
   ],
   imports: [
     DragulaModule,

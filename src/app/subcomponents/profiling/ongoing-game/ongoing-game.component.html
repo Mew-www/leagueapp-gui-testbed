@@ -21,7 +21,7 @@
 
   <br/>
   <div *ngFor="let i of [0,1,2,3,4]" class="CurrentGame__laners-container">
-    <current-game-participant-statistics
+    <ongoing-game-participant-statistics
         class="CurrentGame__laner CurrentGame__laner--ally"
         (signalGamehistoryLoading)="handleGamehistoryLoading(current_game.allies[i].summoner_id)"
         (signalGamehistoryLoaded)="handleGamehistoryLoaded(current_game.allies[i].summoner_id)"
@@ -34,8 +34,8 @@
         [champions]="champions"
         [items]="items"
         [summonerspells]="summonerspells">
-    </current-game-participant-statistics>
-    <current-game-participant-statistics
+    </ongoing-game-participant-statistics>
+    <ongoing-game-participant-statistics
         class="CurrentGame__laner CurrentGame__laner--enemy"
         (signalGamehistoryLoading)="handleGamehistoryLoading(current_game.enemies[i].summoner_id)"
         (signalGamehistoryLoaded)="handleGamehistoryLoaded(current_game.enemies[i].summoner_id)"
@@ -48,6 +48,6 @@
         [champions]="champions"
         [items]="items"
         [summonerspells]="summonerspells">
-    </current-game-participant-statistics>
+    </ongoing-game-participant-statistics>
   </div>
 </div>

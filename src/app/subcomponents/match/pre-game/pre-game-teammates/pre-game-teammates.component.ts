@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Summoner} from "../../../../models/dto/summoner";
 import {GameType} from "../../../../enums/game-type";
 import {ChampionsContainer} from "../../../../models/dto/containers/champions-container";
@@ -20,11 +20,12 @@ export class PreGameTeammatesComponent implements OnInit, OnChanges {
   @Input() items: ItemsContainer;
   @Input() summonerspells: SummonerspellsContainer;
 
+  @Output() gameStartedWithTeammate: EventEmitter<Summoner> = new EventEmitter();
+
   private display_icons: boolean = false;
   private minified_mode: boolean = true;
   private wait_role_selection: boolean = true;
   private roles_selected = 0;
-
   constructor() { }
 
   handleSelectedInitialRole() {

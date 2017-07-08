@@ -11,11 +11,11 @@ import {GameType} from "../../../enums/game-type";
 import {ItemsContainer} from "../../../models/dto/containers/items-container";
 
 @Component({
-  selector: 'current-game',
-  templateUrl: './current-game.component.html',
-  styleUrls: ['./current-game.component.scss']
+  selector: 'ongoing-game',
+  templateUrl: './ongoing-game.component.html',
+  styleUrls: ['./ongoing-game.component.scss']
 })
-export class CurrentGameComponent implements OnInit, OnChanges {
+export class OngoingGameComponent implements OnInit, OnChanges {
 
   @Input() champions: ChampionsContainer;
   @Input() items: ItemsContainer;

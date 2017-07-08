@@ -13,13 +13,13 @@
     </app-profile-type-selector>
   </div>
   <div>
-    <current-game
+    <ongoing-game
         *ngIf="selected_profile_type == profileTypeEnum.CURRENT_GAME"
         [champions]="champions"
         [items]="items"
         [summonerspells]="summonerspells"
         [summoner]="selected_summoner">
-    </current-game>
+    </ongoing-game>
     <summoner-statistics
         *ngIf="selected_profile_type == profileTypeEnum.HISTORICAL"
         [champions]="champions"

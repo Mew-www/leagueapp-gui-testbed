@@ -1,2 +1,16 @@
-<pre-game>
+<pre-game
+    *ngIf="is_metadata_ready"
+    [champions]="champions"
+    [items]="items"
+    [summonerspells]="summonerspells"
+    (gameStartedWithTeammate)="handleGameStartedWithTeammate($event)">
 </pre-game>
+<p *ngIf="error_message.length > 0">{{error_message}}</p>
+<in-game
+    *ngIf="game_possibly_started"
+    [champions]="champions"
+    [items]="items"
+    [summonerspells]="summonerspells"
+    [ally_teammate]="ally_teammate"
+    (gameNotFound)="handleGameNotFound($event)">
+</in-game>
