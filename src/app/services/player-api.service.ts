@@ -7,7 +7,6 @@ import {
   ApiResponse, ApiResponseError, ApiResponseNotFound, ApiResponseSuccess,
   ApiResponseTryLater
 } from "../helpers/api-response";
-import {GameType} from "../enums/game-type";
 import {LeaguePosition} from "../models/dto/league-position";
 import {GameReference} from "../models/dto/game-reference";
 

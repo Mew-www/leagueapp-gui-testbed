@@ -131,4 +131,6 @@ export class ApiRoutes {
   public static EXPLORER_SEEN_MATCHES =  Settings.API_BASE_URI + "explorer/seen_matches";
   public static EXPLORER_SEEN_TIMELINES =  Settings.API_BASE_URI + "explorer/seen_timelines";
   public static EXPLORER_FAILED_REQUESTS =  Settings.API_BASE_URI + "explorer/failed_requests";
+
+  public static LOGGING_URI = Settings.API_BASE_URI + "log";
 }

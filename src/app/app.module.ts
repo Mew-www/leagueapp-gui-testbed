@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {Http, HttpModule, RequestOptions, XHRBackend} from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { KonamiComponent } from './konami/konami.component';
@@ -55,6 +55,7 @@ import {CanActivateViaRegionGuard} from "./guards/can-activate-via-region.guard"
 import { PreviousRolesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-roles/previous-roles.component';
 import { InGameComponent } from './subcomponents/match/in-game/in-game.component';
 import {GameMetadataService} from "./services/game-metadata.service";
+import {LoggedHttpService} from "./services/logged-http.service";
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent, canActivate: [CanActivateViaRegionGuard]},
@@ -109,6 +110,13 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
+    {
+      provide: Http,
+      useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions): Http => {
+        return new LoggedHttpService(xhrBackend, requestOptions);
+      },
+      deps: [XHRBackend, RequestOptions]
+    },
     PreferencesService, TranslatorService,
     CanActivateViaRegionGuard,
     StaticApiService, PlayerApiService, GameApiService,
