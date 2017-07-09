@@ -1,4 +1,4 @@
-import {Component, OnInit, HostListener} from '@angular/core';
+import {Component, OnInit, HostListener, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'konami',
@@ -6,6 +6,8 @@ import {Component, OnInit, HostListener} from '@angular/core';
   styleUrls: ['./konami.component.scss']
 })
 export class KonamiComponent implements OnInit {
+
+  @Output() konamiTriggered = new EventEmitter();
 
   constructor() { }
 
@@ -43,7 +45,7 @@ export class KonamiComponent implements OnInit {
        
 \u2610\u2610\u2610
     `);
-    if (q)
+    if (q) {
       alert(`
         /|ˎ
       (˚◟ₒ 7
@@ -51,5 +53,7 @@ export class KonamiComponent implements OnInit {
         |ˎ \u00A0 \u00A0 \u00A0ヽ
         じしf_,)ノ
       `);
+      this.konamiTriggered.emit(true);
+    }
   };
 }
