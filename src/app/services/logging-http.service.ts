@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import {ConnectionBackend, Http, Request, Response, RequestOptions, RequestOptionsArgs} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {EventLogger} from "../helpers/event-logger";
+import {LogHistoryService} from "./log-history.service";
 
 @Injectable()
-export class LoggedHttpService extends Http {
+export class LoggingHttpService extends Http {
 
-  private logger: EventLogger;
+  public logger: EventLogger;
 
-  constructor(_backend: ConnectionBackend, _defaultOptions: RequestOptions) {
+  constructor(_backend: ConnectionBackend, _defaultOptions: RequestOptions, private log_history: LogHistoryService) {
     super(_backend, _defaultOptions);
-    this.logger = new EventLogger(new Http(_backend, _defaultOptions));
+    this.logger = new EventLogger(new Http(_backend, _defaultOptions), log_history);
   }
 
   request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {

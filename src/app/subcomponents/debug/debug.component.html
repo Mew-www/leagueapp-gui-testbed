@@ -1,0 +1,18 @@
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th>Status</th>
+        <th>Datetime</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let l of logs">
+        <td>{{l.message}}</td>
+        <td>{{l.status}}</td>
+        <td>{{getTimeAgoAsString(l.datetime)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

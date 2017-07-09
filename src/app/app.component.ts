@@ -5,6 +5,8 @@ import {SummonerspellsContainer} from "./models/dto/containers/summonerspells-co
 import {Router} from "@angular/router";
 import {PlatformLocation} from "@angular/common";
 import {GameMetadataService} from "./services/game-metadata.service";
+import {Http} from "@angular/http";
+import {LoggingHttpService} from "./services/logging-http.service";
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,10 @@ export class AppComponent {
   public items: ItemsContainer;
   public summonerspells: SummonerspellsContainer;
 
-  constructor(private platformLocation: PlatformLocation, private router: Router, private metadata: GameMetadataService) { }
+  constructor(private platformLocation: PlatformLocation,
+              private router: Router,
+              private metadata: GameMetadataService,
+              private logging_http: Http) { }
 
   public handleSetupReady(e) {
     // If setup was first time instantiated, default route redirects any given path to /
@@ -41,6 +46,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    (<LoggingHttpService>this.logging_http).logger.log('App-root initialized', 'OK');
+
     this.metadata.load();
     let initial_sub = this.metadata.requests_finished$
       .subscribe(finished => {

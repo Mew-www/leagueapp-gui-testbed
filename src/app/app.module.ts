@@ -55,13 +55,20 @@ import {CanActivateViaRegionGuard} from "./guards/can-activate-via-region.guard"
 import { PreviousRolesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-roles/previous-roles.component';
 import { InGameComponent } from './subcomponents/match/in-game/in-game.component';
 import {GameMetadataService} from "./services/game-metadata.service";
-import {LoggedHttpService} from "./services/logged-http.service";
+import {LoggingHttpService} from "./services/logging-http.service";
+import { DebugComponent } from './subcomponents/debug/debug.component';
+import {LogHistoryService} from "./services/log-history.service";
 
 const routes: Routes = [
+  {'path': "debug", component: DebugComponent},
   {'path': "summoner", component: ProfilingComponent, canActivate: [CanActivateViaRegionGuard]},
   {'path': "match", component: MatchComponent, canActivate: [CanActivateViaRegionGuard]},
   {'path': "**", component: MatchComponent, canActivate: [CanActivateViaRegionGuard]}
 ];
+
+export function loggedHttpFactory (xhr_backend: XHRBackend, request_options: RequestOptions, log_history: LogHistoryService): Http {
+  return new LoggingHttpService(xhr_backend, request_options, log_history);
+}
 
 @NgModule({
   declarations: [
@@ -100,7 +107,8 @@ const routes: Routes = [
     PreviousGamesComponent,
     SquarebraceTitledContainerComponent,
     PreviousRolesComponent,
-    InGameComponent
+    InGameComponent,
+    DebugComponent
   ],
   imports: [
     DragulaModule,
@@ -112,17 +120,16 @@ const routes: Routes = [
   providers: [
     {
       provide: Http,
-      useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions): Http => {
-        return new LoggedHttpService(xhrBackend, requestOptions);
-      },
-      deps: [XHRBackend, RequestOptions]
+      useFactory: loggedHttpFactory,
+      deps: [XHRBackend, RequestOptions, LogHistoryService]
     },
     PreferencesService, TranslatorService,
     CanActivateViaRegionGuard,
     StaticApiService, PlayerApiService, GameApiService,
     RatelimitedRequestsService,
     ExplorerApiService,
-    GameMetadataService
+    GameMetadataService,
+    LogHistoryService
   ],
   bootstrap: [AppComponent]
 })
