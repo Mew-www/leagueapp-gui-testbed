@@ -1,5 +1,4 @@
 <app-setup (setupReady)="handleSetupReady($event)">
-
   <nav *ngIf="is_setup_ready && !is_konami_triggered">
     <a routerLink="/match" routerLinkActive="active">Match</a>
   </nav>
@@ -8,9 +7,7 @@
     <a routerLink="/match" routerLinkActive="active">Match</a>
     <a routerLink="/summoner" routerLinkActive="active">Profiling</a>
   </nav>
-
 </app-setup>
 
 <router-outlet></router-outlet>
-
 <konami (konamiTriggered)="handleKonamiTriggered($event)"></konami>
