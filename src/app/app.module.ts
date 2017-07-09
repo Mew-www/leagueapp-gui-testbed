@@ -54,6 +54,7 @@ import { SquarebraceTitledContainerComponent } from './genericcomponents/squareb
 import {CanActivateViaRegionGuard} from "./guards/can-activate-via-region.guard";
 import { PreviousRolesComponent } from './subcomponents/match/pre-game/pre-game-teammates/pre-game-teammate/previous-roles/previous-roles.component';
 import { InGameComponent } from './subcomponents/match/in-game/in-game.component';
+import {GameMetadataService} from "./services/game-metadata.service";
 
 const routes: Routes = [
   {'path': "summoner", component: ProfilingComponent, canActivate: [CanActivateViaRegionGuard]},
@@ -112,7 +113,8 @@ const routes: Routes = [
     CanActivateViaRegionGuard,
     StaticApiService, PlayerApiService, GameApiService,
     RatelimitedRequestsService,
-    ExplorerApiService
+    ExplorerApiService,
+    GameMetadataService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {StaticApiService} from "./services/static-api.service";
 import {ResType} from "./enums/api-response-type";
 import {Observable} from "rxjs/Observable";
 import {ChampionsContainer} from "./models/dto/containers/champions-container";
@@ -7,6 +6,7 @@ import {ItemsContainer} from "./models/dto/containers/items-container";
 import {SummonerspellsContainer} from "./models/dto/containers/summonerspells-container";
 import {Router} from "@angular/router";
 import {PlatformLocation} from "@angular/common";
+import {GameMetadataService} from "./services/game-metadata.service";
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent {
   public items: ItemsContainer;
   public summonerspells: SummonerspellsContainer;
 
-  constructor(private platformLocation: PlatformLocation, private router: Router, private static_api: StaticApiService) {}
+  constructor(private platformLocation: PlatformLocation, private router: Router, private metadata: GameMetadataService) { }
 
   public handleSetupReady(e) {
     // Activate menu
@@ -38,17 +38,15 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    Observable.forkJoin([
-      this.static_api.getChampions(),
-      this.static_api.getItems(),
-      this.static_api.getSummonerspells()
-    ])
-      .subscribe(static_api_responses => {
-        if (Object.keys(static_api_responses).every(k => static_api_responses[k].type == ResType.SUCCESS)) {
-          this.champions      = static_api_responses[0].data;
-          this.items          = static_api_responses[1].data;
-          this.summonerspells = static_api_responses[2].data;
+    this.metadata.load();
+    let initial_sub = this.metadata.requests_finished$
+      .subscribe(finished => {
+        if (finished && this.metadata.is_ready) {
+          this.champions = this.metadata.champions;
+          this.items = this.metadata.items;
+          this.summonerspells = this.metadata.summonerspells;
           this.is_metadata_ready = true;
+          initial_sub.unsubscribe();
         }
       });
   }
