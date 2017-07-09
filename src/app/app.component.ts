@@ -30,7 +30,7 @@ export class AppComponent {
     // ...so we trigger it here manually after "isFirstTime" -check.
     // Else (if it's NOT first time) the Guard won't prevent router, and it'll route by itself.
     if (this.platformLocation.getBaseHrefFromDOM() === this.platformLocation.pathname) {
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/match');
     }
     // Activate menu
     this.is_setup_ready = true;
