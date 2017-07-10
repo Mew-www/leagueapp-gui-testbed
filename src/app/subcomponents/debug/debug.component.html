@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th>Event</th>
+        <th>Type</th>
         <th>Status</th>
         <th>Datetime</th>
       </tr>
@@ -10,6 +11,7 @@
     <tbody>
       <tr *ngFor="let l of logs">
         <td>{{l.message}}</td>
+        <td>{{l.type}}</td>
         <td>{{l.status}}</td>
         <td>{{getTimeAgoAsString(l.datetime)}}</td>
       </tr>

@@ -46,7 +46,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    (<LoggingHttpService>this.logging_http).logger.log('App-root initialized', 'OK');
+    (<LoggingHttpService>this.logging_http).logger.log('App-root initialized', 'Misc', 'OK');
 
     this.metadata.load();
     let initial_sub = this.metadata.requests_finished$

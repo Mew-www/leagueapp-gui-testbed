@@ -3,10 +3,12 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class Log {
   public readonly message: string;
+  public readonly type: string;
   public readonly status: string;
   public readonly datetime: Date;
-  constructor(message, status) {
+  constructor(message, type, status) {
     this.message = message;
+    this.type = type;
     this.status = status;
     this.datetime = new Date();
   }
@@ -20,8 +22,8 @@ export class LogHistoryService {
 
   constructor() { }
 
-  public append_history(message, status) {
-    this.log_history_source.next(this.log_history_source.value.concat(new Log(message, status)))
+  public append_history(message, type, status) {
+    this.log_history_source.next(this.log_history_source.value.concat(new Log(message, type, status)))
   }
 
 }

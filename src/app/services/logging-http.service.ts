@@ -20,11 +20,11 @@ export class LoggingHttpService extends Http {
     let request = options ? super.request(url, options) : super.request(url);
     return request
       .map(res => {
-        this.logger.log(url_string, '200');
+        this.logger.log(url_string, 'HTTP', '200');
         return res;
       })
       .catch(error_res => {
-        this.logger.log(url_string, error_res.json()['status'].toString());
+        this.logger.log(url_string, 'HTTP', error_res.json()['status'].toString());
         return Observable.throw(error_res);
       });
 

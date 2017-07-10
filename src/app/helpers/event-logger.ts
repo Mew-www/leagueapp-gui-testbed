@@ -6,10 +6,10 @@ export class EventLogger {
 
   constructor(private http: Http, private log_history: LogHistoryService) { }
 
-  public log(message, status) {
-    this.http.post(ApiRoutes.LOGGING_URI, JSON.stringify({'msg': message, 'status': status}))
+  public log(message, type, status) {
+    this.http.post(ApiRoutes.LOGGING_URI, JSON.stringify({'msg': message, 'type': type, 'status': status}))
       .subscribe(res => {
-        this.log_history.append_history(message, status)
+        this.log_history.append_history(message, type, status)
       });
   }
 
