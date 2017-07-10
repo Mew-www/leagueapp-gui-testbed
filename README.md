@@ -1,4 +1,4 @@
-# leagueapp-gui
+# leagueapp-gui-testbed
 Front-end of game statistics aggregator app, for videogame "League of Legends".
 
 Features developed "on the go".
